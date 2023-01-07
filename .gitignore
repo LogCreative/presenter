@@ -274,3 +274,9 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+## Project Specific
+
+build/
+*.pdf
+*-ctan.zip

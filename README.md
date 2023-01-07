@@ -1,2 +1,2 @@
 # presenter
-A LaTeX presentation class for the next decade
+A LaTeX presentation class with seamless migration
