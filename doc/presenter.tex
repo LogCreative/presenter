@@ -23,7 +23,7 @@
 \NewDocumentCommand{\presenter}{}{\textsc{Presenter}}
 \title{\presenter: A \LaTeX{} presentation class with seamless migration}
 \author{Log Creative}
-\date{2023-01-07 \quad v0.0.1}
+\date{2023-01-09 \quad v0.0.2}
 
 \begin{document}
 
@@ -38,6 +38,7 @@
 \tableofcontents
 
 \changes{v0.0.1}{2023-01-07}{Build the project skeleton.}
+\changes{v0.0.2}{2023-01-09}{Basic layout.}
 
 \begin{documentation}
 
@@ -56,6 +57,26 @@
 
   The minimal design is for catering to the current trend without introducing
   too many complexities.
+
+  \section{Related Works}
+
+  \begin{description}
+    \item[\href{https://github.com/josephwright/beamer}{\cls{beamer}}]
+
+      One of the most popular presentation document classes in the current
+      \LaTeX{} world.
+
+    \item[\href{https://github.com/Liam0205/easy_slides}{\pkg{easy-slides}}]
+
+      Entirely based on \cls{article} class, to create presentations.
+
+    \item[\href{https://github.com/LogCreative/AutoBeamer}{\pkg{AutoBeamer}}]
+
+      Origin of the idea. Provides a package to redefine some sectioning commands
+      for basic translation from \cls{article} class to \cls{beamer} class.
+      Provides a web page to convert Markdown document to \cls{beamer} class code.
+
+  \end{description}
 
 \end{documentation}
 

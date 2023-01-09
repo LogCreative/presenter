@@ -19,7 +19,8 @@
 % \iffalse
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplClass {presenter} {2023-01-07} {v0.0.1} {A LaTeX presentation class with seamless migration}
+\ProvidesExplClass{presenter}
+  {2023-01-09}{v0.0.2}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -31,9 +32,34 @@
 %
 % \subsection{Main Entry}
 %
+% Pass landscape option to the document class.
 %    \begin{macrocode}
-\RequirePackage{l3draw}
-\LoadClass{article}
+\PassOptionsToClass { landscape } { article }
+%    \end{macrocode}
+%
+% Pass other options to the document class.
+% And load the base document class: \cls{article}.
+%    \begin{macrocode}
+\DeclareOption* { \PassOptionsToClass { \CurrentOption } { article } }
+\ProcessOptions*
+\LoadClass { article }
+%    \end{macrocode}
+%
+% To take the change on paper orientation into effect,
+% introduce package \pkg{geometry}.
+%    \begin{macrocode}
+\RequirePackage { geometry }
+%    \end{macrocode}
+%
+% Introduce the main package for drawing graphics.
+%    \begin{macrocode}
+\RequirePackage { l3draw }
+%    \end{macrocode}
+%
+% Set the default font to serif fonts.
+% This will not set the math font.
+%    \begin{macrocode}
+\RenewDocumentCommand { \familydefault } { } { \sfdefault }
 %    \end{macrocode}
 %
 % \iffalse
