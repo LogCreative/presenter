@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-16}{v0.0.3}{A LaTeX presentation class with seamless migration}
+  {2023-01-09}{v0.0.2}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -34,16 +34,15 @@
 %
 % Pass landscape option to the document class.
 %    \begin{macrocode}
-\PassOptionsToClass { landscape } { report }
+\PassOptionsToClass { landscape } { article }
 %    \end{macrocode}
 %
 % Pass other options to the document class.
-% And load the base document class: \cls{report}, since it has full access to
-% all levels of sectioning commands.
+% And load the base document class: \cls{article}.
 %    \begin{macrocode}
-\DeclareOption* { \PassOptionsToClass { \CurrentOption } { report } }
+\DeclareOption* { \PassOptionsToClass { \CurrentOption } { article } }
 \ProcessOptions*
-\LoadClass { report }
+\LoadClass { article }
 %    \end{macrocode}
 %
 % To take the change on paper orientation into effect,
@@ -61,11 +60,6 @@
 % This will not set the math font.
 %    \begin{macrocode}
 \RenewDocumentCommand { \familydefault } { } { \sfdefault }
-%    \end{macrocode}
-%
-% Use \verb"headings" page style.
-%    \begin{macrocode}
-\pagestyle{ headings }
 %    \end{macrocode}
 %
 % \iffalse
