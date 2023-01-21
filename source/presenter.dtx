@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-09}{v0.0.2}{A LaTeX presentation class with seamless migration}
+  {2023-01-21}{v0.0.4}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -39,15 +39,16 @@
 %
 % Pass landscape option to the document class.
 %    \begin{macrocode}
-\PassOptionsToClass { landscape } { article }
+\PassOptionsToClass { landscape } { report }
 %    \end{macrocode}
 %
 % Pass other options to the document class.
-% And load the base document class: \cls{article}.
+% And load the base document class: \cls{report}, since it has full access to
+% all levels of sectioning commands.
 %    \begin{macrocode}
-\DeclareOption* { \PassOptionsToClass { \CurrentOption } { article } }
+\DeclareOption* { \PassOptionsToClass { \CurrentOption } { report } }
 \ProcessOptions*
-\LoadClass { article }
+\LoadClass { report }
 %    \end{macrocode}
 %
 % To take the change on paper orientation into effect,
