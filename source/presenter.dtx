@@ -30,6 +30,11 @@
 %<*class>
 % \fi
 %
+% Set the module prefix.
+%    \begin{macrocode}
+%<@@=pre>
+%    \end{macrocode}
+%
 % \subsection{Main Entry}
 %
 % Pass landscape option to the document class.
@@ -60,6 +65,23 @@
 % This will not set the math font.
 %    \begin{macrocode}
 \RenewDocumentCommand { \familydefault } { } { \sfdefault }
+%    \end{macrocode}
+%
+% Define the page style \verb"presenterpage".
+% TODO: Make it a template.
+%    \begin{macrocode}
+\NewDocumentCommand { \ps@presenterpage } { } {
+  \def\@oddhead{\rightmark\hfil\thepage}%
+  \RenewDocumentCommand { \sectionmark } { m } { \markright { \thesection \ ##1 } }
+  \RenewDocumentCommand { \subsectionmark } { m } { \markright { \thesubsection \ ##1 } }
+  \RenewDocumentCommand { \paragraphmark } { m } { \markright { ##1 } }
+  \RenewDocumentCommand { \subparagraphmark } { m } { \markright { ##1 } }
+}
+%    \end{macrocode}
+%
+% Set page style to \verb"presenterpage".
+%    \begin{macrocode}
+\pagestyle { presenterpage }
 %    \end{macrocode}
 %
 % \iffalse
