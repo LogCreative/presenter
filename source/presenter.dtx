@@ -71,8 +71,23 @@
 % Define the page style \verb"presenterpage".
 % TODO: Make it a template.
 %    \begin{macrocode}
+\RequirePackage { array }
+\RequirePackage { xcolor }
+\dim_new:N \g_@@_headline_height_dim
 \NewDocumentCommand { \ps@presenterpage } { } {
-  \def\@oddhead{\rightmark\hfil\thepage}%
+  \RenewDocumentCommand { \@oddhead } { } {
+    \Large\color{white}
+    \begin{tabular}{@{}l}
+      \rightmark
+    \end{tabular}
+    \hfil
+    \AddToHook { shipout / background } {
+      \dim_set_eq:NN \g_@@_headline_height_dim { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
+      \linethickness { \dim_use:N \g_@@_headline_height_dim }
+      \put(0, \dim_eval:n { - \g_@@_headline_height_dim / 2 } ){\line(1,0){\paperwidth}}
+    }
+  }
+  \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
   \RenewDocumentCommand { \sectionmark } { m } { \markright { \thesection \ ##1 } }
   \RenewDocumentCommand { \subsectionmark } { m } { \markright { \thesubsection \ ##1 } }
   \RenewDocumentCommand { \paragraphmark } { m } { \markright { ##1 } }
