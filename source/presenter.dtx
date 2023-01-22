@@ -72,11 +72,10 @@
 % TODO: Make it a template.
 %    \begin{macrocode}
 \RequirePackage { array }
-\RequirePackage { xcolor }
 \dim_new:N \g_@@_headline_height_dim
 \NewDocumentCommand { \ps@presenterpage } { } {
   \RenewDocumentCommand { \@oddhead } { } {
-    \Large\color{white}
+    \Large \color_select:n { white }
     \begin{tabular}{@{}l}
       \rightmark
     \end{tabular}
