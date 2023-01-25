@@ -100,6 +100,16 @@
 \RenewDocumentCommand { \familydefault } { } { \sfdefault }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\RenewDocumentCommand { \@sect } { m m m m m m o m } {
+  \ifnum #2>\c@secnumdepth\else
+    \refstepcounter{#1}%
+  \fi
+  \use:c { #1mark } { #8 }
+}
+\RenewDocumentCommand { \@ssect } { m m m m m } { }
+%    \end{macrocode}
+%
 % Define the page style \verb"pretpage".
 % TODO: Make it a template.
 %    \begin{macrocode}
@@ -118,10 +128,6 @@
     }
   }
   \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
-  \RenewDocumentCommand { \@sect } { m m m m m m o m } {
-    \use:c { ##1mark } { ##7 }
-  }
-  \RenewDocumentCommand { \@ssect } { m m m m m } { }
   \RenewDocumentCommand { \chaptermark } { +m } {  }
   \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
   \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
