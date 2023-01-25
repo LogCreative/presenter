@@ -100,6 +100,11 @@
 \RenewDocumentCommand { \familydefault } { } { \sfdefault }
 %    \end{macrocode}
 %
+% When using a sectioning command, clear the page at the beginning.
+%    \begin{macrocode}
+\xpretocmd { \@startsection } { \clearpage } { } { }
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
   \ifnum #2>\c@secnumdepth\else
