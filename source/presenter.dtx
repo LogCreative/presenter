@@ -105,11 +105,17 @@
 \xpretocmd { \@startsection } { \clearpage } { } { }
 %    \end{macrocode}
 %
+% FIXME: should use the command \cs{addcontentsline} in the header.
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
   \ifnum #2>\c@secnumdepth\else
     \refstepcounter{#1}%
   \fi
+  \addcontentsline{toc}{#1}{%
+    \ifnum #2>\c@secnumdepth \else
+      \protect\numberline{\csname the#1\endcsname}%
+    \fi
+    #7}%
   \use:c { #1mark } { #8 }
 }
 \RenewDocumentCommand { \@ssect } { m m m m m } { }
