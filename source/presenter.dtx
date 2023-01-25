@@ -37,11 +37,6 @@
 %
 % \subsection{Main Entry}
 %
-% Pass landscape option to the document class.
-%    \begin{macrocode}
-\PassOptionsToClass { landscape } { report }
-%    \end{macrocode}
-%
 % Pass other options to the document class.
 % And load the base document class: \cls{report}, since it has full access to
 % all levels of sectioning commands.
@@ -51,10 +46,23 @@
 \LoadClass { report }
 %    \end{macrocode}
 %
-% To take the change on paper orientation into effect,
-% introduce package \pkg{geometry}.
+% Introduce package \pkg{geometry}.
 %    \begin{macrocode}
 \RequirePackage { geometry }
+%    \end{macrocode}
+%
+% Modify the paper size to a smaller one to make the contents to be looked
+% bigger, in other words, maginify the font relatively.
+% The idea is inspired by the \cls{beamer} class.
+%    \begin{macrocode}
+\geometry{
+  paperwidth  = 16 cm,
+  paperheight =  9 cm,
+  top         =  2 cm,
+  bottom      =  2 cm,
+  left        =  2 cm,
+  right       =  2 cm
+}
 %    \end{macrocode}
 %
 % Introduce the main package for drawing graphics.
