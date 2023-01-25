@@ -66,16 +66,32 @@
 }
 %    \end{macrocode}
 %
-% The default \cs{maketitle} implementation for \cls{report} has a hard vertical
-% skip of 60pt which will make troubles in the current page size configuration.
-% Remove the vertical skip by package \pkg{xpatch}.
+% Introduce \pkg{xpatch} for patching command by searching the query.
 %
-% TODO: \pkg{ltcmdhooks} only supports hook something to before/after the
-% command. According to the \file{source2e.dtx}, the current definition is
-% protected by \env{titlepage} environment, which is hard to patch directly.
+% TODO: The latest \pkg{ltcmdhooks} only supports hook something before/after
+% the command.
 %    \begin{macrocode}
 \RequirePackage { xpatch }
+%    \end{macrocode}
+%
+% The default \cs{maketitle} implementation for \cls{report} has a hard-coded
+% vertical skip of 60pt which will make troubles in the current page size
+% configuration. Remove the vertical skip.
+%
+% According to the \file{source2e.dtx}, the current definition is
+% protected by \env{titlepage} environment, which is hard to patch directly.
+%    \begin{macrocode}
 \xpatchcmd { \maketitle } { \vskip 60\p@ } { } { } { }
+%    \end{macrocode}
+%
+% The default \cs{chapter} implementation includes \cs{@makechapterhead} to
+% format the chapter head. There is a 50pt vertical space at the begining of it.
+% Negate the vertical skip to avoid the weirdness of making a new page.
+%
+% TODO: Still use the command from \pkg{xpatch} here, could be improved by the
+% latest \pkg{ltcmdhooks}.
+%    \begin{macrocode}
+\xpretocmd { \@makechapterhead } { \vspace*{-50\p@} } { } { }
 %    \end{macrocode}
 %
 % Set the default font to serif fonts.
@@ -106,10 +122,11 @@
     \use:c { ##1mark } { ##7 }
   }
   \RenewDocumentCommand { \@ssect } { m m m m m } { }
-  \RenewDocumentCommand { \sectionmark } { m } { \InsertMark { prettitle } { \thesection \ ##1 } }
-  \RenewDocumentCommand { \subsectionmark } { m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
-  \RenewDocumentCommand { \paragraphmark } { m } { \InsertMark { prettitle } { ##1 } }
-  \RenewDocumentCommand { \subparagraphmark } { m } { \InsertMark { prettitle } { ##1 } }
+  \RenewDocumentCommand { \chaptermark } { +m } {  }
+  \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
+  \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
+  \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
+  \RenewDocumentCommand { \subparagraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
 }
 %    \end{macrocode}
 %
