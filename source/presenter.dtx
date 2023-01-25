@@ -65,6 +65,18 @@
 }
 %    \end{macrocode}
 %
+% The default \cs{maketitle} implementation for \cls{report} has a hard vertical
+% skip of 60pt which will make troubles in the current page size configuration.
+% Remove the vertical skip by package \pkg{xpatch}.
+%
+% TODO: \pkg{ltcmdhooks} only supports hook something to before/after the
+% command. According to the \file{source2e.dtx}, the current definition is
+% protected by \env{titlepage} environment, which is hard to patch directly.
+%    \begin{macrocode}
+\RequirePackage { xpatch }
+\xpatchcmd { \maketitle } { \vskip 60\p@ } { } { } { }
+%    \end{macrocode}
+%
 % Set the default font to serif fonts.
 % This will not set the math font.
 %    \begin{macrocode}
