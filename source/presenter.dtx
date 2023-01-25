@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-21}{v0.0.4}{A LaTeX presentation class with seamless migration}
+  {2023-01-25}{v0.0.5}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -92,14 +92,13 @@
 \NewDocumentCommand { \ps@pretpage } { } {
   \RenewDocumentCommand { \@oddhead } { } {
     \Large \color_select:n { white }
-    \begin{tabular}{@{}l}
-      \rightmark
-    \end{tabular}
-    \hfil
+    \rightmark\hfil
     \AddToHook { shipout / background } {
-      \dim_set_eq:NN \g_@@_headline_height_dim { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
+      \dim_set_eq:NN \g_@@_headline_height_dim
+        { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
       \linethickness { \dim_use:N \g_@@_headline_height_dim }
-      \put(0, \dim_eval:n { - \g_@@_headline_height_dim / 2 } ){\line(1,0){\paperwidth}}
+      \put (0, \dim_eval:n { - \g_@@_headline_height_dim / 2 } )
+        { \line ( 1 , 0 ) { \paperwidth } }
     }
   }
   \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
