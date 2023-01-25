@@ -87,12 +87,12 @@
 % Define the page style \verb"pretpage".
 % TODO: Make it a template.
 %    \begin{macrocode}
-\RequirePackage { array }
-\dim_new:N \g_@@_headline_height_dim
 \NewDocumentCommand { \ps@pretpage } { } {
+  \NewMarkClass { prettitle }
+  \dim_new:N \g_@@_headline_height_dim
   \RenewDocumentCommand { \@oddhead } { } {
     \Large \color_select:n { white }
-    \rightmark\hfil
+    \LastMark { prettitle } \hfil
     \AddToHook { shipout / background } {
       \dim_set_eq:NN \g_@@_headline_height_dim
         { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
@@ -102,10 +102,14 @@
     }
   }
   \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
-  \RenewDocumentCommand { \sectionmark } { m } { \markright { \thesection \ ##1 } }
-  \RenewDocumentCommand { \subsectionmark } { m } { \markright { \thesubsection \ ##1 } }
-  \RenewDocumentCommand { \paragraphmark } { m } { \markright { ##1 } }
-  \RenewDocumentCommand { \subparagraphmark } { m } { \markright { ##1 } }
+  \RenewDocumentCommand { \@sect } { m m m m m m o m } {
+    \use:c { ##1mark } { ##7 }
+  }
+  \RenewDocumentCommand { \@ssect } { m m m m m } { }
+  \RenewDocumentCommand { \sectionmark } { m } { \InsertMark { prettitle } { \thesection \ ##1 } }
+  \RenewDocumentCommand { \subsectionmark } { m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
+  \RenewDocumentCommand { \paragraphmark } { m } { \InsertMark { prettitle } { ##1 } }
+  \RenewDocumentCommand { \subparagraphmark } { m } { \InsertMark { prettitle } { ##1 } }
 }
 %    \end{macrocode}
 %
