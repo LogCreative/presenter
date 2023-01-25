@@ -30,9 +30,10 @@
 %<*class>
 % \fi
 %
-% Set the module prefix.
+% Set the module prefix. The module is not named in \verb"pre" to avoid the
+% potential conflictions with other classes/packages.
 %    \begin{macrocode}
-%<@@=pre>
+%<@@=pret>
 %    \end{macrocode}
 %
 % \subsection{Main Entry}
@@ -83,12 +84,12 @@
 \RenewDocumentCommand { \familydefault } { } { \sfdefault }
 %    \end{macrocode}
 %
-% Define the page style \verb"presenterpage".
+% Define the page style \verb"pretpage".
 % TODO: Make it a template.
 %    \begin{macrocode}
 \RequirePackage { array }
 \dim_new:N \g_@@_headline_height_dim
-\NewDocumentCommand { \ps@presenterpage } { } {
+\NewDocumentCommand { \ps@pretpage } { } {
   \RenewDocumentCommand { \@oddhead } { } {
     \Large \color_select:n { white }
     \begin{tabular}{@{}l}
@@ -109,9 +110,9 @@
 }
 %    \end{macrocode}
 %
-% Set page style to \verb"presenterpage".
+% Set page style to \verb"pretpage".
 %    \begin{macrocode}
-\pagestyle { presenterpage }
+\pagestyle { pretpage }
 %    \end{macrocode}
 %
 % \iffalse
