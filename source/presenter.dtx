@@ -86,12 +86,9 @@
 %
 % The default \cs{chapter} implementation includes \cs{@makechapterhead} to
 % format the chapter head. There is a 50pt vertical space at the begining of it.
-% Negate the vertical skip to avoid the weirdness of making a new page.
-%
-% TODO: Still use the command from \pkg{xpatch} here, could be improved by the
-% latest \pkg{ltcmdhooks}.
+% Remove the vertical skip.
 %    \begin{macrocode}
-\xpretocmd { \@makechapterhead } { \vspace*{-50\p@} } { } { }
+\xpatchcmd { \@makechapterhead } { \vspace*{50\p@} } { } { } { }
 %    \end{macrocode}
 %
 % Set the default font to serif fonts.
@@ -129,6 +126,7 @@
 %    \end{macrocode}
 %
 % Define the page style \verb"pretpage".
+% TODO: Update the mark when using.
 % TODO: Make it a template.
 %    \begin{macrocode}
 \NewDocumentCommand { \ps@pretpage } { } {
@@ -159,6 +157,9 @@
 %    \begin{macrocode}
 \pagestyle { pretpage }
 %    \end{macrocode}
+%
+% Float in the center.
+%
 %
 % \iffalse
 %</class>
