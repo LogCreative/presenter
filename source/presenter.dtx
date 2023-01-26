@@ -117,7 +117,9 @@
     #7}%
   \use:c { #1mark } { #8 }
 }
-\RenewDocumentCommand { \@ssect } { m m m m m } { }
+\RenewDocumentCommand { \@ssect } { m m m m m } {
+  \starmark { #5 }
+}
 %    \end{macrocode}
 %
 % When using \pkg{hyperref} package, the internal link will jump to the whole
@@ -149,6 +151,7 @@
   \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
   \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
   \RenewDocumentCommand { \subparagraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
+  \ProvideDocumentCommand { \starmark } { +m } { \InsertMark { prettitle } { ##1 } }
 }
 %    \end{macrocode}
 %
