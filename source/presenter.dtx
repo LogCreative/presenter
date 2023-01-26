@@ -104,14 +104,13 @@
 %
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
-  \ifnum #2>\c@secnumdepth\else
-    \refstepcounter{#1}%
-  \fi
-  \addcontentsline{toc}{#1}{%
-    \ifnum #2>\c@secnumdepth \else
-      \protect\numberline{\csname the#1\endcsname}%
-    \fi
-    #7}%
+  \int_compare:nNnF { #2 } > { \value { secnumdepth } }
+  { \refstepcounter { #1 } }
+  \addcontentsline { toc } { #1 } {
+    \int_compare:nNnF { #2 } > { \value { secnumdepth } }
+      { \protect \numberline { \use:c { the#1 } } }
+    #7
+  }
   \use:c { #1mark } { #8 }
 }
 \RenewDocumentCommand { \@ssect } { m m m m m } {
