@@ -124,13 +124,16 @@
 \PassOptionsToPackage { pdfview = Fit } { hyperref }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\NewMarkClass { prettitle }
+\dim_new:N \g_@@_headline_height_dim
+%    \end{macrocode}
+%
 % Define the page style \verb"pretpage".
 % TODO: Update the mark when using.
 % TODO: Make it a template.
 %    \begin{macrocode}
 \NewDocumentCommand { \ps@pretpage } { } {
-  \NewMarkClass { prettitle }
-  \dim_new:N \g_@@_headline_height_dim
   \RenewDocumentCommand { \@oddhead } { } {
     \Large \color_select:n { white }
     \LastMark { prettitle } \hfil
