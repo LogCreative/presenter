@@ -147,6 +147,8 @@
     }
   }
   \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
+  \xapptocmd { \ps@plain }
+    { \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage } } { } { }
   \RenewDocumentCommand { \chaptermark } { +m } {  }
   \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
   \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
