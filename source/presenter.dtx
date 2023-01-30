@@ -38,13 +38,38 @@
 %
 % \subsection{Main Entry}
 %
-% Pass other options to the document class.
-% And load the base document class: \cls{report}, since it has full access to
-% all levels of sectioning commands.
+% \begin{macro}[int]{\g_@@_base_class_tl}
+% Base class boolean variable if it is \cls{article} base class.
 %    \begin{macrocode}
-\DeclareOption* { \PassOptionsToClass { \CurrentOption } { report } }
+\bool_new:N \g_@@_article_bool
+\bool_gset_true:N \g_@@_article_bool
+%    \end{macrocode}
+% \end{macro}
+%
+% Declare option \verb"report" and \verb"article" for selecting respective base
+% classes.
+%    \begin{macrocode}
+\DeclareOption { article } { \bool_gset_true:N  \g_@@_article_bool }
+\DeclareOption { report  } { \bool_gset_false:N \g_@@_article_bool }
+%    \end{macrocode}
+%
+% It is necessary to pass the \verb"titlepage" option to the \cls{article} class.
+%    \begin{macrocode}
+\PassOptionsToClass { titlepage } { article }
+%    \end{macrocode}
+%
+% Pass other options to both the potential document class.
+%    \begin{macrocode}
+\DeclareOption* {
+  \PassOptionsToClass { \CurrentOption } { article }
+  \PassOptionsToClass { \CurrentOption } { report  }
+}
+%    \end{macrocode}
+%
+% Process the options and load the selected base class.
+%    \begin{macrocode}
 \ProcessOptions*
-\LoadClass { report }
+\LoadClass { \bool_if:NTF \g_@@_article_bool { article } { report } }
 %    \end{macrocode}
 %
 % Introduce package \pkg{geometry}.
@@ -82,6 +107,17 @@
 % protected by \env{titlepage} environment, which is hard to patch directly.
 %    \begin{macrocode}
 \xpatchcmd { \maketitle } { \vskip 60\p@ } { } { } { }
+%    \end{macrocode}
+%
+% Patch part page here if you want to use \cls{article} as the base class.
+%    \begin{macrocode}
+\bool_if:NT \g_@@_article_bool
+  {
+    \xpretocmd { \part } {
+      \clearpage
+      \thispagestyle { plain }
+    } {  } {  }
+  }
 %    \end{macrocode}
 %
 % The default \cs{chapter(*)} implementation includes \cs{@make(s)chapterhead}
@@ -150,7 +186,8 @@
   \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
   \xapptocmd { \ps@plain }
     { \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage } } { } { }
-  \RenewDocumentCommand { \chaptermark } { +m } {  }
+  \bool_if:NF \g_@@_article_bool
+    { \RenewDocumentCommand { \chaptermark } { +m } {  } }
   \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
   \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
   \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
