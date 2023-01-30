@@ -120,30 +120,43 @@
   }
 %    \end{macrocode}
 %
+% For \cls{report} class, unify the \tn{chapter} behavior.
+%    \begin{macrocode}
+\bool_if:NF \g_@@_article_bool
+  {
+%    \end{macrocode}
 % To unify the behavior of chapter with other alph numbered sections, no page
 % style change will be made.
 %    \begin{macrocode}
-\xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
+    \xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
 %    \end{macrocode}
-% The default \tn{chapter(*)} implementation includes \tn{@make(s)chapterhead}
-% to format the chapter head. Remove the typesetting in the body.
+% \begin{macro}[int]{\@makechapterhead,\@makeschapterhead}
+% The default \tn{chapter} (or \tn{chapter*}) implementation includes
+% \tn{@makechapterhead} (or \tn{@makeschapterhead}) to format the chapter head.
+% Remove the typesetting in the body.
 %    \begin{macrocode}
-\RenewDocumentCommand { \@makechapterhead } { m } { }
-\RenewDocumentCommand { \@makeschapterhead } { m } { }
+    \RenewDocumentCommand { \@makechapterhead } { m } { }
+    \RenewDocumentCommand { \@makeschapterhead } { m } { }
 %    \end{macrocode}
+% \end{macro}
 % And add the information to mark for stared version \tn{chapter*}.
 %    \begin{macrocode}
-\xpretocmd { \@schapter } { \starmark{#1} } { } { }
+    \xpretocmd { \@schapter } { \starmark{#1} } { } { }
+%    \end{macrocode}
+%    \begin{macrocode}
+  }
 %    \end{macrocode}
 %
-% When using a sectioning command, clear the page at the beginning.
+% For the rest of the sectioning commands, \tn{@startsection} will be called to
+% handle them. When using them, clear the page at the beginning.
 %    \begin{macrocode}
 \xpretocmd { \@startsection } { \clearpage } { } { }
 %    \end{macrocode}
 %
-% For the rest of the sectioning commands, \tn{@startsection} will be called to
-% handle them. \tn{@(s)sect} will be called as the child command. No typesetting
-% in the body now.
+% \begin{macro}[int]{\@sect}
+% For the non-star version, \tn{@sect} will be called as the child command.
+% Step the counter, add to contents and mark the information. No typesetting in
+% the body now.
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
   \int_compare:nNnF { #2 } > { \value { secnumdepth } }
@@ -156,14 +169,18 @@
   \use:c { #1mark } { #8 }
 }
 %    \end{macrocode}
+% \end{macro}
 %
-% For the stared version of the sectioning command, no typesetting in the body
-% and insert the information to the mark.
+% \begin{macro}[int]{\@ssect}
+% For the stared version of the sectioning command, \tn{@ssect} will be called
+% as the child command. No typesetting in the body and insert the information to
+% the mark.
 %    \begin{macrocode}
 \RenewDocumentCommand { \@ssect } { m m m m m } {
   \starmark { #5 }
 }
 %    \end{macrocode}
+% \end{macro}
 %
 % When using \pkg{hyperref} package, the internal link will jump to the whole
 % page (fits the page to the window), which confirms the behavior as a slide.
