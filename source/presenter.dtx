@@ -120,18 +120,20 @@
   }
 %    \end{macrocode}
 %
-% The default \cs{chapter(*)} implementation includes \cs{@make(s)chapterhead}
-% to format the chapter head. There is a 50pt vertical space at the begining of
-% it. Remove the vertical skip.
+% To unify the behavior of chapter with other alph numbered sections, no page
+% style change will be made.
 %    \begin{macrocode}
-\xpatchcmd { \@makechapterhead } { \vspace*{50\p@} } { } { } { }
-\xpatchcmd { \@makeschapterhead } { \vspace*{50\p@} } { } { } { }
+\xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
 %    \end{macrocode}
-%
-% Set the default font to serif fonts.
-% This will not set the math font.
+% The default \tn{chapter(*)} implementation includes \tn{@make(s)chapterhead}
+% to format the chapter head. Remove the typesetting in the body.
 %    \begin{macrocode}
-\RenewDocumentCommand { \familydefault } { } { \sfdefault }
+\RenewDocumentCommand { \@makechapterhead } { m } { }
+\RenewDocumentCommand { \@makeschapterhead } { m } { }
+%    \end{macrocode}
+% And add the information to mark for stared version \tn{chapter*}.
+%    \begin{macrocode}
+\xpretocmd { \@schapter } { \starmark{#1} } { } { }
 %    \end{macrocode}
 %
 % When using a sectioning command, clear the page at the beginning.
@@ -139,10 +141,13 @@
 \xpretocmd { \@startsection } { \clearpage } { } { }
 %    \end{macrocode}
 %
+% For the rest of the sectioning commands, \tn{@startsection} will be called to
+% handle them. \tn{@(s)sect} will be called as the child command. No typesetting
+% in the body now.
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
   \int_compare:nNnF { #2 } > { \value { secnumdepth } }
-  { \refstepcounter { #1 } }
+    { \refstepcounter { #1 } }
   \addcontentsline { toc } { #1 } {
     \int_compare:nNnF { #2 } > { \value { secnumdepth } }
       { \protect \numberline { \use:c { the#1 } } }
@@ -150,6 +155,11 @@
   }
   \use:c { #1mark } { #8 }
 }
+%    \end{macrocode}
+%
+% For the stared version of the sectioning command, no typesetting in the body
+% and insert the information to the mark.
+%    \begin{macrocode}
 \RenewDocumentCommand { \@ssect } { m m m m m } {
   \starmark { #5 }
 }
@@ -187,7 +197,7 @@
   \xapptocmd { \ps@plain }
     { \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage } } { } { }
   \bool_if:NF \g_@@_article_bool
-    { \RenewDocumentCommand { \chaptermark } { +m } {  } }
+    { \RenewDocumentCommand { \chaptermark } { +m } { \InsertMark { prettitle } { \thechapter \ ##1 } } }
   \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
   \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
   \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
@@ -207,6 +217,12 @@
 %    \begin{macrocode}
 \def\fps@figure{hp}
 \def\fps@table{hp}
+%    \end{macrocode}
+%
+% Set the default font to serif fonts.
+% This will not set the math font.
+%    \begin{macrocode}
+\RenewDocumentCommand { \familydefault } { } { \sfdefault }
 %    \end{macrocode}
 %
 % \iffalse
