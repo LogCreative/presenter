@@ -188,6 +188,11 @@
 \PassOptionsToPackage { pdfview = Fit } { hyperref }
 %    \end{macrocode}
 %
+% Introduce \pkg{l3draw} package for drawing graphics.
+%    \begin{macrocode}
+\RequirePackage { l3draw }
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 \NewMarkClass { prettitle }
 \dim_new:N \g_@@_headline_height_dim
@@ -202,12 +207,16 @@
     \Large
     \LastMark { prettitle } \hfil
     \AddToHook { shipout / background } {
-      \color_select:n { black!20 }
       \dim_set_eq:NN \g_@@_headline_height_dim
         { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
-      \linethickness { \dim_use:N \g_@@_headline_height_dim }
-      \put (0, \dim_eval:n { - \g_@@_headline_height_dim / 2 } )
-        { \line ( 1 , 0 ) { \paperwidth } }
+      \put ( 0, - \dim_use:N \g_@@_headline_height_dim )
+        {
+          \draw_begin:
+            \draw_path_rectangle:nn { 0pt, 0pt } { \paperwidth, \g_@@_headline_height_dim }
+            \color_fill:n { black!20 }
+            \draw_path_use_clear:n { fill }
+          \draw_end:
+        }
     }
   }
   \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
