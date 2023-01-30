@@ -130,15 +130,13 @@
 %    \begin{macrocode}
     \xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
 %    \end{macrocode}
-% \begin{macro}[int]{\@makechapterhead,\@makeschapterhead}
 % The default \tn{chapter} (or \tn{chapter*}) implementation includes
 % \tn{@makechapterhead} (or \tn{@makeschapterhead}) to format the chapter head.
 % Remove the typesetting in the body.
 %    \begin{macrocode}
-    \RenewDocumentCommand { \@makechapterhead } { m } { }
-    \RenewDocumentCommand { \@makeschapterhead } { m } { }
+    \renewcommand { \@makechapterhead  } [ 1 ] { }
+    \renewcommand { \@makeschapterhead } [ 1 ] { }
 %    \end{macrocode}
-% \end{macro}
 % And add the information to mark for stared version \tn{chapter*}.
 %    \begin{macrocode}
     \xpretocmd { \@schapter } { \starmark{#1} } { } { }
@@ -202,8 +200,8 @@
 % TODO: Update the mark when using.
 % TODO: Make it a template.
 %    \begin{macrocode}
-\NewDocumentCommand { \ps@pretpage } { } {
-  \RenewDocumentCommand { \@oddhead } { } {
+\newcommand { \ps@pretpage } {
+  \renewcommand { \@oddhead } {
     \Large
     \LastMark { prettitle } \hfil
     \AddToHook { shipout / background } {
@@ -219,9 +217,9 @@
         }
     }
   }
-  \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage }
+  \renewcommand { \@oddfoot } { \@title\hfil\thepage }
   \xapptocmd { \ps@plain }
-    { \RenewDocumentCommand { \@oddfoot } { } { \@title\hfil\thepage } } { } { }
+    { \renewcommand { \@oddfoot } { \@title\hfil\thepage } } { } { }
   \bool_if:NF \g_@@_article_bool
     { \RenewDocumentCommand { \chaptermark } { +m } { \InsertMark { prettitle } { \thechapter \ ##1 } } }
   \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
@@ -239,16 +237,19 @@
 %
 % Change the default placement for defined float. This will make it try here at
 % first, then try the floating page configuration.
-% FIXME: Written in \LaTeX3 will cause an error.
+%
+% NOTE: \cs{renewcommand} in \LaTeXe{} and \cs{RenewDocumentCommand} in \LaTeX3
+% are different, and don't use the latter one for time-critical work if not
+% necessary, and what's worse may turn into an error (in this case).
 %    \begin{macrocode}
-\def\fps@figure{hp}
-\def\fps@table{hp}
+\renewcommand { \fps@figure } { hp }
+\renewcommand { \fps@table  } { hp }
 %    \end{macrocode}
 %
 % Set the default font to serif fonts.
 % This will not set the math font.
 %    \begin{macrocode}
-\RenewDocumentCommand { \familydefault } { } { \sfdefault }
+\renewcommand { \familydefault } { \sfdefault }
 %    \end{macrocode}
 %
 % \iffalse
