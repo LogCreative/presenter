@@ -163,8 +163,13 @@
 \pagestyle { pretpage }
 %    \end{macrocode}
 %
-% Float in the center.
-%
+% Change the default placement for defined float. This will make it try here at
+% first, then try the floating page configuration.
+% FIXME: Written in \LaTeX3 will cause an error.
+%    \begin{macrocode}
+\def\fps@figure{hp}
+\def\fps@table{hp}
+%    \end{macrocode}
 %
 % \iffalse
 %</class>
