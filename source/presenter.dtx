@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-25}{v0.0.5}{A LaTeX presentation class with seamless migration}
+  {2023-01-30}{v0.0.6}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -136,9 +136,10 @@
 %    \begin{macrocode}
 \NewDocumentCommand { \ps@pretpage } { } {
   \RenewDocumentCommand { \@oddhead } { } {
-    \Large \color_select:n { white }
+    \Large
     \LastMark { prettitle } \hfil
     \AddToHook { shipout / background } {
+      \color_select:n { black!20 }
       \dim_set_eq:NN \g_@@_headline_height_dim
         { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
       \linethickness { \dim_use:N \g_@@_headline_height_dim }
