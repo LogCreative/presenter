@@ -30,41 +30,29 @@
 %</package>
 % \fi
 %
-% \CheckSum{0}
-%
 % \iffalse
 %<*package>
 % \fi
 %
+% \section{\cls{presenter} Built-In Styles}
+%
+% \begin{documentation}
+%
+% \begin{TemplateDescription}{headline-bg}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default blank page.
+%    \begin{macrocode}
 %<*default>
-%    \begin{macrocode}
-%<@@=pret_default>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
 \DeclareTemplateInterface { headline-bg } { default } { 0 } { }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\DeclareTemplateCode { headline-bg } { default } { 0 } { } { }
-%    \end{macrocode}
 %</default>
-%
-%<*fill>
-%    \begin{macrocode}
-%<@@=pret_fill>
 %    \end{macrocode}
-%</fill>
+% \end{TemplateDescription}
 %
-%<*fill-l3draw>
+% \begin{TemplateDescription}{headline-bg}{fill}
+% \TemplateKey{fill}{tokenlist}{fill color}{black!20}
+% \TemplateSemantics Filled headline.
 %    \begin{macrocode}
-\RequirePackage { l3draw }
-%<@@=pret_fill_iii>
-%    \end{macrocode}
-%</fill-l3draw>
-%
 %<*fill|fill-l3draw>
-%    \begin{macrocode}
 \DeclareTemplateInterface
   { headline-bg }
 %<fill>  { fill }
@@ -73,9 +61,36 @@
   {
     fill : tokenlist = black!20,
   }
+%</fill|fill-l3draw>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+%    \begin{macrocode}
+%<*default>
+%<@@=pret_default>
+\DeclareTemplateCode { headline-bg } { default } { 0 } { } { }
+%</default>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+%<*fill>
+%<@@=pret_fill>
+%</fill>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*fill-l3draw>
+\RequirePackage { l3draw }
+%<@@=pret_fill_iii>
+%</fill-l3draw>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*fill|fill-l3draw>
 \dim_new:N \l_@@_headline_height_dim
 \tl_new:N \l_@@_headline_bg_fill_tl
 \DeclareTemplateCode { headline-bg } { fill } { 0 }
@@ -96,16 +111,19 @@
     \put ( 0, - \dim_use:N \l_@@_headline_height_dim )
       {
         \draw_begin:
-          \draw_path_rectangle:nn { 0pt, 0pt } { \paperwidth, \l_@@_headline_height_dim }
+          \draw_path_rectangle:nn
+            { 0pt, 0pt }
+            { \paperwidth, \l_@@_headline_height_dim }
           \exp_args:NV \color_fill:n \l_@@_headline_bg_fill_tl
           \draw_path_use_clear:n { fill }
         \draw_end:
       }
 %</fill-l3draw>
   }
-%    \end{macrocode}
 %</fill|fill-l3draw>
+%    \end{macrocode}
 %
+% \end{implementation}
 %
 % \iffalse
 %</package>
