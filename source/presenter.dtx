@@ -208,51 +208,18 @@
 \RequirePackage { xtemplate }
 %    \end{macrocode}
 %
-% Introduce \pkg{l3draw} package for drawing graphics.
-%    \begin{macrocode}
-\RequirePackage { l3draw }
-%    \end{macrocode}
-%
 % Declare an object type called \verb"headline-background".
 %    \begin{macrocode}
 \DeclareObjectType { headline-bg } { 0 }
 %    \end{macrocode}
 %
+% One could only load the template in the preamble.
+% It is too heavy to load all the templates.
+% The user could only edit the instance in the body.
+% TODO: Make it an interface.
 %    \begin{macrocode}
-\DeclareTemplateInterface { headline-bg } { default } { 0 } { }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\DeclareTemplateCode { headline-bg } { default } { 0 } { } { }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\DeclareTemplateInterface { headline-bg } { fill } { 0 }
-  {
-    fill : tokenlist,
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\dim_new:N \l_@@_headline_height_dim
-\tl_new:N \g_@@_headline_bg_fill_tl
-\DeclareTemplateCode { headline-bg } { fill } { 0 }
-  {
-    fill = \g_@@_headline_bg_fill_tl
-  }
-  {
-    \AssignTemplateKeys
-    \dim_set_eq:NN \l_@@_headline_height_dim
-      { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
-    \put ( 0, - \dim_use:N \l_@@_headline_height_dim )
-      {
-        \draw_begin:
-          \draw_path_rectangle:nn { 0pt, 0pt } { \paperwidth, \l_@@_headline_height_dim }
-          \exp_args:NV \color_fill:n \g_@@_headline_bg_fill_tl
-          \draw_path_use_clear:n { fill }
-        \draw_end:
-      }
-  }
+\RequirePackage { pretpage-fill }
+\DeclareInstance { headline-bg } { base } { fill } { }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -269,10 +236,6 @@
 % TODO: Update the mark when using.
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
-  \DeclareInstance { headline-bg } { base } { fill }
-    {
-      fill = black!20
-    }
   \renewcommand { \@oddhead } {
     \Large
     \LastMark { presentertitle } \hfil
