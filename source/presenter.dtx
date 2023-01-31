@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-31}{v0.0.7}{A LaTeX presentation class with seamless migration}
+  {2023-01-31}{v0.0.8}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -208,6 +208,11 @@
 \RequirePackage { xtemplate }
 %    \end{macrocode}
 %
+% Introduce \pkg{l3draw} package for drawing graphics.
+%    \begin{macrocode}
+\RequirePackage { l3draw }
+%    \end{macrocode}
+%
 % Declare an object type called \verb"headline-background".
 %    \begin{macrocode}
 \DeclareObjectType { headline-bg } { 0 }
@@ -250,11 +255,6 @@
   }
 %    \end{macrocode}
 %
-% Introduce \pkg{l3draw} package for drawing graphics.
-%    \begin{macrocode}
-\RequirePackage { l3draw }
-%    \end{macrocode}
-%
 %    \begin{macrocode}
 \NewMarkClass { presentertitle }
 %    \end{macrocode}
@@ -262,23 +262,15 @@
 % Define the page style \verb"presenterpage".
 % TODO: Update the mark when using.
 %    \begin{macrocode}
-\xapptocmd { \ps@plain } {
-  \renewcommand { \@oddhead } {
-    \AddToHookNext { shipout / background } {
-      \DeclareInstance { headline-bg } { base } { default } { }
-      \UseInstance { headline-bg } { base }
-    }
-  }
-} { } { }
 \newcommand { \ps@presenterpage } {
+  \DeclareInstance { headline-bg } { base } { fill }
+    {
+      fill = black!20
+    }
   \renewcommand { \@oddhead } {
     \Large
     \LastMark { presentertitle } \hfil
     \AddToHookNext { shipout / background } {
-      \DeclareInstance { headline-bg } { base } { fill }
-        {
-          fill = black!20
-        }
       \UseInstance { headline-bg } { base }
     }
   }
