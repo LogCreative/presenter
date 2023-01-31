@@ -210,7 +210,7 @@
 \RequirePackage { xtemplate }
 %    \end{macrocode}
 %
-% Declare an object type called \verb"headline-background".
+% Declare an object type called \verb"headline-bg".
 %    \begin{macrocode}
 \DeclareObjectType { headline-bg } { 0 }
 %    \end{macrocode}
@@ -235,6 +235,10 @@
 %    \end{macrocode}
 %
 % Define the page style \verb"presenterpage".
+%
+% Use the hook by \cs{AddToHookNext} inside \tn{@oddhead} command to render the
+% background on every page.
+%
 % TODO: Update the mark when using.
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
