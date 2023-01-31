@@ -38,13 +38,13 @@
 %
 % \subsection{Main Entry}
 %
-% \begin{macro}[int]{\g_@@_base_class_tl}
+% \begin{variable}[int]{\g_@@_base_class_tl}
 % Base class boolean variable if it is \cls{article} base class.
 %    \begin{macrocode}
 \bool_new:N \g_@@_article_bool
 \bool_gset_true:N \g_@@_article_bool
 %    \end{macrocode}
-% \end{macro}
+% \end{variable}
 %
 % Declare option \verb"report" and \verb"article" for selecting respective base
 % classes.
@@ -155,6 +155,16 @@
 % For the non-star version, \tn{@sect} will be called as the child command.
 % Step the counter, add to contents and mark the information. No typesetting in
 % the body now.
+% \begin{arguments}
+%   \item name
+%   \item level
+%   \item indent
+%   \item beforeskip
+%   \item afterskip
+%   \item style
+%   \item contents line title (optional)
+%   \item display title
+% \end{arguments}
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
   \int_compare:nNnF { #2 } > { \value { secnumdepth } }
@@ -173,6 +183,13 @@
 % For the stared version of the sectioning command, \tn{@ssect} will be called
 % as the child command. No typesetting in the body and insert the information to
 % the mark.
+% \begin{arguments}
+%   \item indent
+%   \item beforeskip
+%   \item afterskip
+%   \item style
+%   \item display title
+% \end{arguments}
 %    \begin{macrocode}
 \RenewDocumentCommand { \@ssect } { m m m m m } {
   \starmark { #5 }
