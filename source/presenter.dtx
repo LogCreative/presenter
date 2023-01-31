@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-31}{v0.0.8}{A LaTeX presentation class with seamless migration}
+  {2023-01-31}{v0.0.7}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -208,11 +208,6 @@
 \RequirePackage { xtemplate }
 %    \end{macrocode}
 %
-% Introduce \pkg{l3draw} package for drawing graphics.
-%    \begin{macrocode}
-\RequirePackage { l3draw }
-%    \end{macrocode}
-%
 % Declare an object type called \verb"headline-background".
 %    \begin{macrocode}
 \DeclareObjectType { headline-bg } { 0 }
@@ -255,91 +250,9 @@
   }
 %    \end{macrocode}
 %
-%
-% \begin{variable}{\g_@@_special_page_bool}
-% Boolean for detecting if the page style is temporarily loaded.
-% Initialized as false.
+% Introduce \pkg{l3draw} package for drawing graphics.
 %    \begin{macrocode}
-\bool_new:N \g_@@_special_page_bool
-\bool_gset_false:N \g_@@_special_page_bool
-%    \end{macrocode}
-% \end{variable}
-%
-% \begin{macro}[int]{\thispagestyle}
-% Mostly borrowed from \file{source2e.dtx}, rewritten in \LaTeX3 for certain part.
-% To change the boolean defined by this document class.
-% \begin{arguments}
-%   \item page style name
-% \end{arguments}
-%    \begin{macrocode}
-\RenewDocumentCommand { \thispagestyle } { m } {
-  \cs_if_exist:cTF { ps@#1 } {
-    \global\@specialpagetrue
-    \bool_gset_true:N \g_@@_special_page_bool
-    \gdef\@specialstyle{#1}
-  } { \undefinedstyle }
-}
-%    \end{macrocode}
-% \end{macro}
-%
-% After each page shipout, it won't be the special page anymore.
-%    \begin{macrocode}
-\AddToHook { shipout / after } {
-  \bool_gset_false:N \g_@@_special_page_bool
-}
-%    \end{macrocode}
-%
-% \begin{macro}{\@@_ps_set_template:n}
-% Set the presenter templates for page styles.
-% \begin{arguments}
-%   \item the action for setting the template.
-% \end{arguments}
-%    \begin{macrocode}
-\cs_new:Npn \@@_ps_set_template:n #1 {
-  \bool_if:NTF \g_@@_special_page_bool
-    { \AddToHookNext { shipout / before } { #1 } }
-    { \AddToHook { shipout / before } { #1 } }
-}
-%    \end{macrocode}
-% This macro will detect if the page style is loaded as \tn{pagestyle} (permantly)
-% or \tn{thispagestyle} (temporarily). If it is temporary, the declaration will
-% only affect the next page.
-% \end{macro}
-%
-% NOTE: The patch could be much simpler if the use of \cs{@specialpage} is
-% available, however, in \file{ltoutput.dtx}:
-% \begin{verbatim}
-% \if@specialpage
-%   \global\@specialpagefalse\@nameuse{ps@\@specialstyle}%
-% \fi
-% \end{verbatim}
-% where the \cs{@specialpage} is set to false before the page style is called.
-% The variable could not be accessed inside the page style.
-%
-% Render the background according to the current instance.
-% TODO: move to the \cs{@oddhead} for receiving the paramenter from sectioning.
-%    \begin{macrocode}
-\AddToHook { shipout / background } {
-  \UseInstance { headline-bg } { base }
-}
-%    \end{macrocode}
-%
-% Patch the \verb"empty" page style.
-%    \begin{macrocode}
-\xapptocmd { \ps@empty } {
-  \@@_ps_set_template:n {
-    \DeclareInstance { headline-bg } { base } { default } { }
-  }
-} { } { }
-%    \end{macrocode}
-%
-% Patch the \verb"plain" page style.
-%    \begin{macrocode}
-\xapptocmd { \ps@plain } {
-  \@@_ps_set_template:n {
-    \DeclareInstance { headline-bg } { base } { default } { }
-  }
-} { } { }
+\RequirePackage { l3draw }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -349,15 +262,25 @@
 % Define the page style \verb"presenterpage".
 % TODO: Update the mark when using.
 %    \begin{macrocode}
-\newcommand { \ps@presenterpage } {
-  \@@_ps_set_template:n {
-    \DeclareInstance { headline-bg } { base } { fill }
-    {
-      fill = black!20
+\xapptocmd { \ps@plain } {
+  \renewcommand { \@oddhead } {
+    \AddToHookNext { shipout / background } {
+      \DeclareInstance { headline-bg } { base } { default } { }
+      \UseInstance { headline-bg } { base }
     }
   }
+} { } { }
+\newcommand { \ps@presenterpage } {
   \renewcommand { \@oddhead } {
-    \Large \LastMark { presentertitle } \hfil
+    \Large
+    \LastMark { presentertitle } \hfil
+    \AddToHookNext { shipout / background } {
+      \DeclareInstance { headline-bg } { base } { fill }
+        {
+          fill = black!20
+        }
+      \UseInstance { headline-bg } { base }
+    }
   }
   \renewcommand { \@oddfoot } { \@title\hfil\thepage }
   \xapptocmd { \ps@plain }
