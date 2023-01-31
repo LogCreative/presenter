@@ -20,7 +20,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-01-30}{v0.0.6}{A LaTeX presentation class with seamless migration}
+  {2023-01-31}{v0.0.7}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -58,7 +58,7 @@
 \PassOptionsToClass { titlepage } { article }
 %    \end{macrocode}
 %
-% Pass other options to both the potential document class.
+% Pass other options to both the potential document classes.
 %    \begin{macrocode}
 \DeclareOption* {
   \PassOptionsToClass { \CurrentOption } { article }
@@ -192,18 +192,18 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\NewMarkClass { prettitle }
+\NewMarkClass { presentertitle }
 \dim_new:N \g_@@_headline_height_dim
 %    \end{macrocode}
 %
-% Define the page style \verb"pretpage".
+% Define the page style \verb"presenterpage".
 % TODO: Update the mark when using.
 % TODO: Make it a template.
 %    \begin{macrocode}
-\newcommand { \ps@pretpage } {
+\newcommand { \ps@presenterpage } {
   \renewcommand { \@oddhead } {
     \Large
-    \LastMark { prettitle } \hfil
+    \LastMark { presentertitle } \hfil
     \AddToHook { shipout / background } {
       \dim_set_eq:NN \g_@@_headline_height_dim
         { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
@@ -221,18 +221,18 @@
   \xapptocmd { \ps@plain }
     { \renewcommand { \@oddfoot } { \@title\hfil\thepage } } { } { }
   \bool_if:NF \g_@@_article_bool
-    { \RenewDocumentCommand { \chaptermark } { +m } { \InsertMark { prettitle } { \thechapter \ ##1 } } }
-  \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { prettitle } { \thesection \ ##1 } }
-  \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { prettitle }{ \thesubsection \ ##1 } }
-  \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
-  \RenewDocumentCommand { \subparagraphmark } { +m } { \InsertMark { prettitle } { ##1 } }
-  \ProvideDocumentCommand { \starmark } { +m } { \InsertMark { prettitle } { ##1 } }
+    { \RenewDocumentCommand { \chaptermark } { +m } { \InsertMark { presentertitle } { \thechapter \ ##1 } } }
+  \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { presentertitle } { \thesection \ ##1 } }
+  \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { presentertitle }{ \thesubsection \ ##1 } }
+  \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { presentertitle } { ##1 } }
+  \RenewDocumentCommand { \subparagraphmark } { +m } { \InsertMark { presentertitle } { ##1 } }
+  \ProvideDocumentCommand { \starmark } { +m } { \InsertMark { presentertitle } { ##1 } }
 }
 %    \end{macrocode}
 %
-% Set page style to \verb"pretpage".
+% Set page style to \verb"presenterpage".
 %    \begin{macrocode}
-\pagestyle { pretpage }
+\pagestyle { presenterpage }
 %    \end{macrocode}
 %
 % Change the default placement for defined float. This will make it try here at
