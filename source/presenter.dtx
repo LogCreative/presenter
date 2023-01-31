@@ -259,6 +259,12 @@
 \NewMarkClass { presentertitle }
 %    \end{macrocode}
 %
+% Patch the page style \verb"plain".
+%    \begin{macrocode}
+\xapptocmd { \ps@plain }
+  { \renewcommand { \@oddfoot } { \@title\hfil\thepage } } { } { }
+%    \end{macrocode}
+%
 % Define the page style \verb"presenterpage".
 % TODO: Update the mark when using.
 %    \begin{macrocode}
@@ -275,8 +281,6 @@
     }
   }
   \renewcommand { \@oddfoot } { \@title\hfil\thepage }
-  \xapptocmd { \ps@plain }
-    { \renewcommand { \@oddfoot } { \@title\hfil\thepage } } { } { }
   \bool_if:NF \g_@@_article_bool
     { \RenewDocumentCommand { \chaptermark } { +m } { \InsertMark { presentertitle } { \thechapter \ ##1 } } }
   \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { presentertitle } { \thesection \ ##1 } }
