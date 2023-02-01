@@ -1,0 +1,169 @@
+% \iffalse meta-comment
+% ------------------------------------------------------------------------
+% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Log Creative.
+% ------------------------------------------------------------------------
+% \fi
+%
+% \iffalse
+%<*package>
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage
+%<default>  {pretbg-default}
+%<block>  {pretbg-block}
+%<block-l3draw>  {pretbg-block-l3draw}
+  {2023-02-01}{v0.0.9}
+%<default>  {default background style for presenter}
+%<block>  {block background style for presenter}
+%<block-l3draw>  {block background style for presenter implemented in l3draw}
+%</package>
+% \fi
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{\cls{presenter} Built-In Styles}
+%
+% \begin{documentation}
+%
+% \begin{TemplateDescription}{background/headline}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default blank page.
+%    \begin{macrocode}
+%<*default>
+\DeclareTemplateInterface { background / headline } { default } { 0 } { }
+%</default>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/headline}{block}
+% \TemplateKey{fill}{boolean}{if block is filled}{true}
+% \TemplateKey{fill-color}{tokenlist}{fill color}{black!20}
+% \TemplateKey{stroke}{boolean}{if there is a block underline}{false}
+% \TemplateKey{stroke-color}{tokenlist}{stroke color}{black}
+% \TemplateKey{stroke-linewidth}{length}{stroke linewidth}{1pt}
+% \TemplateSemantics blocked headline.
+%    \begin{macrocode}
+%<*block|block-l3draw>
+\DeclareTemplateInterface
+  { background / headline }
+%<block>  { block }
+%<block-l3draw>  { block-l3draw }
+  { 0 }
+  {
+    fill             : boolean   = true     ,
+    fill-color       : tokenlist = black!20 ,
+    stroke           : boolean   = false    ,
+    stroke-color     : tokenlist = black    ,
+    stroke-linewidth : length    = 1pt
+  }
+%</block|block-l3draw>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+%    \begin{macrocode}
+%<*default>
+%<@@=pret_default>
+\DeclareTemplateCode { background / headline } { default } { 0 } { } { }
+%</default>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*block>
+%<@@=pret_block>
+%</block>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*block-l3draw>
+\RequirePackage { l3draw }
+%<@@=pret_block>
+%</block-l3draw>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*block|block-l3draw>
+\bool_new:N \l_@@_bg_hl_fill_bool
+\tl_new:N \l_@@_bg_hl_fill_color_tl
+\bool_new:N \l_@@_bg_hl_stroke_bool
+\tl_new:N \l_@@_bg_hl_stroke_color_tl
+\dim_new:N \l_@@_bg_hl_stroke_linewidth_dim
+\dim_new:N \l_@@_bg_hl_height_dim
+\DeclareTemplateCode { background / headline } { block } { 0 }
+  {
+    fill             = \l_@@_bg_hl_fill_bool            ,
+    fill-color       = \l_@@_bg_hl_fill_color_tl        ,
+    stroke           = \l_@@_bg_hl_stroke_bool          ,
+    stroke-color     = \l_@@_bg_hl_stroke_color_tl      ,
+    stroke-linewidth = \l_@@_bg_hl_stroke_linewidth_dim
+  }
+  {
+    \AssignTemplateKeys
+    \dim_set_eq:NN \l_@@_bg_hl_height_dim
+      { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
+%<*block>
+    \bool_if:NT \l_@@_bg_hl_fill_bool 
+      {
+        \exp_args:NV \color_select:n \l_@@_bg_hl_fill_color_tl
+        \linethickness { \dim_use:N \l_@@_bg_hl_height_dim }
+        \put (0, \dim_eval:n { - \l_@@_bg_hl_height_dim / 2 } )
+          { \line ( 1 , 0 ) { \paperwidth } }
+      }
+    \bool_if:NT \l_@@_bg_hl_stroke_bool
+      {
+        \exp_args:NV \color_select:n \l_@@_bg_hl_stroke_color_tl
+        \linethickness { \dim_use:N \l_@@_bg_hl_stroke_linewidth_dim }
+        \put (0, - \dim_use:N \l_@@_bg_hl_height_dim )
+          { \line ( 1 , 0 ) { \paperwidth } }
+      }
+%</block>
+%<*block-l3draw>
+    \put ( 0, - \dim_use:N \l_@@_bg_hl_height_dim )
+      {
+        \draw_begin:
+        \bool_if:NT \l_@@_bg_hl_fill_bool
+          {
+            \draw_path_rectangle:nn
+              { 0pt, 0pt }
+              { \paperwidth, \l_@@_bg_hl_height_dim }
+            \exp_args:NV \color_fill:n \l_@@_bg_hl_fill_color_tl
+            \draw_path_use_clear:n { fill }
+          }
+        \bool_if:NT \l_@@_bg_hl_stroke_bool
+          {
+            \draw_linewidth:n { \l_@@_bg_hl_stroke_linewidth_dim }
+            \draw_path_moveto:n { 0pt , 0pt }
+            \draw_path_lineto:n { \paperwidth, 0pt }
+            \exp_args:NV \color_select:n \l_@@_bg_hl_stroke_color_tl 
+            \draw_path_use_clear:n { stroke }
+          }
+        \draw_end:
+      }
+%</block-l3draw>
+  }
+%</block|block-l3draw>
+%    \end{macrocode}
+%
+% \end{implementation}
+%
+% \iffalse
+%</package>
+% \fi
+%
+\endinput
