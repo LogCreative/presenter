@@ -36,14 +36,35 @@
 %
 %    \begin{macrocode}
 %<*default>
+%    \end{macrocode}
+%
+% \begin{TemplateDescription}{foreground/headline}{default}
+% \TemplateKey{style}{tokenlist}{Style of the headline text.}{\cs{Large}}
+% \TemplateSemantics Default single headline style.
+%    \begin{macrocode}
 \DeclareTemplateInterface { foreground / headline } { default } { 0 }
   { style : tokenlist = \Large }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/sectioning}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Handle sectioning marks.
+%    \begin{macrocode}
 \DeclareTemplateInterface { foreground / sectioning } { default } { 1 }
   { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/footline}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default page number footline style.
+%    \begin{macrocode}
 \DeclareTemplateInterface { foreground / footline } { default } { 0 }
   { style : tokenlist }
 %</default>
 %    \end{macrocode}
+% \end{TemplateDescription}
 %
 % \end{documentation}
 %
