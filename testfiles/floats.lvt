@@ -1,0 +1,43 @@
+\documentclass{presenter}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{mwe}
+\begin{document}
+
+\paragraph{Inserting the small picture}
+
+A Single line of words.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{example-image-a.pdf}
+  \caption{Example picture}
+\end{figure}
+
+\paragraph{Inserting a big picture}
+
+A Single line of words.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{example-image-a.pdf}
+  \caption{Example picture}
+\end{figure}
+
+\paragraph{Inserting the table}
+
+A Single line of words.
+
+\begin{table}
+  \centering
+  \caption{Example table}
+  \begin{tabular}{cc}
+    \toprule
+    A & B \\
+    \midrule
+    C & D \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\end{document}
