@@ -1,0 +1,9 @@
+\documentclass{presenter}
+\usepackage{lipsum}
+\begin{document}
+
+\paragraph{Long text}
+
+\lipsum[1-3]
+
+\end{document}
