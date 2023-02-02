@@ -1,2 +1,2 @@
 # presenter
-A LaTeX presentation class with seamless migration
+A LaTeX presentation framework with seamless migration

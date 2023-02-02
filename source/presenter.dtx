@@ -24,7 +24,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-02-01}{v0.0.9}{A LaTeX presentation class with seamless migration}
+  {2023-02-02}{v0.1.0}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -205,9 +205,12 @@
 \RequirePackage { xtemplate }
 %    \end{macrocode}
 %
-% Declare an object type called \verb"background/headline".
+% Declare an object types.
 %    \begin{macrocode}
 \DeclareObjectType { background / headline } { 0 }
+\DeclareObjectType { foreground / headline } { 0 }
+\DeclareObjectType { foreground / sectioning } { 1 }
+\DeclareObjectType { foreground / footline } { 0 }
 %    \end{macrocode}
 %
 % One could only load the template in the preamble.
@@ -217,16 +220,16 @@
 %    \begin{macrocode}
 \RequirePackage { pretbg-block }
 \DeclareInstance { background / headline } { base } { block } { }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\NewMarkClass { presentertitle }
+\RequirePackage { pretfg-default }
+\DeclareInstance { foreground / headline } { base } { default } { }
+\DeclareInstance { foreground / sectioning } { base } { default } { }
+\DeclareInstance { foreground / footline } { base } { default } { }
 %    \end{macrocode}
 %
 % Patch the page style \verb"plain".
 %    \begin{macrocode}
 \xapptocmd { \ps@plain }
-  { \renewcommand { \@oddfoot } { \@title\hfil\thepage } } { } { }
+  { \renewcommand { \@oddfoot } { \UseInstance { foreground / footline } { base } } } { } { }
 %    \end{macrocode}
 %
 % Define the page style \verb"presenterpage".
@@ -238,20 +241,29 @@
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
   \renewcommand { \@oddhead } {
-    \Large
-    \LastMark { presentertitle } \hfil
+    \UseInstance { foreground / headline } { base }
     \AddToHookNext { shipout / background } {
       \UseInstance { background / headline } { base }
     }
   }
-  \renewcommand { \@oddfoot } { \@title\hfil\thepage }
+  \renewcommand { \@oddfoot } { \UseInstance { foreground / footline } { base } }
   \bool_if:NF \g_@@_article_bool
-    { \RenewDocumentCommand { \chaptermark } { +m } { \InsertMark { presentertitle } { \thechapter \ ##1 } } }
-  \RenewDocumentCommand { \sectionmark } { +m } { \InsertMark { presentertitle } { \thesection \ ##1 } }
-  \RenewDocumentCommand { \subsectionmark } { +m } { \InsertMark { presentertitle }{ \thesubsection \ ##1 } }
-  \RenewDocumentCommand { \paragraphmark } { +m } { \InsertMark { presentertitle } { ##1 } }
-  \RenewDocumentCommand { \subparagraphmark } { +m } { \InsertMark { presentertitle } { ##1 } }
-  \ProvideDocumentCommand { \starmark } { +m } { \InsertMark { presentertitle } { ##1 } }
+    {
+      \RenewDocumentCommand { \chaptermark } { +m }
+        { \UseInstance { foreground / sectioning } { base } { \thechapter \ ##1 } }
+    }
+  \RenewDocumentCommand { \sectionmark } { +m }
+    { \UseInstance { foreground / sectioning } { base } { \thesection \ ##1 } }
+  \RenewDocumentCommand { \subsectionmark } { +m }
+    { \UseInstance { foreground / sectioning } { base } { \thesubsection \ ##1 } }
+  \RenewDocumentCommand { \subsubsectionmark } { +m }
+    { \UseInstance { foreground / sectioning } { base } { \thesubsubsection \ ##1 } }
+  \RenewDocumentCommand { \paragraphmark } { +m }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
+  \RenewDocumentCommand { \subparagraphmark } { +m }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
+  \ProvideDocumentCommand { \starmark } { +m }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
 }
 %    \end{macrocode}
 %
