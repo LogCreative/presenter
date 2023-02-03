@@ -63,6 +63,14 @@
 }
 %    \end{macrocode}
 %
+% When using \pkg{hyperref} package, the internal link will jump to the whole
+% page (fits the page to the window), which confirms the behavior as a slide.
+% This should be done before the base document class is loaded,
+% in case \pkg{hyperref} is loaded in the document class.
+%    \begin{macrocode}
+\PassOptionsToPackage { pdfview = Fit } { hyperref }
+%    \end{macrocode}
+%
 % Process the options and load the selected base class.
 %    \begin{macrocode}
 \ProcessOptions*
@@ -193,12 +201,6 @@
 }
 %    \end{macrocode}
 % \end{macro}
-%
-% When using \pkg{hyperref} package, the internal link will jump to the whole
-% page (fits the page to the window), which confirms the behavior as a slide.
-%    \begin{macrocode}
-\PassOptionsToPackage { pdfview = Fit } { hyperref }
-%    \end{macrocode}
 %
 % Introduce package \pkg{xtemplate} for customize headline.
 %    \begin{macrocode}
