@@ -24,7 +24,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-02-03}{v0.1.1}{A LaTeX presentation class with seamless migration}
+  {2023-02-04}{v0.1.2}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -221,7 +221,7 @@
 %    \begin{macrocode}
 \DeclareObjectType { background / headline } { 0 }
 \DeclareObjectType { foreground / headline } { 0 }
-\DeclareObjectType { foreground / sectioning } { 1 }
+\DeclareObjectType { foreground / sectioning } { 2 }
 \DeclareObjectType { foreground / footline } { 0 }
 %    \end{macrocode}
 %
@@ -262,20 +262,20 @@
   \bool_if:NT \g_@@_chapter_bool
     {
       \RenewDocumentCommand { \chaptermark } { +m }
-        { \UseInstance { foreground / sectioning } { base } { \thechapter \ ##1 } }
+        { \UseInstance { foreground / sectioning } { base } { } { \thechapter \ ##1 } }
     }
   \RenewDocumentCommand { \sectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { \thesection \ ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { } { \thesection \ ##1 } }
   \RenewDocumentCommand { \subsectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { \thesubsection \ ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { } { \thesubsection \ ##1 } }
   \RenewDocumentCommand { \subsubsectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { \thesubsubsection \ ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { } { \thesubsubsection \ ##1 } }
   \RenewDocumentCommand { \paragraphmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
   \RenewDocumentCommand { \subparagraphmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
   \ProvideDocumentCommand { \starmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
 }
 %    \end{macrocode}
 %

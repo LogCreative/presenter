@@ -51,7 +51,7 @@
 % \TemplateKey{none}{---}{}{}
 % \TemplateSemantics Handle sectioning marks.
 %    \begin{macrocode}
-\DeclareTemplateInterface { foreground / sectioning } { default } { 1 }
+\DeclareTemplateInterface { foreground / sectioning } { default } { 2 }
   { }
 %    \end{macrocode}
 % \end{TemplateDescription}
@@ -85,10 +85,10 @@
     \group_end:
     \hfil
   }
-\DeclareTemplateCode { foreground / sectioning } { default } { 1 }
+\DeclareTemplateCode { foreground / sectioning } { default } { 2 }
   { }
   {
-    \InsertMark { presentertitle } { #1 }
+    \InsertMark { presentertitle } { #2 }
   }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { default } { 0 }
