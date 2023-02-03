@@ -24,7 +24,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplClass{presenter}
-  {2023-02-02}{v0.1.0}{A LaTeX presentation class with seamless migration}
+  {2023-02-03}{v0.1.1}{A LaTeX presentation class with seamless migration}
 %</class>
 % \fi
 %
@@ -40,7 +40,7 @@
 %
 % \subsection{Main Entry}
 %
-% \begin{variable}[int]{\g_@@_base_class_tl}
+% \begin{variable}[int]{\g_@@_article_tl}
 % Base class boolean variable if it is \cls{article} base class.
 %    \begin{macrocode}
 \bool_new:N \g_@@_article_bool
@@ -50,6 +50,9 @@
 %
 % Declare option \verb"report" and \verb"article" for selecting respective base
 % classes.
+% TODO: in order to make other base classes available, a \verb"base" keyval
+% option is required here. However, at this point, \pkg{l3keys2e} is obsolete,
+% but \TeX{} Live 2023 has not come out.
 %    \begin{macrocode}
 \DeclareOption { article } { \bool_gset_true:N  \g_@@_article_bool }
 \DeclareOption { report  } { \bool_gset_false:N \g_@@_article_bool }
@@ -77,6 +80,17 @@
 \LoadClass { \bool_if:NTF \g_@@_article_bool { article } { report } }
 %    \end{macrocode}
 %
+% \begin{variable}[int]{\g_@@_chapter_bool}
+% Boolean variable indicate if \cls{presenter} need to patch \tn{chapter}
+% command. It is decided whether there is a \tn{chapter} command.
+%    \begin{macrocode}
+\bool_new:N \g_@@_chapter_bool
+\cs_if_exist:NTF \chapter
+  { \bool_gset_true:N  \g_@@_chapter_bool }
+  { \bool_gset_false:N \g_@@_chapter_bool }
+%    \end{macrocode}
+% \end{variable}
+%
 % Introduce package \pkg{geometry}.
 %    \begin{macrocode}
 \RequirePackage { geometry }
@@ -97,9 +111,6 @@
 %    \end{macrocode}
 %
 % Introduce \pkg{xpatch} for patching command by searching the query.
-%
-% TODO: The latest \pkg{ltcmdhooks} only supports hook something before/after
-% the command.
 %    \begin{macrocode}
 \RequirePackage { xpatch }
 %    \end{macrocode}
@@ -115,19 +126,18 @@
 %    \end{macrocode}
 %
 % Patch part page here if you want to use \cls{article} as the base class.
+% It is not harmful for \cls{report} base class as well, which will clear the
+% page twice in equivalence to clear the page once.
 %    \begin{macrocode}
-\bool_if:NT \g_@@_article_bool
-  {
-    \xpretocmd { \part } {
-      \clearpage
-      \thispagestyle { plain }
-    } {  } {  }
-  }
+\xpretocmd { \part } {
+  \clearpage
+  \thispagestyle { plain }
+} {  } {  }
 %    \end{macrocode}
 %
 % For \cls{report} class, unify the \tn{chapter} behavior.
 %    \begin{macrocode}
-\bool_if:NF \g_@@_article_bool
+\bool_if:NT \g_@@_chapter_bool
   {
 %    \end{macrocode}
 % To unify the behavior of chapter with other alph numbered sections, no page
@@ -249,7 +259,7 @@
     }
   }
   \renewcommand { \@oddfoot } { \UseInstance { foreground / footline } { base } }
-  \bool_if:NF \g_@@_article_bool
+  \bool_if:NT \g_@@_chapter_bool
     {
       \RenewDocumentCommand { \chaptermark } { +m }
         { \UseInstance { foreground / sectioning } { base } { \thechapter \ ##1 } }
