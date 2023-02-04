@@ -73,7 +73,10 @@
 %    \begin{macrocode}
 %<*default>
 %<@@=pretfg_default>
-\NewMarkClass { presentertitle }
+%    \end{macrocode}
+% \pkg{default} style of foreground/headline is implemented using the basic
+% \tn{rightmark}.
+%    \begin{macrocode}
 \tl_new:N \l_@@_fg_headline_style_tl
 \DeclareTemplateCode { foreground / headline } { default } { 0 }
   { style = \l_@@_fg_headline_style_tl }
@@ -81,15 +84,21 @@
     \AssignTemplateKeys
     \group_begin:  
       \l_@@_fg_headline_style_tl
-      \LastMark { presentertitle }
+      \rightmark
     \group_end:
     \hfil
   }
+%    \end{macrocode}
+% \pkg{default} style of foreground/sectioning just uses \tn{markright}.
+%    \begin{macrocode}
 \DeclareTemplateCode { foreground / sectioning } { default } { 2 }
   { }
   {
-    \InsertMark { presentertitle } { #2 }
+    \markright { #2 }
   }
+%    \end{macrocode}
+% \pkg{default} style of foreground/footline will print the page number.
+%    \begin{macrocode}
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { default } { 0 }
   { style = \l_@@_fg_footline_style_tl }
