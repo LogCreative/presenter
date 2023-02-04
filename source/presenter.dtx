@@ -168,8 +168,10 @@
 %
 % \begin{macro}[int]{\@sect}
 % For the non-star version, \tn{@sect} will be called as the child command.
-% Step the counter, add to contents and mark the information. No typesetting in
-% the body now.
+% Step the counter, add to contents and mark the information.
+% No typesetting in the body now.
+% In the mark, whether the number is printed is based on the current level
+% compared with the value of the counter secnumdepth.
 % \begin{arguments}
 %   \item name
 %   \item level
@@ -182,14 +184,19 @@
 % \end{arguments}
 %    \begin{macrocode}
 \RenewDocumentCommand { \@sect } { m m m m m m o m } {
-  \int_compare:nNnF { #2 } > { \value { secnumdepth } }
-    { \refstepcounter { #1 } }
-  \addcontentsline { toc } { #1 } {
-    \int_compare:nNnF { #2 } > { \value { secnumdepth } }
-      { \protect \numberline { \use:c { the#1 } } }
-    #7
-  }
-  \use:c { #1mark } { #8 }
+  \int_compare:nNnTF { #2 } > { \value { secnumdepth } }
+    {
+      \addcontentsline { toc } { #1 } { #7 }
+      \use:c { #1mark } { #8 }
+    }
+    {
+      \refstepcounter { #1 }
+      \addcontentsline { toc } { #1 } {
+        \protect \numberline { \use:c { the#1 } }
+        #7
+      }
+      \use:c { #1mark } { \use:c { the#1 } ~ #8 }
+    }
 }
 %    \end{macrocode}
 % \end{macro}
@@ -221,7 +228,7 @@
 %    \begin{macrocode}
 \DeclareObjectType { background / headline } { 0 }
 \DeclareObjectType { foreground / headline } { 0 }
-\DeclareObjectType { foreground / sectioning } { 2 }
+\DeclareObjectType { foreground / sectioning } { 1 }
 \DeclareObjectType { foreground / footline } { 0 }
 %    \end{macrocode}
 %
@@ -262,20 +269,20 @@
   \bool_if:NT \g_@@_chapter_bool
     {
       \RenewDocumentCommand { \chaptermark } { +m }
-        { \UseInstance { foreground / sectioning } { base } { } { \thechapter \ ##1 } }
+        { \UseInstance { foreground / sectioning } { base } { ##1 } }
     }
   \RenewDocumentCommand { \sectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { \thesection \ ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
   \RenewDocumentCommand { \subsectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { \thesubsection \ ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
   \RenewDocumentCommand { \subsubsectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { \thesubsubsection \ ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
   \RenewDocumentCommand { \paragraphmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
   \RenewDocumentCommand { \subparagraphmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
   \ProvideDocumentCommand { \starmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
+    { \UseInstance { foreground / sectioning } { base } { ##1 } }
 }
 %    \end{macrocode}
 %
