@@ -21,7 +21,7 @@
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplPackage
 %<default>  {pretfg-default}
-  {2023-02-04}{v0.1.2}
+  {2023-02-02}{v0.1.0}
 %<default>  {default foreground style for presenter}
 %</package>
 % \fi
@@ -51,7 +51,7 @@
 % \TemplateKey{none}{---}{}{}
 % \TemplateSemantics Handle sectioning marks.
 %    \begin{macrocode}
-\DeclareTemplateInterface { foreground / sectioning } { default } { 1 }
+\DeclareTemplateInterface { foreground / sectioning } { default } { 2 }
   { }
 %    \end{macrocode}
 % \end{TemplateDescription}
@@ -88,10 +88,13 @@
     \group_end:
     \hfil
   }
-\DeclareTemplateCode { foreground / sectioning } { default } { 1 }
+%    \end{macrocode}
+% \pkg{default} style of foreground/sectioning just uses \tn{markright}.
+%    \begin{macrocode}
+\DeclareTemplateCode { foreground / sectioning } { default } { 2 }
   { }
   {
-    \markright { #1 }
+    \markright { #2 }
   }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { default } { 0 }
