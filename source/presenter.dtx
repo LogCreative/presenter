@@ -91,6 +91,21 @@
 %    \end{macrocode}
 % \end{variable}
 %
+%    \begin{macrocode}
+\prop_new:N \g_@@_sec_lv_prop
+\prop_new:N \g_@@_lv_sec_prop
+\cs_new:Npn \pret_put_sec_lv:nn #1#2 {
+  \prop_gput:Nnn \g_@@_sec_lv_prop { #1 } { #2 }
+  \prop_gput:Nnn \g_@@_lv_sec_prop { #2 } { #1 }
+}
+\cs_new:Npn \pret_get_sec_lv:nN #1#2 {
+  \prop_get:NnN \g_@@_sec_lv_prop { #1 } #2
+}
+\cs_new:Npn \pret_get_lv_sec:nN #1#2 {
+  \prop_get:NnN \g_@@_lv_sec_prop { #1 } #2
+}
+%    \end{macrocode}
+%
 % Introduce package \pkg{geometry}.
 %    \begin{macrocode}
 \RequirePackage { geometry }
@@ -135,10 +150,19 @@
 } {  } {  }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\pret_put_sec_lv:nn { part } { 0 }
+%    \end{macrocode}
+%
 % For \cls{report} class, unify the \tn{chapter} behavior.
 %    \begin{macrocode}
 \bool_if:NT \g_@@_chapter_bool
   {
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \pret_put_sec_lv:nn { part    } { -1 }
+  \pret_put_sec_lv:nn { chapter } {  0 }
 %    \end{macrocode}
 % To unify the behavior of chapter with other alph numbered sections, no page
 % style change will be made.
@@ -189,6 +213,7 @@
       { \protect \numberline { \use:c { the#1 } } }
     #7
   }
+  \pret_put_sec_lv:nn { #1 } { #2 }
   \use:c { #1mark } { #8 }
 }
 %    \end{macrocode}
@@ -208,6 +233,23 @@
 %    \begin{macrocode}
 \RenewDocumentCommand { \@ssect } { m m m m m } {
   \starmark { #5 }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\printsecnum}
+% Insert the printed version numbers of sectioning counter \meta{name}.
+% This macro will compare the level of the \meta{name} with the counter
+% \verb"secnumdepth" to determine whether to print it out.
+% If it is printed out, a trailing hard space will be added.
+% \begin{arguments}
+%   \item name
+% \end{arguments}
+%    \begin{macrocode}
+\NewDocumentCommand { \printsecnum } { m } {
+  \pret_get_sec_lv:nN { #1 } \l_tmpa_int
+  \int_compare:nNnF { \l_tmpa_int } > { \value { secnumdepth } }
+    { \use:c { the#1 } \ }
 }
 %    \end{macrocode}
 % \end{macro}
@@ -261,21 +303,41 @@
   \renewcommand { \@oddfoot } { \UseInstance { foreground / footline } { base } }
   \bool_if:NT \g_@@_chapter_bool
     {
-      \RenewDocumentCommand { \chaptermark } { +m }
-        { \UseInstance { foreground / sectioning } { base } { } { \thechapter \ ##1 } }
+      \RenewDocumentCommand { \chaptermark } { +m } {
+        \UseInstance { foreground / sectioning } { base } { chapter }
+          { \printsecnum { chapter } ##1 }
+      }
     }
   \RenewDocumentCommand { \sectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { \thesection \ ##1 } }
+    {
+      \UseInstance { foreground / sectioning } { base } { section }
+        { \printsecnum { section } ##1 }
+    }
   \RenewDocumentCommand { \subsectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { \thesubsection \ ##1 } }
+    {
+      \UseInstance { foreground / sectioning } { base } { subsection }
+        { \printsecnum { subsection } ##1 }
+    }
   \RenewDocumentCommand { \subsubsectionmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { \thesubsubsection \ ##1 } }
+    {
+      \UseInstance { foreground / sectioning } { base } { subsubsection }
+        { \printsecnum { subsubsection } ##1 }
+    }
   \RenewDocumentCommand { \paragraphmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
+    {
+      \UseInstance { foreground / sectioning } { base } { paragraph }
+        { \printsecnum { paragraph } ##1 }
+    }
   \RenewDocumentCommand { \subparagraphmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
+    {
+      \UseInstance { foreground / sectioning } { base } { subparagraph }
+        { \printsecnum { subparagraph } ##1 }
+    }
   \ProvideDocumentCommand { \starmark } { +m }
-    { \UseInstance { foreground / sectioning } { base } { } { ##1 } }
+    {
+      \UseInstance { foreground / sectioning } { base } { star }
+        { ##1 }
+    }
 }
 %    \end{macrocode}
 %
