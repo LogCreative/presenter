@@ -8,7 +8,7 @@ Compared to other existing packages, presenter won't need any additional frame o
 
 **This project is still a Work In Progress (WIP).**
 
-You can see more examples in the [`testfiles/`](testfiles/) folder.
+You can see more examples in the [`testfiles/`](testfiles/) folder. Refer to the documentation for more instructions.
 
 ```diff
 -\documentclass{article}
@@ -18,6 +18,9 @@ You can see more examples in the [`testfiles/`](testfiles/) folder.
 Hello, world!
 \end{document}
 ```
+
+<img width="440" alt="presenter" src="https://user-images.githubusercontent.com/61653082/225827335-07178eea-95af-4bed-adeb-f401ea97f997.png">
+
 
 ```latex
 \documentclass{presenter}
@@ -33,3 +36,5 @@ This is the content of this page.
 
 \end{document}
 ```
+
+<img width="420" alt="bluepresenter" src="https://user-images.githubusercontent.com/61653082/225827991-a284fcab-ad4a-4da0-becf-d506053f961b.png">
