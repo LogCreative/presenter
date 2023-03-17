@@ -1,0 +1,11 @@
+\input{regression-test}
+\documentclass{article}
+\usepackage{presenter}
+\begin{document}
+\START
+\paragraph{presenter package}
+
+This page is loaded using presenter package.
+
+\END
+\end{document}
