@@ -1,6 +1,7 @@
 \input{regression-test}
 \documentclass{presenter}
 \LoadPresenterBackground{block}
+\EditInstance{background/headline}{base}{stroke=true}
 \begin{document}
 \START
 
