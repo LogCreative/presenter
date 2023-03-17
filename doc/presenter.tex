@@ -75,6 +75,31 @@
 
   \end{description}
 
+  \section{Load Templates}
+
+  \begin{function}[added=2023-03-17]{\LoadPresenterBackground}
+    \begin{syntax}
+      \cs{LoadPresenterBackground} \oarg{component comma list} \marg{style}
+    \end{syntax}
+    Load presenter background style with style file \file{pretbg-<style>.sty}.
+    The background style selection could be viewed in Section \ref{sec:pretbg}.
+    You could specify the optional argument \meta{component comma list} to
+    modify one or more components. \meta{component} could be one of
+    \verb"headline". This command could only be used in the preamble.
+  \end{function}
+
+  \begin{function}[added=2023-03-17]{\LoadPresenterForeground}
+    \begin{syntax}
+      \cs{LoadPresenterForeground} \oarg{component comma list} \marg{style}
+    \end{syntax}
+    Load presenter background style with style file \file{pretfg-<style>.sty}.
+    The foreground style selection could be viewed in Section \ref{sec:pretfg}.
+    You could specify the optional argument \meta{component comma list} to
+    modify one or more components. \meta{component} could be one of
+    \verb"headline", \verb"sectioning" and \verb"footline". This command could
+    only be used in the preamble.
+  \end{function}
+
 \end{documentation}
 
 \CheckSum{0}

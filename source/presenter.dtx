@@ -270,7 +270,14 @@
 \DeclareObjectType { foreground / footline } { 0 }
 %    \end{macrocode}
 %
-%  \begin{macro}{\LoadPresenterBackground}
+% \begin{macro}{\LoadPresenterBackground}
+% Load the style file \file{pretbg-#2.sty} and set the component template based
+% on the first argument (could be a comma list).
+% \begin{arguments}
+%   \item component comma list.
+%         If it is empty, set up all components of this style.
+%   \item background style name.
+% \end{arguments}
 %    \begin{macrocode}
 \NewDocumentCommand { \LoadPresenterBackground } { O{} m }
   {
@@ -279,12 +286,23 @@
       {
         \DeclareInstance { background / headline } { base } { #2 } { }
       }
-      { \DeclareInstance { background / #1 } { base } { #2 } { } }
+      {
+        \clist_map_inline:nn { #1 } {
+          \DeclareInstance { background / ##1 } { base } { #2 } { }
+        }
+      }
   }
 %    \end{macrocode}
-%  \end{macro}
+% \end{macro}
 %
-%  \begin{macro}{\LoadPresenterForeground}
+% \begin{macro}{\LoadPresenterForeground}
+% Load the style file \file{pretfg-#2.sty} and set the component template based
+% on the first argument (could be a comma list).
+% \begin{arguments}
+%   \item component comma list.
+%         If it is empty, set up all components of this style.
+%   \item foreground style name.
+% \end{arguments}
 %    \begin{macrocode}
 \NewDocumentCommand { \LoadPresenterForeground } { O{} m }
   {
@@ -295,10 +313,14 @@
       \DeclareInstance { foreground / sectioning } { base } { #2 } { }
       \DeclareInstance { foreground / footline } { base } { #2 } { }
     }
-    { \DeclareInstance { foreground / #1 } { base } { #2 } { } }
+    {
+      \clist_map_inline:nn { #1 } {
+        \DeclareInstance { foreground / ##1 } { base } { #2 } { }
+      }
+    }
   }
 %    \end{macrocode}
-%  \end{macro}
+% \end{macro}
 %
 % One could only load the template in the preamble.
 % It is too heavy to load all the templates.
