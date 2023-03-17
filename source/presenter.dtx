@@ -21,24 +21,28 @@
 % \begin{implementation}
 %
 % \iffalse
-%<*class>
+%<*class|package>
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplClass{presenter}
-  {2023-02-04}{v0.1.2}{A LaTeX presentation class with seamless migration}
-%</class>
+%<class>\ProvidesExplClass
+%<package>\ProvidesExplPackage
+  {presenter}
+  {2023-02-04}{v0.1.2}
+%<class>  {A LaTeX presentation framework with seamless migration (class)}
+%<package>  {A LaTeX presentation framework with seamless migration (package)}
+%</class|package>
 % \fi
 %
 % \iffalse
 %<*class>
 % \fi
 %
-% Set the module prefix. The module is not named in \verb"pre" to avoid the
-% potential conflictions with other classes/packages.
-%    \begin{macrocode}
-%<@@=pret>
-%    \end{macrocode}
+% \subsection{\cls{presenter} class}
 %
-% \subsection{Main Entry}
+% Set the module prefix for the document class. The module is not named in
+% \verb"pre" to avoid the potential conflictions with other classes/packages.
+%    \begin{macrocode}
+%<@@=pretcls>
+%    \end{macrocode}
 %
 % \begin{variable}[int]{\g_@@_article_bool}
 % Base class boolean variable if it is \cls{article} base class.
@@ -66,18 +70,37 @@
 }
 %    \end{macrocode}
 %
-% When using \pkg{hyperref} package, the internal link will jump to the whole
-% page (fits the page to the window), which confirms the behavior as a slide.
-% This should be done before the base document class is loaded,
-% in case \pkg{hyperref} is loaded in the document class.
-%    \begin{macrocode}
-\PassOptionsToPackage { pdfview = Fit } { hyperref }
-%    \end{macrocode}
-%
-% Process the options and load the selected base class.
+% Process the options and load the selected base class. Load the main package.
 %    \begin{macrocode}
 \ProcessOptions*
 \LoadClass { \bool_if:NTF \g_@@_article_bool { article } { report } }
+\RequirePackage { presenter }
+%    \end{macrocode}
+%
+% \iffalse
+%</class>
+% \fi
+%
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{\pkg{presenter} package}
+%
+% Set the module prefix for the package. The module is not named in \verb"pre"
+% to avoid the potential conflictions with other classes/packages.
+%    \begin{macrocode}
+%<@@=pret>
+%    \end{macrocode}
+%
+% When using \pkg{hyperref} package, the internal link will jump to the whole
+% page (fits the page to the window), which confirms the behavior as a slide.
+% TODO: It seems that \cs{AtEndOfPackage} is not available for \pkg{hyperref}.
+%    \begin{macrocode}
+\IfPackageLoadedTF { hyperref }
+  { \hypersetup { pdfview = Fit } }
+  { \PassOptionsToPackage { pdfview = Fit } { hyperref } }
 %    \end{macrocode}
 %
 % \begin{variable}[int]{\g_@@_chapter_bool}
@@ -414,7 +437,7 @@
 %    \end{macrocode}
 %
 % \iffalse
-%</class>
+%</package>
 % \fi
 %
 % \end{implementation}
