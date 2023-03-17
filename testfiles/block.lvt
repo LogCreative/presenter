@@ -1,0 +1,10 @@
+\documentclass{presenter}
+\usepackage{lipsum}
+\LoadPresenterBackground{block}
+\begin{document}
+
+\paragraph{Some text}
+
+\lipsum[2]
+
+\end{document}
