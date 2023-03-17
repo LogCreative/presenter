@@ -217,6 +217,9 @@
   \use:c { #1mark } { #8 }
 }
 %    \end{macrocode}
+% NOTE: Since every section will create a new page, the update will be consistent.
+% Is it necessary, or just pass the entire content?
+% TODO: do more research on this with other packages.
 % \end{macro}
 %
 % \begin{macro}[int]{\@ssect}
@@ -267,17 +270,42 @@
 \DeclareObjectType { foreground / footline } { 0 }
 %    \end{macrocode}
 %
+%  \begin{macro}{\LoadPresenterBackground}
+%    \begin{macrocode}
+\NewDocumentCommand { \LoadPresenterBackground } { O{} m }
+  {
+    \RequirePackage { pretbg-#2 }
+    \tl_if_blank:nTF { #1 }
+      {
+        \DeclareInstance { background / headline } { base } { #2 } { }
+      }
+      { \DeclareInstance { background / #1 } { base } { #2 } { } }
+  }
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\LoadPresenterForeground}
+%    \begin{macrocode}
+\NewDocumentCommand { \LoadPresenterForeground } { O{} m }
+  {
+    \RequirePackage { pretfg-#2 }
+    \tl_if_blank:nTF { #1 }
+    {
+      \DeclareInstance { foreground / headline } { base } { #2 } { }
+      \DeclareInstance { foreground / sectioning } { base } { #2 } { }
+      \DeclareInstance { foreground / footline } { base } { #2 } { }
+    }
+    { \DeclareInstance { foreground / #1 } { base } { #2 } { } }
+  }
+%    \end{macrocode}
+%  \end{macro}
+%
 % One could only load the template in the preamble.
 % It is too heavy to load all the templates.
 % The user could only edit the instance in the body.
-% TODO: Make it an interface.
 %    \begin{macrocode}
-\RequirePackage { pretbg-block }
-\DeclareInstance { background / headline } { base } { block } { }
-\RequirePackage { pretfg-default }
-\DeclareInstance { foreground / headline } { base } { default } { }
-\DeclareInstance { foreground / sectioning } { base } { default } { }
-\DeclareInstance { foreground / footline } { base } { default } { }
+\LoadPresenterBackground { default }
+\LoadPresenterForeground { default }
 %    \end{macrocode}
 %
 % Patch the page style \verb"plain".

@@ -22,11 +22,11 @@
 \ProvidesExplPackage
 %<default>  {pretbg-default}
 %<block>  {pretbg-block}
-%<block-l3draw>  {pretbg-block-l3draw}
+%<l3block>  {pretbg-l3block}
   {2023-02-02}{v0.1.0}
 %<default>  {default background style for presenter}
 %<block>  {block background style for presenter}
-%<block-l3draw>  {block background style for presenter implemented in l3draw}
+%<l3block>  {block background style for presenter implemented in l3draw}
 %</package>
 % \fi
 %
@@ -48,7 +48,7 @@
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
-% \begin{TemplateDescription}{background/headline}{block,block-l3draw}
+% \begin{TemplateDescription}{background/headline}{block,l3block}
 % \TemplateKey{fill}{boolean}{if block is filled}{true}
 % \TemplateKey{fill-color}{tokenlist}{fill color}{black!20}
 % \TemplateKey{stroke}{boolean}{if there is a block underline}{false}
@@ -56,11 +56,11 @@
 % \TemplateKey{stroke-linewidth}{length}{stroke linewidth}{1pt}
 % \TemplateSemantics blocked headline.
 %    \begin{macrocode}
-%<*block|block-l3draw>
+%<*block|l3block>
 \DeclareTemplateInterface
   { background / headline }
 %<block>  { block }
-%<block-l3draw>  { block-l3draw }
+%<l3block>  { l3block }
   { 0 }
   {
     fill             : boolean   = true ,
@@ -69,7 +69,7 @@
     stroke-color     : tokenlist = black ,
     stroke-linewidth : length    = 1pt
   }
-%</block|block-l3draw>
+%</block|l3block>
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -89,13 +89,13 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<*block-l3draw>
+%<*l3block>
 \RequirePackage { l3draw }
-%</block-l3draw>
+%</l3block>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<*block|block-l3draw>
+%<*block|l3block>
 \bool_new:N \l_@@_bg_headline_fill_bool
 \tl_new:N \l_@@_bg_headline_fill_color_tl
 \bool_new:N \l_@@_bg_headline_stroke_bool
@@ -130,7 +130,7 @@
           { \line ( 1 , 0 ) { \paperwidth } }
       }
 %</block>
-%<*block-l3draw>
+%<*l3block>
     \put ( 0, - \dim_use:N \l_@@_bg_headline_height_dim )
       {
         \draw_begin:
@@ -152,9 +152,9 @@
           }
         \draw_end:
       }
-%</block-l3draw>
+%</l3block>
   }
-%</block|block-l3draw>
+%</block|l3block>
 %    \end{macrocode}
 %
 % \end{implementation}
