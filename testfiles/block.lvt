@@ -1,13 +1,12 @@
 \input{regression-test}
 \documentclass{presenter}
-\usepackage{lipsum}
 \LoadPresenterBackground{block}
 \begin{document}
 \START
 
 \paragraph{Some text}
 
-\lipsum[2]
+This is the content of this page.
 
 \END
 \end{document}

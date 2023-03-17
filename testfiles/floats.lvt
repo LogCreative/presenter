@@ -4,7 +4,6 @@
 \usepackage{booktabs}
 \usepackage{mwe}
 \begin{document}
-\START
 
 \paragraph{Inserting the small picture}
 
@@ -25,6 +24,8 @@ A Single line of words.
   \includegraphics[width=0.4\textwidth]{example-image-a.pdf}
   \caption{Example picture}
 \end{figure}
+
+\START
 
 \paragraph{Inserting the table}
 
