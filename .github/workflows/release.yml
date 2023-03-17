@@ -36,6 +36,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: presenter-ctan.zip
+          asset_name: presenter-ctan.zip
           asset_content_type: application/x-zip
       - name: add presenter.tds.zip
         uses: actions/upload-release-asset@v1.0.1
@@ -44,4 +45,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/distrib/tds/presenter.tds.zip
+          asset_name: presenter.tds.zip
           asset_content_type: application/x-zip
