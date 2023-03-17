@@ -39,12 +39,26 @@
 
 \begin{documentation}
 
-  \section{Philosophy}
+  \section{Introduction}
+
+  With the popularity of GPT-4 and its related technology, it is now possible to
+  generate presentations by just entering some prompts or summarizing an article.
+  In \LaTeX{} world, \presenter{} is such a package to create presentations from
+  regular \LaTeX{} documents without many modifications, which could be natively
+  run by any latest \TeX{} distributions.
+
+  Compared to other existing packages, \presenter{} won't need any additional
+  \env{frame} or \env{slide} environment to split different pages, but use
+  sectioning commands as the natural way to split different points.
+  This package will not summarize the contents yet but it is promising to have
+  such a function in other ways in the future.
+
+  \textbf{This project is still a Work In Progress (WIP).}
 
   \subsection{Seamless Migration}
 
   Users should feel seamless on migrating from document class like \cls{article},
-  \cls{report}, \cls{book} to \cls{presenter} without modifying many structures.
+  \cls{report} to \cls{presenter} without modifying many structures.
 
   \subsection{Stay On Top}
 
@@ -74,6 +88,40 @@
       Provides a web page to convert Markdown document to \cls{beamer} class code.
 
   \end{description}
+
+  \section{Basics}
+
+  To use \cls{presenter} is very simple, just use swap the line of \verb"\documentclass{article}"
+  into \verb"\documentclass{presenter}" and you are almost done.
+
+  \begin{verbatim}
+    \documentclass{presenter}
+    \begin{document}
+      \section{Get Started}
+      Hello, world!
+    \end{document}
+  \end{verbatim}
+
+  \begin{function}[added=2023-02-04]{article, report}
+    However, if you want to use \tn{chapter} level, pass the \verb"report"
+    option to the document class \cls{presenter}. The default is \verb"article"
+    based.
+  \end{function}
+
+  \begin{texnote}
+    It sounds not okay to use \cls{book} class as the base document class, since
+    they are typically pretty long. But if you want to use it as the base class,
+    or any other document class, use the package \pkg{presenter} right after the
+    document class is loaded.
+    \begin{verbatim}
+      \documentclass{book}
+      \usepackage{presenter}
+      \begin{document}
+        \chapter{Beginning of Everything}
+        This is the beginning of everything.
+      \end{document}
+    \end{verbatim}
+  \end{texnote}
 
   \section{Load Templates}
 
