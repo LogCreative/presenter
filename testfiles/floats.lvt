@@ -1,8 +1,10 @@
+\input{regression-test}
 \documentclass{presenter}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{mwe}
 \begin{document}
+\START
 
 \paragraph{Inserting the small picture}
 
@@ -40,4 +42,5 @@ A Single line of words.
   \end{tabular}
 \end{table}
 
+\END
 \end{document}

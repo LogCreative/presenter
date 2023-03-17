@@ -1,5 +1,7 @@
+\input{regression-test}
 \documentclass{presenter}
 \begin{document}
+\START
 \part{Example}
 
 Testing the text under the part.
@@ -24,4 +26,5 @@ Testing the text in the paragraph.
 
 Testing the text in the subparagraph.
 
+\END
 \end{document}

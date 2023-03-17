@@ -1,4 +1,7 @@
+\input{regression-test}
 \documentclass{presenter}
 \begin{document}
+\START
 Hello, world!
+\END
 \end{document}
