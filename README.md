@@ -4,9 +4,19 @@ A LaTeX presentation framework with seamless migration
 presenter is a package to create presentations from
 regular LaTeX documents without many modifications, which could be natively run by any latest TeX distributions.
 
-Compared to other existing packages, presenter won't need any additional frame or slide environment to split different pages, but use sectioning commands as the natural way to split different points.
+Compared to other existing packages, presenter won't need any additional frame or slide environment to split different pages, but uses sectioning commands as the natural way to split different points.
 
-**This project is still a Work In Progress (WIP).**
+**This project is still a Work In Progress (WIP).** Since it is still in the development state, you need to unpack the dtx files before using the package. Use the command
+
+```
+l3build unpack
+```
+or
+```
+cd source
+latex presenter.ins
+```
+to get the unpacked style files as the dependency of your document. Or you could install the tds zip `presenter.tds.zip` from the release section to your computer for global use.
 
 You can see more examples in the [`testfiles/`](testfiles/) folder. Refer to the documentation for more instructions.
 
