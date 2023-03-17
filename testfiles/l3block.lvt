@@ -1,0 +1,15 @@
+\input{regression-test}
+\documentclass{presenter}
+\usepackage{xcolor}
+\LoadPresenterBackground{l3block}
+\EditInstance{background/headline}{base}{fill-color=blue!70!green}
+\EditInstance{foreground/headline}{base}{style={\Large\color{white}}}
+\begin{document}
+\START
+
+\paragraph{Some text}
+
+This is the content of this page.
+
+\END
+\end{document}
