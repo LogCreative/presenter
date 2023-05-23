@@ -226,7 +226,7 @@
 %   \item display title
 % \end{arguments}
 %    \begin{macrocode}
-\RenewDocumentCommand { \@sect } { m m m m m m o m } {
+\RenewDocumentCommand { \@sect } { m m m m m m O{} m } {
   \int_compare:nNnF { #2 } > { \value { secnumdepth } }
     { \refstepcounter { #1 } }
   \addcontentsline { toc } { #1 } {
