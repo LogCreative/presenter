@@ -273,7 +273,7 @@
 \NewDocumentCommand { \printsecnum } { m } {
   \pret_get_sec_lv:nN { #1 } \l_tmpa_int
   \int_compare:nNnF { \l_tmpa_int } > { \value { secnumdepth } }
-    { \use:c { the#1 } \ }
+    { \use:c { the#1 } \quad }
 }
 %    \end{macrocode}
 % \end{macro}
