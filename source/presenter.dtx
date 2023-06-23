@@ -164,10 +164,12 @@
 % Patch part page here if you want to use \cls{article} as the base class.
 % It is not harmful for \cls{report} base class as well, which will clear the
 % page twice in equivalence to clear the page once.
+% Process the part sectioning after clearing the page.
 %    \begin{macrocode}
 \xpretocmd { \part } {
   \clearpage
   \thispagestyle { plain }
+  \UseInstance { foreground / sectioning } { base } { part } { }
 } {  } {  }
 %    \end{macrocode}
 %

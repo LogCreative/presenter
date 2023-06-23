@@ -21,8 +21,10 @@
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesExplPackage
 %<default>  {pretfg-default}
+%<dual>  {pretfg-dual}
   {2023-03-17}{v0.2.0}
 %<default>  {default foreground style for presenter}
+%<dual>  {dual foreground style for presenter}
 %</package>
 % \fi
 %
@@ -63,9 +65,51 @@
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / footline } { default } { 0 }
   { style : tokenlist }
-%</default>
 %    \end{macrocode}
 % \end{TemplateDescription}
+%
+%    \begin{macrocode}
+%</default>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*dual>
+%    \end{macrocode}
+%
+% \begin{TemplateDescription}{foreground/headline}{dual}
+% \TemplateKey{parent-style}{tokenlist}{Style of parent level text}{\cs{normalsize}}
+% \TemplateKey{child-style}{tokenlist}{Style of main text}{\cs{Large}}
+% \TemplateSemantics Display the parent level (except the empty nodes) and the current level titles.
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / headline } { dual } { 0 }
+  { 
+    parent-style : tokenlist = \normalsize ,
+    child-style: tokenlist = \Large
+  }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/sectioning}{dual}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Handle sectioning marks.
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / sectioning } { dual } { 2 }
+  { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/footline}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default page number footline style.
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / footline } { dual } { 0 }
+  { style : tokenlist }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+%    \begin{macrocode}
+%</dual>
+%    \end{macrocode}
 %
 % \end{documentation}
 %
@@ -109,6 +153,96 @@
     \group_end:
   }
 %</default>
+%    \end{macrocode}
+%
+% \pkg{dual} style.
+%    \begin{macrocode}
+%<*dual>
+%<@@=pretfg_dual>
+\tl_new:N \l_@@_fg_headline_parent_style_tl
+\tl_new:N \l_@@_fg_headline_child_style_tl
+%    \end{macrocode}
+% \begin{variable}[int]{
+%   \l_@@_fg_headline_prev_sec_lv_int,
+%   \l_@@_fg_headline_cur_sec_lv_int
+% }
+% Store the previous or the current section level.
+% Here an int variable is used instead of a mark, since the mark grabbed by
+% \cs{LastMark} is not expandable and cannot be processed by \cs{int_eval:n}.
+%    \begin{macrocode}
+\int_new:N \l_@@_fg_headline_prev_sec_lv_int
+\int_set:Nn \l_@@_fg_headline_prev_sec_lv_int { 10 }
+\int_new:N \l_@@_fg_headline_cur_sec_lv_int
+%    \end{macrocode}
+% \end{variable}
+%    \begin{macrocode}
+\DebugMarksOn
+\NewMarkClass { pretprevmark }
+\NewMarkClass { pretcurmark }
+\DeclareTemplateCode { foreground / headline } { dual } { 0 }
+  {
+    parent-style = \l_@@_fg_headline_parent_style_tl ,
+    child-style = \l_@@_fg_headline_child_style_tl
+  }
+  {
+    \AssignTemplateKeys
+    \group_begin:
+      \mark_if_eq:nnnnnnTF { page } { pretprevmark } { last }
+        { page } { pretcurmark } { last }
+        {
+          \l_@@_fg_headline_child_style_tl 
+          \LastMark { pretcurmark }
+        }
+        {
+          % TODO: adjust
+          \begin{tabular}{@{}l@{}}
+            \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
+            \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
+          \end{tabular}
+        }
+    \group_end:
+  }
+\DeclareTemplateCode { foreground / sectioning } { dual } { 2 }
+  { }
+  {
+    \tl_if_eq:nnTF { #1 } { star }
+      {
+        % TODO: handle star version. Use a tmp variable? Modify the criteria?
+        \InsertMark { pretprevmark } { #2 }
+        \InsertMark { pretcurmark } { #2 }
+      }
+      {
+        \tl_if_eq:nnTF { #1 } { part }
+          {
+            \int_set:Nn \l_@@_fg_headline_prev_sec_lv_int { 10 }
+          }
+          {
+            \pret_get_sec_lv:nN { #1 } \l_@@_fg_headline_cur_sec_lv_int
+            \int_compare:nNnTF
+              { \l_@@_fg_headline_cur_sec_lv_int } > 
+              { \l_@@_fg_headline_prev_sec_lv_int }
+              { \InsertMark { pretcurmark } { #2 } }
+              {
+                \int_set_eq:NN \l_@@_fg_headline_prev_sec_lv_int
+                  \l_@@_fg_headline_cur_sec_lv_int
+                \InsertMark { pretprevmark } { #2 }
+                \InsertMark { pretcurmark } { #2 }
+              }
+          }
+      }
+  }
+\tl_new:N \l_@@_fg_footline_style_tl
+\DeclareTemplateCode { foreground / footline } { dual } { 0 }
+  { style = \l_@@_fg_footline_style_tl }
+  {
+    \AssignTemplateKeys
+    \hfil
+    \group_begin:
+      \l_@@_fg_footline_style_tl
+      \thepage
+    \group_end:
+  }
+%</dual>
 %    \end{macrocode}
 %
 % \end{implementation}
