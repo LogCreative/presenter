@@ -198,26 +198,27 @@
   }
   {
     \AssignTemplateKeys
-    \group_begin:
-      \mark_if_eq:nnnnnnTF { page } { pretprevmark } { last }
-        { page } { pretcurmark } { last }
-        {
+    \mark_if_eq:nnnnnnTF { page } { pretprevmark } { last }
+      { page } { pretcurmark } { last }
+      {
+        \group_begin:
           \l_@@_fg_headline_child_style_tl 
           \LastMark { pretcurmark }
+        \group_end:
+        \hfil
+      }
+      {
+        \vbox_set:Nn \l_@@_fg_headline_parent_box 
+          { \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } }
+        \vbox:n {
+          \skip_vertical:n { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
+          \begin{tabular}{@{}l@{}}
+            \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
+            \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
+          \end{tabular}
+          \skip_vertical:n { \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
         }
-        {
-          \vbox_set:Nn \l_@@_fg_headline_parent_box 
-            { \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } }
-          \vbox:n {
-            \skip_vertical:n { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
-            \begin{tabular}{@{}l@{}}
-              \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
-              \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
-            \end{tabular}
-            \skip_vertical:n { \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
-          }
-        }
-    \group_end:
+      }
   }
 \DeclareTemplateCode { foreground / sectioning } { dual } { 2 }
   { }
