@@ -251,7 +251,10 @@
             \int_compare:nNnTF
               { \l_@@_fg_headline_cur_sec_lv_int } > 
               { \l_@@_fg_headline_prev_sec_lv_int }
-              { \InsertMark { pretcurmark } { #2 } }
+              { 
+                \InsertMark { pretprevmark } { \LastMark { pretcurmark } }
+                \InsertMark { pretcurmark } { #2 }
+              }
               {
                 \int_set_eq:NN \l_@@_fg_headline_prev_sec_lv_int
                   \l_@@_fg_headline_cur_sec_lv_int
