@@ -1,0 +1,47 @@
+\input{regression-test}
+\documentclass{presenter}
+\LoadPresenterForeground{dual}
+\vfuzz=18pt
+\begin{document}
+\START
+\part{Example}
+
+Testing the text under the part.
+
+\section{A segment}
+
+Testing the text in the section.
+
+\subsection{A small segment}
+
+Testing the text in the subsection.
+
+\subsubsection{A very small segment}
+
+Testing the text in the subsubsection.
+
+\paragraph{A point}
+
+Testing the text in the paragraph.
+
+\subparagraph{A small point}
+
+Testing the text in the subparagraph.
+
+\subparagraph*{Star page}
+
+Testing the stared sectioning.
+
+\part{Another part}
+
+Testing the sectioning after another part.
+
+\section{New section}
+
+This is a new section in the second part.
+
+\subsection{subsection in the section}
+
+This is the subsection in the section and the second part.
+
+\end{document}
