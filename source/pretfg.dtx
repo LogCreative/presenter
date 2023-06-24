@@ -173,9 +173,14 @@
 \int_new:N \l_@@_fg_headline_cur_sec_lv_int
 %    \end{macrocode}
 % \end{variable}
+%
+% FIXME: Maybe mark is not necessary.
 %    \begin{macrocode}
 \NewMarkClass { pretprevmark }
 \NewMarkClass { pretcurmark }
+\NewMarkClass { pretstarmark }
+\bool_new:N \l_@@_fg_headline_star_mark_bool
+\bool_set_false:N \l_@@_fg_headline_star_mark_bool
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
 \box_new:N \l_@@_fg_headline_parent_box
@@ -198,38 +203,45 @@
   }
   {
     \AssignTemplateKeys
-    \mark_if_eq:nnnnnnTF { page } { pretprevmark } { last }
-      { page } { pretcurmark } { last }
+    \group_begin:
+    \bool_if:NTF \l_@@_fg_headline_star_mark_bool
       {
-        \group_begin:
+        \l_@@_fg_headline_child_style_tl 
+        \LastMark { pretstarmark }
+      }
+      {
+        \mark_if_eq:nnnnnnTF { page } { pretprevmark } { last }
+        { page } { pretcurmark } { last }
+        {
           \l_@@_fg_headline_child_style_tl 
           \LastMark { pretcurmark }
-        \group_end:
-        \hfil
-      }
-      {
-        \vbox_set:Nn \l_@@_fg_headline_parent_box 
-          { \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } }
-        \vbox:n {
-          \skip_vertical:n { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
-          \begin{tabular}{@{}l@{}}
-            \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
-            \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
-          \end{tabular}
-          \skip_vertical:n { \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
+        }
+        {
+          \vbox_set:Nn \l_@@_fg_headline_parent_box 
+            { \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } }
+          \vbox:n {
+            \skip_vertical:n { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
+            \begin{tabular}{@{}l@{}}
+              \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
+              \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
+            \end{tabular}
+            \skip_vertical:n { \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
+          }
         }
       }
+      \group_end:
+      \hfil
   }
 \DeclareTemplateCode { foreground / sectioning } { dual } { 2 }
   { }
   {
     \tl_if_eq:nnTF { #1 } { star }
       {
-        % TODO: handle star version. Use a tmp variable? Modify the criteria?
-        \InsertMark { pretprevmark } { #2 }
-        \InsertMark { pretcurmark } { #2 }
+        \bool_set_true:N \l_@@_fg_headline_star_mark_bool
+        \InsertMark { pretstarmark } { #2 }
       }
       {
+        \bool_set_false:N \l_@@_fg_headline_star_mark_bool
         \tl_if_eq:nnTF { #1 } { part }
           {
             \int_set:Nn \l_@@_fg_headline_prev_sec_lv_int { 10 }
