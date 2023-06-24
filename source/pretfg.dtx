@@ -159,8 +159,6 @@
 %    \begin{macrocode}
 %<*dual>
 %<@@=pretfg_dual>
-\tl_new:N \l_@@_fg_headline_parent_style_tl
-\tl_new:N \l_@@_fg_headline_child_style_tl
 %    \end{macrocode}
 % \begin{variable}[int]{
 %   \l_@@_fg_headline_prev_sec_lv_int,
@@ -176,9 +174,23 @@
 %    \end{macrocode}
 % \end{variable}
 %    \begin{macrocode}
-\DebugMarksOn
 \NewMarkClass { pretprevmark }
 \NewMarkClass { pretcurmark }
+\tl_new:N \l_@@_fg_headline_parent_style_tl
+\tl_new:N \l_@@_fg_headline_child_style_tl
+\box_new:N \l_@@_fg_headline_parent_box
+%    \end{macrocode}
+% It seems to be in horizontal mode in the header, use a \cs{vbox} to create a
+% vertical mode environment in order to adjust the vertical position of the
+% titles.
+%
+% A \env{tabular} environment is used to make natural vertical spaces without 
+% manual adjustments.
+%
+% FIXME: the vertical skip before and after the \env{tabular} seems to have a
+% maximum value which cannot be exceeded. Maybe related to \pkg{geometry}
+% package or the \cs{vbox} without height?
+%    \begin{macrocode}
 \DeclareTemplateCode { foreground / headline } { dual } { 0 }
   {
     parent-style = \l_@@_fg_headline_parent_style_tl ,
@@ -194,11 +206,16 @@
           \LastMark { pretcurmark }
         }
         {
-          % TODO: adjust
-          \begin{tabular}{@{}l@{}}
-            \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
-            \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
-          \end{tabular}
+          \vbox_set:Nn \l_@@_fg_headline_parent_box 
+            { \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } }
+          \vbox:n {
+            \skip_vertical:n { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
+            \begin{tabular}{@{}l@{}}
+              \l_@@_fg_headline_parent_style_tl \LastMark { pretprevmark } \\
+              \l_@@_fg_headline_child_style_tl \LastMark { pretcurmark }
+            \end{tabular}
+            \skip_vertical:n { \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
+          }
         }
     \group_end:
   }
