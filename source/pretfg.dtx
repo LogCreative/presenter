@@ -160,6 +160,13 @@
 %<*dual>
 %<@@=pretfg_dual>
 %    \end{macrocode}
+% \begin{variable}[int]{\c_@@_fg_headline_lowest_sec_lv_int}
+% The lowest section level constant.
+% FIXME: Maybe refactored.
+%    \begin{macrocode}
+\int_const:Nn \c_@@_fg_headline_lowest_sec_lv_int { 10 }
+%    \end{macrocode}
+% \end{variable}
 % \begin{variable}[int]{
 %   \l_@@_fg_headline_prev_sec_lv_int,
 %   \l_@@_fg_headline_cur_sec_lv_int
@@ -169,7 +176,8 @@
 % \cs{LastMark} is not expandable and cannot be processed by \cs{int_eval:n}.
 %    \begin{macrocode}
 \int_new:N \l_@@_fg_headline_prev_sec_lv_int
-\int_set:Nn \l_@@_fg_headline_prev_sec_lv_int { 10 }
+\int_set_eq:NN \l_@@_fg_headline_prev_sec_lv_int
+  \c_@@_fg_headline_lowest_sec_lv_int
 \int_new:N \l_@@_fg_headline_cur_sec_lv_int
 %    \end{macrocode}
 % \end{variable}
@@ -246,7 +254,8 @@
         \bool_set_false:N \l_@@_fg_headline_star_mark_bool
         \tl_if_eq:nnTF { #1 } { part }
           {
-            \int_set:Nn \l_@@_fg_headline_prev_sec_lv_int { 10 }
+            \int_set:Nn \l_@@_fg_headline_prev_sec_lv_int 
+              \c_@@_fg_headline_lowest_sec_lv_int
           }
           {
             \pret_get_sec_lv:nN { #1 } \l_@@_fg_headline_cur_sec_lv_int
