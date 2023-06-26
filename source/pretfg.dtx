@@ -199,9 +199,6 @@
 \NewMarkClass { pretprevmark }
 \NewMarkClass { pretcurmark }
 \NewMarkClass { pretstarmark }
-\tl_new:N \l_@@_fg_headline_parent_style_tl
-\tl_new:N \l_@@_fg_headline_child_style_tl
-\box_new:N \l_@@_fg_headline_parent_box
 %    \end{macrocode}
 % It seems to be in horizontal mode in the header, use a \cs{vbox} to create a
 % vertical mode environment in order to adjust the vertical position of the
@@ -213,6 +210,9 @@
 %
 % FIXME: overfull vbox, the implementation is required to be refactored.
 %    \begin{macrocode}
+\tl_new:N \l_@@_fg_headline_parent_style_tl
+\tl_new:N \l_@@_fg_headline_child_style_tl
+\box_new:N \l_@@_fg_headline_parent_box
 \DeclareTemplateCode { foreground / headline } { dual } { 0 }
   {
     parent-style = \l_@@_fg_headline_parent_style_tl ,
