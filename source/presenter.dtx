@@ -34,7 +34,7 @@
 %<*class>
 % \fi
 %
-% \section{\cls{presenter} class}
+% \section{\cls{presenter} Class}
 %
 % Set the module prefix for the document class. The module is not named in
 % \verb"pre" to avoid the potential conflictions with other classes/packages.
@@ -84,7 +84,7 @@
 %<*package>
 % \fi
 %
-% \section{\pkg{presenter} package}
+% \section{\pkg{presenter} Package}
 %
 % Set the module prefix for the package. The module is not named in \verb"pre"
 % to avoid the potential conflictions with other classes/packages.
@@ -344,7 +344,10 @@
 % Patch the page style \verb"plain".
 %    \begin{macrocode}
 \xapptocmd { \ps@plain }
-  { \renewcommand { \@oddfoot } { \UseInstance { foreground / footline } { base } } } { } { }
+  {
+    \renewcommand { \@oddfoot } 
+      { \UseInstance { foreground / footline } { base } }
+  } { } { }
 %    \end{macrocode}
 %
 % Define the page style \verb"presenterpage".
