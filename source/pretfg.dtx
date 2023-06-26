@@ -61,11 +61,11 @@
 % \end{TemplateDescription}
 %
 % \begin{TemplateDescription}{foreground/footline}{default}
-% \TemplateKey{none}{---}{}{}
+% \TemplateKey{style}{tokenlist}{Style of the footline text}{\cs{footnotesize}}
 % \TemplateSemantics Default page number footline style.
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / footline } { default } { 0 }
-  { style : tokenlist }
+  { style : tokenlist = \footnotesize }
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -103,12 +103,12 @@
 % \end{TemplateDescription}
 %
 % \begin{TemplateDescription}{foreground/footline}{default}
-% \TemplateKey{none}{---}{}{}
+% \TemplateKey{style}{tokenlist}{Style of the footline text}{\cs{footnotesize}}
 % \TemplateSemantics title is displayed in the bottom left and the page number
 % is displayed in the bottom right.
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / footline } { dual } { 0 }
-  { style : tokenlist }
+  { style : tokenlist = \footnotesize }
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -151,9 +151,9 @@
   { style = \l_@@_fg_footline_style_tl }
   {
     \AssignTemplateKeys
-    \hfil
     \group_begin:
       \l_@@_fg_footline_style_tl
+      \hfil
       \thepage
     \group_end:
   }
