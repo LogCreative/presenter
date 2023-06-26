@@ -80,7 +80,8 @@
 % \begin{TemplateDescription}{foreground/headline}{dual}
 % \TemplateKey{parent-style}{tokenlist}{Style of parent level text}{\cs{normalsize}}
 % \TemplateKey{child-style}{tokenlist}{Style of main text}{\cs{Large}}
-% \TemplateSemantics Display the parent level (except the empty nodes) and the current level titles.\\
+% \TemplateSemantics Display the parent level (except the empty nodes) and
+% the current level titles.\\
 % \previewtest[4]{dual}
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / headline } { dual } { 0 }
@@ -93,7 +94,8 @@
 %
 % \begin{TemplateDescription}{foreground/sectioning}{dual}
 % \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Handle sectioning marks.
+% \TemplateSemantics Handle sectioning mark logic for displaying two levels of
+% titles.
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / sectioning } { dual } { 2 }
   { }
@@ -102,7 +104,8 @@
 %
 % \begin{TemplateDescription}{foreground/footline}{default}
 % \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Default page number footline style.
+% \TemplateSemantics title is displayed in the bottom left and the page number
+% is displayed in the bottom right.
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / footline } { dual } { 0 }
   { style : tokenlist }
@@ -282,9 +285,10 @@
   { style = \l_@@_fg_footline_style_tl }
   {
     \AssignTemplateKeys
-    \hfil
     \group_begin:
       \l_@@_fg_footline_style_tl
+      \@title
+      \hfil
       \thepage
     \group_end:
   }
