@@ -1,7 +1,8 @@
 \input{regression-test}
 \documentclass{presenter}
 \LoadPresenterForeground{dual}
-\vfuzz=18pt
+\title{Dual Style}
+\vfuzz=18pt      % FIXME: overfull vbox
 \begin{document}
 \START
 \part{Example}
