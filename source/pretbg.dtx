@@ -39,15 +39,26 @@
 %
 % \begin{documentation}
 %
-% \begin{TemplateDescription}{background/headline}{default}
-% \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Default blank page.
 %    \begin{macrocode}
 %<*default>
+%    \end{macrocode}
+% 
+% \begin{TemplateDescription}{background/headline}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default blank page.\\
+% \previewtest{package}
+%    \begin{macrocode}
 \DeclareTemplateInterface { background / headline } { default } { 0 } { }
-%</default>
 %    \end{macrocode}
 % \end{TemplateDescription}
+%
+%    \begin{macrocode}
+%</default>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*block|l3block>
+%    \end{macrocode}
 %
 % \begin{TemplateDescription}{background/headline}{block,l3block}
 % \TemplateKey{fill}{boolean}{if block is filled}{true}
@@ -55,9 +66,9 @@
 % \TemplateKey{stroke}{boolean}{if there is a block underline}{false}
 % \TemplateKey{stroke-color}{tokenlist}{stroke color}{black}
 % \TemplateKey{stroke-linewidth}{length}{stroke linewidth}{1pt}
-% \TemplateSemantics blocked headline.
+% \TemplateSemantics blocked headline.\\
+% \previewtest{block}
 %    \begin{macrocode}
-%<*block|l3block>
 \DeclareTemplateInterface
   { background / headline }
 %<block>  { block }
@@ -70,9 +81,12 @@
     stroke-color     : tokenlist = black ,
     stroke-linewidth : length    = 1pt
   }
-%</block|l3block>
 %    \end{macrocode}
 % \end{TemplateDescription}
+%
+%    \begin{macrocode}
+%</block|l3block>
+%    \end{macrocode}
 %
 % \end{documentation}
 %

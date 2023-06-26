@@ -25,6 +25,25 @@
 \author{Log Creative}
 \date{2023-06-24 \quad v0.2.5}
 
+\usepackage{graphicx}
+\NewDocumentCommand{\previewtest}{O{1} m}{
+  \IfFileExists{#2.pdf}%
+    {
+      \begingroup
+        \setlength{\fboxsep}{0pt}
+        \framebox{%
+          \includegraphics[width=0.5\linewidth,page=#1]{#2.pdf}%
+        }
+      \endgroup
+    }
+    {
+      \includegraphics[width=0.5\linewidth,height=0.28125\linewidth,draft]{#2.pdf}
+      \PackageWarning{presenter.pdf}{`#2.pdf' is missing, \MessageBreak
+      please run `l3build check' before \MessageBreak
+      typesetting the document}
+    }
+}
+
 \begin{document}
 
 \maketitle

@@ -43,7 +43,8 @@
 %
 % \begin{TemplateDescription}{foreground/headline}{default}
 % \TemplateKey{style}{tokenlist}{Style of the headline text.}{\cs{Large}}
-% \TemplateSemantics Default single headline style.
+% \TemplateSemantics Default single headline style.\\
+% \previewtest[4]{sectioning}
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / headline } { default } { 0 }
   { style : tokenlist = \Large }
@@ -79,7 +80,8 @@
 % \begin{TemplateDescription}{foreground/headline}{dual}
 % \TemplateKey{parent-style}{tokenlist}{Style of parent level text}{\cs{normalsize}}
 % \TemplateKey{child-style}{tokenlist}{Style of main text}{\cs{Large}}
-% \TemplateSemantics Display the parent level (except the empty nodes) and the current level titles.
+% \TemplateSemantics Display the parent level (except the empty nodes) and the current level titles.\\
+% \previewtest[4]{dual}
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / headline } { dual } { 0 }
   { 
