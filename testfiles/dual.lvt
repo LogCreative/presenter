@@ -29,6 +29,10 @@ Testing the text in the paragraph.
 
 Testing the text in the subparagraph.
 
+\subsection{Header}
+
+A bigger section level.
+
 \subparagraph*{Star page}
 
 Testing the stared sectioning.
