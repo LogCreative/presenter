@@ -130,8 +130,7 @@
   \begin{texnote}
     It sounds not okay to use \cls{book} class as the base document class, since
     they are typically pretty long. But if you want to use it as the base class,
-    or any other document class, use the package \pkg{presenter} right after the
-    document class is loaded.
+    or any other document class, use the package \pkg{presenter} instead.
     \begin{verbatim}
       \documentclass{book}
       \usepackage{presenter}
@@ -143,6 +142,11 @@
   \end{texnote}
 
   \section{Load Templates}
+
+  \presenter{} provides some built-in templates for changing the visual
+  presentation. The following command provides the interface for changing the
+  theme or one of the components. You could visit the \texttt{testfiles/} folder
+  for the code example of using these themes.
 
   \begin{function}[added=2023-03-17]{\LoadPresenterBackground}
     \begin{syntax}

@@ -285,20 +285,42 @@
 \RequirePackage { xtemplate }
 %    \end{macrocode}
 %
-% Declare an object types.
+% Declare object types.
+% \begin{macro}{background/headline}
+% The background redering of the headline.
 %    \begin{macrocode}
 \DeclareObjectType { background / headline } { 0 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{foreground/headline}
+% The foreground display method of the headline.
+%    \begin{macrocode}
 \DeclareObjectType { foreground / headline } { 0 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{foreground/sectioning}
+% Handle the sectioning logic.
+% \begin{arguments}
+%   \item the name of sectioning.
+%   \item the content of the sectioning title.
+% \end{arguments}
+%    \begin{macrocode}
 \DeclareObjectType { foreground / sectioning } { 2 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{foreground/footline}
+% The foreground display of the footline.
+%    \begin{macrocode}
 \DeclareObjectType { foreground / footline } { 0 }
 %    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{\LoadPresenterBackground}
 % Load the style file \file{pretbg-#2.sty} and set the component template based
 % on the first argument (could be a comma list).
 % \begin{arguments}
 %   \item component comma list.
-%         If it is empty, set up all components of this style.
+%         The default value will set up all components of this style.
 %   \item background style name.
 % \end{arguments}
 %    \begin{macrocode}
@@ -318,7 +340,7 @@
 % on the first argument (could be a comma list).
 % \begin{arguments}
 %   \item component comma list.
-%         If it is empty, set up all components of this style.
+%         The default value will set up all components of this style.
 %   \item foreground style name.
 % \end{arguments}
 %    \begin{macrocode}
@@ -354,8 +376,6 @@
 %
 % Use the hook by \cs{AddToHookNext} inside \tn{@oddhead} command to render the
 % background on every page.
-%
-% TODO: Update the mark when using.
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
   \renewcommand { \@oddhead } {
