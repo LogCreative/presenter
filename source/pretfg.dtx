@@ -193,6 +193,14 @@
 \bool_set_false:N \l_@@_fg_headline_star_mark_bool
 %    \end{macrocode}
 % \end{variable}
+% \begin{variable}[int]{\l_@@_fg_headline_parent_box}
+% A box to store the parent title content for height measuring.
+% If it is dual title, then the headline foreground will raise the height of the
+% parent title to align the bottom of the child title.
+%    \begin{macrocode}
+\box_new:N \l_@@_fg_headline_parent_box
+%    \end{macrocode}
+% \end{variable}
 %
 % FIXME: Maybe mark is not necessary.
 %    \begin{macrocode}
@@ -211,7 +219,6 @@
 %    \begin{macrocode}
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
-\box_new:N \l_@@_fg_headline_parent_box
 \DeclareTemplateCode { foreground / headline } { dual } { 0 }
   {
     parent-style = \l_@@_fg_headline_parent_style_tl ,
