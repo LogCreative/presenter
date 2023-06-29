@@ -34,7 +34,7 @@ l3build check
 l3build doc
 ```
 
-## Showwheel
+## Demo
 
 ```diff
 -\documentclass{article}
