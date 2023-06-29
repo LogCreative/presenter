@@ -204,11 +204,10 @@
 % vertical mode environment in order to adjust the vertical position of the
 % titles.
 %
-% FIXME: the vertical skip before and after the titles seems to have a
-% maximum value which cannot be exceeded. Maybe related to \pkg{geometry}
-% package or the \cs{vbox} without height?
-%
-% FIXME: overfull vbox, the implementation is required to be refactored.
+% If the default \texttt{headsep} is too small for \pkg{dual} style headline,
+% try to use \cmd{geometry} to set both \texttt{headsep} and \texttt{top} to a
+% bigger value to get a better visual presentation. Currently, this style won't
+% set \cmd{geometry} additionally for the decoupling reason.
 %    \begin{macrocode}
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl

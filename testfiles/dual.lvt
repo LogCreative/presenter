@@ -2,7 +2,7 @@
 \documentclass{presenter}
 \LoadPresenterForeground{dual}
 \title{Dual Style}
-\vfuzz=18pt      % FIXME: overfull vbox
+\geometry{headheight=1.8cm,top=2.3cm}
 \begin{document}
 \START
 \part{Example}
