@@ -24,7 +24,7 @@
 %<class>\ProvidesExplClass
 %<package>\ProvidesExplPackage
   {presenter}
-  {2023-06-24}{v0.2.5}
+  {2023-06-29}{v0.3.0}
 %<class>  {A LaTeX presentation framework with seamless migration (class)}
 %<package>  {A LaTeX presentation framework with seamless migration (package)}
 %</class|package>
@@ -249,6 +249,10 @@
 % For the stared version of the sectioning command, \tn{@ssect} will be called
 % as the child command. No typesetting in the body and insert the information to
 % the mark.
+%
+% NOTICE: since there is no name or level of the sectioning in the paramenters
+% of \tn{@ssect}, the current implementation will make displaying the star
+% sectioning look identical despite of different levels of starred sectioning.
 % \begin{arguments}
 %   \item indent
 %   \item beforeskip

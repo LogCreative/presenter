@@ -22,7 +22,7 @@
 \ProvidesExplPackage
 %<default>  {pretfg-default}
 %<dual>  {pretfg-dual}
-  {2023-06-24}{v0.2.5}
+  {2023-06-29}{v0.3.0}
 %<default>  {default foreground style for presenter}
 %<dual>  {dual foreground style for presenter}
 %</package>
@@ -167,7 +167,6 @@
 %    \end{macrocode}
 % \begin{variable}[int]{\c_@@_fg_headline_lowest_sec_lv_int}
 % The lowest section level constant.
-% FIXME: Maybe refactored.
 %    \begin{macrocode}
 \int_const:Nn \c_@@_fg_headline_lowest_sec_lv_int { 10 }
 %    \end{macrocode}
@@ -201,8 +200,6 @@
 \box_new:N \l_@@_fg_headline_parent_box
 %    \end{macrocode}
 % \end{variable}
-%
-% FIXME: Maybe mark is not necessary.
 %    \begin{macrocode}
 \NewMarkClass { pretprevmark }
 \NewMarkClass { pretcurmark }
