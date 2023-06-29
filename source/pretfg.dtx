@@ -32,7 +32,7 @@
 %<*package>
 % \fi
 %
-% \section{\cls{presenter} Foreground Built-In Styles}
+% \section{Presenter Foreground Built-In Styles}
 % \label{sec:pretfg}
 %
 % \begin{documentation}
@@ -122,8 +122,7 @@
 %
 % \pkg{default} style.
 % foreground/headline is implemented using the basic \tn{rightmark}.
-% foreground/sectioning just uses \tn{markright}.
-% foreground/footline will print the page number.
+% foreground/sectioning just uses \tn{markright} for basic general availablity.
 %    \begin{macrocode}
 %<*default>
 %<@@=pretfg_default>
@@ -146,6 +145,9 @@
   {
     \markright { #2 }
   }
+%    \end{macrocode}
+% foreground/footline will print the page number.
+%    \begin{macrocode}
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { default } { 0 }
   { style = \l_@@_fg_footline_style_tl }
@@ -200,6 +202,19 @@
 \box_new:N \l_@@_fg_headline_parent_box
 %    \end{macrocode}
 % \end{variable}
+% 
+% Here, \presenter{} uses the new mark mechanism instead of legacy \tn{leftmark}
+% and \tn{rightmark} for the following reasons:
+% \begin{itemize}
+%  \item \LaTeX3 now encourages to use the new interface and the source code of
+%        the \LaTeX{} format \file{ltmarks.dtx} has already swapped the original
+%        implementation of those commands to the new version.
+%  \item The current implementation needs to take care of three marks instead of
+%        only two marks.
+%  \item Maybe the star mark is not necessary, since the design could be changed
+%        in the future. But using the new interface will make the comparsion of
+%        marks easier.
+% \end{itemize}
 %    \begin{macrocode}
 \NewMarkClass { pretprevmark }
 \NewMarkClass { pretcurmark }
@@ -209,10 +224,11 @@
 % vertical mode environment in order to adjust the vertical position of the
 % titles.
 %
-% If the default \texttt{headsep} is too small for \pkg{dual} style headline,
-% try to use \cs{geometry} to set both \texttt{headsep} and \texttt{top} to a
-% bigger value to get a better visual presentation. Currently, this style won't
-% set \cs{geometry} additionally for the decoupling reason.
+% If the default \texttt{headsep} is too small for \pkg{dual} style headline
+% (overfull \cs{vbox} occurred), try to use \cs{geometry} to set both
+% \texttt{headsep} and \texttt{top} to a bigger value to get a better visual
+% presentation. Currently, this style won't set \cs{geometry} additionally for
+% the decoupling reason.
 %    \begin{macrocode}
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
