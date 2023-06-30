@@ -178,7 +178,7 @@
 % \begin{variable}[int]{\l_@@_fg_headline_star_title_tl}
 % Temporary storage for star sectioning title.
 %    \begin{macrocode}
-  \tl_new:N \l_@@_fg_headline_star_title_tl
+\tl_new:N \l_@@_fg_headline_star_title_tl
 %    \end{macrocode}
 % \end{variable}
 % \begin{variable}[int]{\l_@@_fg_headline_parent_box}
@@ -197,6 +197,7 @@
 \seq_new:N \l_@@_fg_headline_title_seq
 %    \end{macrocode}
 % \end{variable}
+% TODO: more abstraction.
 %
 % It seems to be in horizontal mode in the header, use a \cs{vbox} to create a
 % vertical mode environment in order to adjust the vertical position of the
@@ -234,9 +235,7 @@
               {
                 \seq_get:NN \l_@@_fg_headline_title_seq \l_tmpa_tl
                 \vbox_set:Nn \l_@@_fg_headline_parent_box 
-                  {
-                    \l_@@_fg_headline_parent_style_tl \l_tmpa_tl
-                  }
+                  { \l_@@_fg_headline_parent_style_tl \l_tmpa_tl }
                 \vbox:n {
                   \skip_vertical:n
                     { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
@@ -273,17 +272,13 @@
                 \seq_get:NNTF \l_@@_fg_headline_sec_lv_seq \l_tmpa_int
                   {
                     \int_compare:nNnTF { \l_tmpa_int } < { \l_tmpb_int }
-                      {
-                        \bool_set_false:N \l_tmpa_bool
-                      }
+                      { \bool_set_false:N \l_tmpa_bool }
                       {
                         \seq_pop:NN \l_@@_fg_headline_sec_lv_seq \l_tmpa_int
                         \seq_pop:NN \l_@@_fg_headline_title_seq \l_tmpa_tl
                       }
                   }
-                  {
-                    \bool_set_false:N \l_tmpa_bool
-                  }
+                  { \bool_set_false:N \l_tmpa_bool }
               }
             \seq_push:NV \l_@@_fg_headline_sec_lv_seq \l_tmpb_int
             \seq_push:Nn \l_@@_fg_headline_title_seq { #2 }
