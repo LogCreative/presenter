@@ -1,0 +1,192 @@
+% \iffalse meta-comment
+% ------------------------------------------------------------------------
+% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Log Creative.
+% ------------------------------------------------------------------------
+% \fi
+%
+% \begin{implementation}
+%
+% \iffalse
+%<*package>
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage{pretsec}{2023-06-29}{v0.3.0}
+  {sectioning support pack for presenter}
+%</package>
+% \fi
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% \section{Presenter Sectioning}
+% \label{sec:pretsec}
+%
+% \pkg{pretsec} package contains algorithms to handle sectioning problems for
+% \presenter{}.
+%
+%    \begin{macrocode}
+%<@@=pretsec>
+%    \end{macrocode}
+%
+% \subsection{Sectioning Name--level Relation Storage}
+%
+% \begin{variable}[int]{\g_@@_sec_lv_prop, \g_@@_lv_sec_prop}
+% Global property lists to store the relations between the sectioning name and
+% the sectioning level. These private variables should be synced. There are
+% public functions \cs{pret_put_sec_lv:nn}, \cs{pret_get_sec_lv:nN},
+% \cs{pret_get_lv_sec:nN} to handle the operations on these variables.
+%    \begin{macrocode}
+\prop_new:N \g_@@_sec_lv_prop
+\prop_new:N \g_@@_lv_sec_prop
+%    \end{macrocode}
+% \end{variable}
+% \begin{macro}{\pret_put_sec_lv:nn}
+% Store the relation of the input sectioning name and sectioning level.
+% \begin{arguments}
+%   \item sectioning name
+%   \item sectioning level
+% \end{arguments}
+%    \begin{macrocode}
+\cs_new:Npn \pret_put_sec_lv:nn #1#2 {
+  \prop_gput:Nnn \g_@@_sec_lv_prop { #1 } { #2 }
+  \prop_gput:Nnn \g_@@_lv_sec_prop { #2 } { #1 }
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\pret_get_sec_lv:nN}
+% Get the level of the sectioning name and store it to the variable.
+% \begin{arguments}
+%   \item sectioning name
+%   \item output sectioning level (variable)
+% \end{arguments}
+%    \begin{macrocode}
+\cs_new:Npn \pret_get_sec_lv:nN #1#2 {
+  \prop_get:NnN \g_@@_sec_lv_prop { #1 } #2
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\pret_get_lv_sec:nN}
+% Get the sectioning name of the level and store it to the variable.
+% \begin{arguments}
+%   \item sectioning level
+%   \item output sectioning name (variable)
+% \end{arguments}
+%    \begin{macrocode}
+\cs_new:Npn \pret_get_lv_sec:nN #1#2 {
+  \prop_get:NnN \g_@@_lv_sec_prop { #1 } #2
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Sectioning Advanced Title Generation}
+%
+% \begin{variable}[int]{\g_@@_star_mark_bool}
+% Boolean variable to indicate whether this page is a stared section or not.
+%    \begin{macrocode}
+\bool_new:N \g_@@_star_mark_bool
+\bool_set_false:N \g_@@_star_mark_bool
+%    \end{macrocode}
+% \end{variable}
+% \begin{variable}[int]{\g_@@_star_title_tl}
+% Temporary storage for star sectioning title.
+%    \begin{macrocode}
+\tl_new:N \g_@@_star_title_tl
+%    \end{macrocode}
+% \end{variable}
+% \begin{variable}[int]{\g_@@_sec_lv_seq, \g_@@_title_seq}
+% Stacks for storing the sectioning level and the corresponding titles.
+% The operation on the two stacks should be synced.
+%    \begin{macrocode}
+\seq_new:N \g_@@_sec_lv_seq
+\seq_new:N \g_@@_title_seq
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{macro}{\pret_get_parent_child_title:NN}
+% Get the parent title sequence (lowest is in the first) and the child title.
+% \begin{arguments}
+%   \item parent nodes sequence variable in bottom-up (reversed) order
+%   \item child node token list variable
+% \end{arguments}
+%    \begin{macrocode}
+\cs_new:Npn \pret_get_parent_child_title:NN #1#2 {
+  \seq_clear:N #1
+  \tl_clear:N #2
+  \bool_if:NTF \g_@@_star_mark_bool
+    {
+      \tl_set_eq:NN #2 \g_@@_star_title_tl
+    }
+    {
+      \seq_get:NNT \g_@@_sec_lv_seq \l_tmpb_int
+        {
+          \seq_set_eq:NN \l_tmpa_seq \g_@@_title_seq
+          \seq_pop:NN \l_tmpa_seq #2
+          \seq_set_eq:NN #1 \l_tmpa_seq
+        }
+    }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\pret_push_sec_title:nn}
+% Store the title at the level of sectioning name.
+% \begin{arguments}
+%   \item sectioning name
+%   \item title
+% \end{arguments}
+%    \begin{macrocode}
+\cs_new:Npn \pret_push_sec_title:nn #1#2 {
+  \tl_if_eq:nnTF { #1 } { star }
+  {
+    \bool_set_true:N \g_@@_star_mark_bool
+    \tl_set:Nn \g_@@_star_title_tl { #2 }
+  }
+  {
+    \bool_set_false:N \g_@@_star_mark_bool
+    \tl_if_eq:nnTF { #1 } { part }
+      {
+        \seq_clear:N \g_@@_title_seq
+        \seq_clear:N \g_@@_sec_lv_seq
+      }
+      {
+        \pret_get_sec_lv:nN { #1 } \l_tmpb_int
+        \bool_set_true:N \l_tmpa_bool
+        \bool_do_while:Nn \l_tmpa_bool
+          {
+            \seq_get:NNTF \g_@@_sec_lv_seq \l_tmpa_int
+              {
+                \int_compare:nNnTF { \l_tmpa_int } < { \l_tmpb_int }
+                  { \bool_set_false:N \l_tmpa_bool }
+                  {
+                    \seq_pop:NN \g_@@_sec_lv_seq \l_tmpa_int
+                    \seq_pop:NN \g_@@_title_seq \l_tmpa_tl
+                  }
+              }
+              { \bool_set_false:N \l_tmpa_bool }
+          }
+        \seq_push:NV \g_@@_sec_lv_seq \l_tmpb_int
+        \seq_push:Nn \g_@@_title_seq { #2 }
+      }
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \end{implementation}
+\endinput

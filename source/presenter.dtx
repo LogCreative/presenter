@@ -112,53 +112,10 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{variable}[int]{\g_@@_sec_lv_prop, \g_@@_lv_sec_prop}
-% Global property lists to store the relations between the sectioning name and
-% the sectioning level. These private variables should be synced. There are
-% public functions \cs{pret_put_sec_lv:nn}, \cs{pret_get_sec_lv:nN},
-% \cs{pret_get_lv_sec:nN} to handle the operations on these variables.
-%    \begin{macrocode}
-\prop_new:N \g_@@_sec_lv_prop
-\prop_new:N \g_@@_lv_sec_prop
-%    \end{macrocode}
-% \end{variable}
-% \begin{macro}[int]{\pret_put_sec_lv:nn}
-% Store the relation of the input sectioning name and sectioning level.
-% \begin{arguments}
-%   \item sectioning name
-%   \item sectioning level
-% \end{arguments}
-%    \begin{macrocode}
-\cs_new:Npn \pret_put_sec_lv:nn #1#2 {
-  \prop_gput:Nnn \g_@@_sec_lv_prop { #1 } { #2 }
-  \prop_gput:Nnn \g_@@_lv_sec_prop { #2 } { #1 }
-}
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}[int]{\pret_get_sec_lv:nN}
-% Get the level of the sectioning name and store it to the variable.
-% \begin{arguments}
-%   \item sectioning name
-%   \item output sectioning level (variable)
-% \end{arguments}
-%    \begin{macrocode}
-\cs_new:Npn \pret_get_sec_lv:nN #1#2 {
-  \prop_get:NnN \g_@@_sec_lv_prop { #1 } #2
-}
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}[int]{\pret_get_lv_sec:nN}
-% Get the sectioning name of the level and store it to the variable.
-% \begin{arguments}
-%   \item sectioning level
-%   \item output sectioning name (variable)
-% \end{arguments}
-%    \begin{macrocode}
-\cs_new:Npn \pret_get_lv_sec:nN #1#2 {
-  \prop_get:NnN \g_@@_lv_sec_prop { #1 } #2
-}
-%    \end{macrocode}
-% \end{macro}
+% Additional sectioning handlers are implemented in package \pkg{pretsec}.
+% \begin{macrocode}
+\RequirePackage{pretsec}
+% \end{macrocode}
 %
 % Introduce package \pkg{geometry}.
 %    \begin{macrocode}
