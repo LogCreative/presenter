@@ -22,11 +22,11 @@
 \ProvidesExplPackage
 %<default>  {pretbg-default}
 %<block>  {pretbg-block}
-%<l3block>  {pretbg-l3block}
+%<iiiblock>  {pretbg-iiiblock}
   {2023-06-29}{v0.3.0}
 %<default>  {default background style for presenter}
 %<block>  {block background style for presenter}
-%<l3block>  {block background style for presenter implemented in l3draw}
+%<iiiblock>  {block background style for presenter implemented in l3draw}
 %</package>
 % \fi
 %
@@ -57,10 +57,10 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<*block|l3block>
+%<*block|iiiblock>
 %    \end{macrocode}
 %
-% \begin{TemplateDescription}{background/headline}{block,l3block}
+% \begin{TemplateDescription}{background/headline}{block,iiiblock}
 % \TemplateKey{fill}{boolean}{if block is filled}{true}
 % \TemplateKey{fill-color}{tokenlist}{fill color}{black!20}
 % \TemplateKey{stroke}{boolean}{if there is a block underline}{false}
@@ -72,7 +72,7 @@
 \DeclareTemplateInterface
   { background / headline }
 %<block>  { block }
-%<l3block>  { l3block }
+%<iiiblock>  { iiiblock }
   { 0 }
   {
     fill             : boolean   = true ,
@@ -85,13 +85,25 @@
 % \end{TemplateDescription}
 %
 %    \begin{macrocode}
-%</block|l3block>
+%</block|iiiblock>
 %    \end{macrocode}
 %
 % \end{documentation}
 %
 % \begin{implementation}
 %
+% NOTE: For the same apperence there may be more than one implementations, like
+%       \pkg{block} and \pkg{iiiblock} here. When declaring the template
+%       interface, no \LaTeX3 variable is involved. But when declaring the
+%       template implementation, the key value needs to be assigned to a given
+%       variable. Since declaring a new variable like \cs{tl_new:N} requires the
+%       variable is not declared before, and the \pkg{docstrip} is not smart
+%       enough to replace \texttt{@@} into the corresponding namespaces
+%       (\texttt{@@} will always affecting the contents below until the next
+%       \texttt{@@} declaration), all the implementation will be rolled up to
+%       avoid the re-declaration variable issue.
+%
+% \pkg{default} style.
 %    \begin{macrocode}
 %<@@=pretbg_default>
 %<*default>
@@ -99,28 +111,17 @@
 %</default>
 %    \end{macrocode}
 %
+% \pkg{block} style.
 %    \begin{macrocode}
 %<@@=pretbg_block>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*l3block>
-\RequirePackage { l3draw }
-%</l3block>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*block|l3block>
+%<*block>
 \bool_new:N \l_@@_bg_headline_fill_bool
 \tl_new:N \l_@@_bg_headline_fill_color_tl
 \bool_new:N \l_@@_bg_headline_stroke_bool
 \tl_new:N \l_@@_bg_headline_stroke_color_tl
 \dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
 \dim_new:N \l_@@_bg_headline_height_dim
-\DeclareTemplateCode { background / headline }
-%<block>  { block }
-%<l3block>  { l3block }
-  { 0 }
+\DeclareTemplateCode { background / headline } { block } { 0 }
   {
     fill             = \l_@@_bg_headline_fill_bool ,
     fill-color       = \l_@@_bg_headline_fill_color_tl ,
@@ -132,7 +133,6 @@
     \AssignTemplateKeys
     \dim_set_eq:NN \l_@@_bg_headline_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
-%<*block>
     \bool_if:NT \l_@@_bg_headline_fill_bool 
       {
         \exp_args:NV \color_select:n \l_@@_bg_headline_fill_color_tl
@@ -147,8 +147,33 @@
         \put (0, - \dim_use:N \l_@@_bg_headline_height_dim )
           { \line ( 1 , 0 ) { \paperwidth } }
       }
+  }
 %</block>
-%<*l3block>
+%    \end{macrocode}
+%
+% \pkg{iiiblock} style.
+%    \begin{macrocode}
+%<*iiiblock>
+%<@@=pretbg_iiiblock>
+\RequirePackage { l3draw }
+\bool_new:N \l_@@_bg_headline_fill_bool
+\tl_new:N \l_@@_bg_headline_fill_color_tl
+\bool_new:N \l_@@_bg_headline_stroke_bool
+\tl_new:N \l_@@_bg_headline_stroke_color_tl
+\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\dim_new:N \l_@@_bg_headline_height_dim
+\DeclareTemplateCode { background / headline } { iiiblock } { 0 }
+  {
+    fill             = \l_@@_bg_headline_fill_bool ,
+    fill-color       = \l_@@_bg_headline_fill_color_tl ,
+    stroke           = \l_@@_bg_headline_stroke_bool ,
+    stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
+    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
+  }
+  {
+    \AssignTemplateKeys
+    \dim_set_eq:NN \l_@@_bg_headline_height_dim
+      { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
     \put ( 0, - \dim_use:N \l_@@_bg_headline_height_dim )
       {
         \draw_begin:
@@ -170,9 +195,8 @@
           }
         \draw_end:
       }
-%</l3block>
   }
-%</block|l3block>
+%</iiiblock>
 %    \end{macrocode}
 %
 % \end{implementation}
