@@ -169,14 +169,6 @@
 \tl_new:N \l_@@_fg_headline_star_title_tl
 %    \end{macrocode}
 % \end{variable}
-% \begin{variable}[int]{\l_@@_fg_headline_parent_box}
-% A box to store the parent title content for height measuring.
-% If it is dual title, then the headline foreground will raise the height of the
-% parent title to align the bottom of the child title.
-%    \begin{macrocode}
-\box_new:N \l_@@_fg_headline_parent_box
-%    \end{macrocode}
-% \end{variable}
 % \begin{variable}[int]{\l_@@_fg_headline_sec_lv_seq, \l_@@_fg_headline_title_seq}
 % Stacks for storing the sectioning level and the corresponding titles.
 % The operation on the two stacks should be synced.
@@ -192,10 +184,10 @@
 % titles.
 %
 % If the default \texttt{headsep} is too small for \pkg{dual} style headline
-% (overfull \cs{vbox} occurred), try to use \cs{geometry} to set both
-% \texttt{headsep} and \texttt{top} to a bigger value to get a better visual
-% presentation. Currently, this style won't set \cs{geometry} additionally for
-% the decoupling reason.
+% (overfull \cs{vbox} and weird presentation may occur), try to use
+% \cs{geometry} to set both \texttt{headsep} and \texttt{top} to a bigger value
+% to get a better visual presentation. Currently, this style won't set
+% \cs{geometry} additionally for the decoupling reason.
 %    \begin{macrocode}
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
@@ -222,11 +214,7 @@
               }
               {
                 \seq_get:NN \l_@@_fg_headline_title_seq \l_tmpa_tl
-                \vbox_set:Nn \l_@@_fg_headline_parent_box 
-                  { \l_@@_fg_headline_parent_style_tl \l_tmpa_tl }
                 \vbox:n {
-                  \skip_vertical:n
-                    { - \box_ht_plus_dp:N \l_@@_fg_headline_parent_box }
                   \l_@@_fg_headline_parent_style_tl \l_tmpa_tl
                   \skip_vertical:N \c_zero_dim
                   \l_@@_fg_headline_child_style_tl \l_tmpb_tl
