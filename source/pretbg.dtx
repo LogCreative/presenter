@@ -38,27 +38,17 @@
 % \label{sec:pretbg}
 %
 % \begin{documentation}
-%
-%    \begin{macrocode}
-%<*default>
-%    \end{macrocode}
 % 
 % \begin{TemplateDescription}{background/headline}{default}
 % \TemplateKey{none}{---}{}{}
 % \TemplateSemantics Default blank page.\\
 % \previewtest{package}
 %    \begin{macrocode}
+%<*default>
 \DeclareTemplateInterface { background / headline } { default } { 0 } { }
-%    \end{macrocode}
-% \end{TemplateDescription}
-%
-%    \begin{macrocode}
 %</default>
 %    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*block|iiiblock>
-%    \end{macrocode}
+% \end{TemplateDescription}
 %
 % \begin{TemplateDescription}{background/headline}{block,iiiblock}
 % \TemplateKey{fill}{boolean}{if block is filled}{true}
@@ -69,6 +59,7 @@
 % \TemplateSemantics blocked headline.\\
 % \previewtest{block}
 %    \begin{macrocode}
+%<*block|iiiblock>
 \DeclareTemplateInterface
   { background / headline }
 %<block>  { block }
@@ -81,12 +72,9 @@
     stroke-color     : tokenlist = black ,
     stroke-linewidth : length    = 1pt
   }
-%    \end{macrocode}
-% \end{TemplateDescription}
-%
-%    \begin{macrocode}
 %</block|iiiblock>
 %    \end{macrocode}
+% \end{TemplateDescription}
 %
 % \end{documentation}
 %
