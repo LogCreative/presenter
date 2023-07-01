@@ -1,0 +1,55 @@
+\input{regression-test}
+\documentclass{presenter}
+\LoadPresenterForeground{cascade}
+\EditInstance{foreground/headline}{base}{parent-separator={\quad $\rightarrow$\quad}}
+\title{Cascade Style}
+\author{Your Name}
+\geometry{headheight=1.8cm,top=2.3cm}
+\begin{document}
+\START
+\part{Example}
+
+Testing the text under the part.
+
+\section{A segment}
+
+Testing the text in the section.
+
+\subsection{A small segment}
+
+Testing the text in the subsection.
+
+\subsubsection{A very small segment}
+
+Testing the text in the subsubsection.
+
+\paragraph{A point}
+
+Testing the text in the paragraph.
+
+\section{New section}
+\subparagraph{A small point}
+
+Testing the text in the subparagraph.
+
+\subsection{Header}
+
+A bigger section level.
+
+\subparagraph*{Star page}
+
+Testing the stared sectioning.
+
+\part{Another part}
+
+Testing the sectioning after another part.
+
+\section{New section}
+
+This is a new section in the second part.
+
+\subsection{subsection in the section}
+
+This is the subsection in the section and the second part.
+
+\end{document}

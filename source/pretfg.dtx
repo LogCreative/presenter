@@ -22,9 +22,11 @@
 \ProvidesExplPackage
 %<default>  {pretfg-default}
 %<dual>  {pretfg-dual}
+%<cascade>  {pretfg-cascade}
   {2023-06-29}{v0.3.0}
 %<default>  {default foreground style for presenter}
 %<dual>  {dual foreground style for presenter}
+%<cascade>  {cascade foreground style for presenter}
 %</package>
 % \fi
 %
@@ -101,6 +103,46 @@
 \DeclareTemplateInterface { foreground / footline } { dual } { 0 }
   { style : tokenlist = \footnotesize }
 %</dual>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/headline}{cascade}
+% \TemplateKey{parent-style}{tokenlist}{Style of parent level text}{\cs{normalsize}}
+% \TemplateKey{child-style}{tokenlist}{Style of main text}{\cs{Large}}
+% \TemplateKey{parent-separator}{tokenlist}{Connection tokens between different
+% different levels of titles in the parent title}{\verb"\quad{}$\triangleright$\quad{}"}
+% \TemplateSemantics Display all the parent level titles separated by the
+% parent-separator and the current level title.\\
+% \previewtest[5]{cascade}
+%    \begin{macrocode}
+%<*cascade>
+\DeclareTemplateInterface { foreground / headline } { cascade } { 0 }
+  { 
+    parent-style : tokenlist = \normalsize ,
+    child-style : tokenlist = \Large ,
+    parent-separator : tokenlist = { \quad{}$\triangleright$\quad{} } ,
+  }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/sectioning}{cascade}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Handle sectioning mark logic for displaying the parent
+% multi-level titles and the child title.
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / sectioning } { cascade } { 2 }
+  { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{foreground/footline}{cascade}
+% \TemplateKey{style}{tokenlist}{Style of the footline text}{\cs{footnotesize}}
+% \TemplateSemantics author is displayed in the bottom left, title is displayed
+% in the middle of bottom, and the page number is displayed in the bottom right.
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / footline } { cascade } { 0 }
+  { style : tokenlist = \footnotesize }
+%</cascade>
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -210,6 +252,67 @@
     \group_end:
   }
 %</dual>
+%    \end{macrocode}
+%
+% \paragraph{\pkg{cascade} style.}
+%
+% Almost the same as \pkg{dual} style. But all the parent nodes are displayed.
+% Since the parent sequence returned from \cs{pret_get_parent_child_title:NN}
+% is in the reversed order, when displaying it, reverese the sequence first.
+%
+%    \begin{macrocode}
+%<*cascade>
+%<@@=pretfg_cascade>
+\tl_new:N \l_@@_fg_headline_parent_style_tl
+\tl_new:N \l_@@_fg_headline_child_style_tl
+\tl_new:N \l_@@_fg_headline_parent_separator_tl
+\DeclareTemplateCode { foreground / headline } { cascade } { 0 }
+  {
+    parent-style = \l_@@_fg_headline_parent_style_tl ,
+    child-style = \l_@@_fg_headline_child_style_tl ,
+    parent-separator = \l_@@_fg_headline_parent_separator_tl
+  }
+  {
+    \AssignTemplateKeys
+    \group_begin:
+    \pret_get_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
+    \seq_if_empty:NTF \l_tmpa_seq
+      {
+        \l_@@_fg_headline_child_style_tl \l_tmpb_tl
+      }
+      {
+        \seq_reverse:N \l_tmpa_seq
+        \vbox:n
+          {
+            \l_@@_fg_headline_parent_style_tl
+            \seq_use:Nn \l_tmpa_seq { \l_@@_fg_headline_parent_separator_tl }
+            \skip_vertical:N \c_zero_dim
+            \l_@@_fg_headline_child_style_tl \l_tmpb_tl
+          }
+      }
+    \group_end:
+    \hfil
+  }
+\DeclareTemplateCode { foreground / sectioning } { cascade } { 2 }
+  { }
+  {
+    \pret_push_sec_title:nn { #1 } { #2 }
+  }
+\tl_new:N \l_@@_fg_footline_style_tl
+\DeclareTemplateCode { foreground / footline } { cascade } { 0 }
+  { style = \l_@@_fg_footline_style_tl }
+  {
+    \AssignTemplateKeys
+    \group_begin:
+      \l_@@_fg_footline_style_tl
+      \@author
+      \hfil
+      \@title
+      \hfil
+      \thepage
+    \group_end:
+  }
+%</cascade>
 %    \end{macrocode}
 %
 % \end{implementation}
