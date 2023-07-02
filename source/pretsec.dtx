@@ -105,11 +105,11 @@
 \tl_new:N \g_@@_star_title_tl
 %    \end{macrocode}
 % \end{variable}
-% \begin{variable}[int]{\g_@@_sec_lv_seq, \g_@@_title_seq}
+% \begin{variable}[int]{\g_@@_lv_seq, \g_@@_title_seq}
 % Stacks for storing the sectioning level and the corresponding titles.
 % The operation on the two stacks should be synced.
 %    \begin{macrocode}
-\seq_new:N \g_@@_sec_lv_seq
+\seq_new:N \g_@@_lv_seq
 \seq_new:N \g_@@_title_seq
 %    \end{macrocode}
 % \end{variable}
@@ -132,25 +132,25 @@
     \tl_if_eq:nnTF { #1 } { part }
       {
         \seq_clear:N \g_@@_title_seq
-        \seq_clear:N \g_@@_sec_lv_seq
+        \seq_clear:N \g_@@_lv_seq
       }
       {
         \pret_get_sec_lv:nN { #1 } \l_tmpb_int
         \bool_set_true:N \l_tmpa_bool
         \bool_do_while:Nn \l_tmpa_bool
           {
-            \seq_get:NNTF \g_@@_sec_lv_seq \l_tmpa_int
+            \seq_get:NNTF \g_@@_lv_seq \l_tmpa_int
               {
                 \int_compare:nNnTF { \l_tmpa_int } < { \l_tmpb_int }
                   { \bool_set_false:N \l_tmpa_bool }
                   {
-                    \seq_pop:NN \g_@@_sec_lv_seq \l_tmpa_int
+                    \seq_pop:NN \g_@@_lv_seq \l_tmpa_int
                     \seq_pop:NN \g_@@_title_seq \l_tmpa_tl
                   }
               }
               { \bool_set_false:N \l_tmpa_bool }
           }
-        \seq_push:NV \g_@@_sec_lv_seq \l_tmpb_int
+        \seq_push:NV \g_@@_lv_seq \l_tmpb_int
         \seq_push:Nn \g_@@_title_seq { #2 }
       }
   }
@@ -173,7 +173,7 @@
       \tl_set_eq:NN #2 \g_@@_star_title_tl
     }
     {
-      \seq_get:NNT \g_@@_sec_lv_seq \l_tmpb_int
+      \seq_get:NNT \g_@@_lv_seq \l_tmpb_int
         {
           \seq_set_eq:NN \l_tmpa_seq \g_@@_title_seq
           \seq_pop:NN \l_tmpa_seq #2
@@ -199,7 +199,7 @@
   \bool_if:NTF \g_@@_star_mark_bool
     { \tl_set:Nn #1 { star } }
     {
-      \seq_get:NNTF \g_@@_sec_lv_seq \l_tmpb_int
+      \seq_get:NNTF \g_@@_lv_seq \l_tmpb_int
         { \pret_get_lv_sec:nN { \l_tmpb_int } #1 }
         { \tl_set:Nn #1 { part } }
     }
