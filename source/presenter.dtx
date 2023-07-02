@@ -52,9 +52,6 @@
 %
 % Declare option \verb"report" and \verb"article" for selecting respective base
 % classes.
-% TODO: in order to make other base classes available, a \verb"base" keyval
-% option is required here. However, at this point, \pkg{l3keys2e} is obsolete,
-% but \TeX{} Live 2023 has not come out.
 %    \begin{macrocode}
 \DeclareOption { article } { \bool_gset_true:N  \g_@@_article_bool }
 \DeclareOption { report  } { \bool_gset_false:N \g_@@_article_bool }
@@ -113,9 +110,9 @@
 % \end{variable}
 %
 % Additional sectioning handlers are implemented in package \pkg{pretsec}.
-% \begin{macrocode}
+%    \begin{macrocode}
 \RequirePackage{pretsec}
-% \end{macrocode}
+%    \end{macrocode}
 %
 % Introduce package \pkg{geometry}.
 %    \begin{macrocode}
