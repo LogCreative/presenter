@@ -184,6 +184,29 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\pret_get_cur_sec:N}
+% Get the current sectioning name.
+% NOTICE: when the sequence \cs{g_@@_sec_lv_seq} is empty, according to the
+%         current algorithm of \cs{pret_push_sec_title:nn}, it is regarded as
+%         \texttt{part}. A reasonable explanation about the scenario where no
+%         sectioning command has been issued at the beginning of the document is
+%         that it is in Part 0 of this document.
+% \begin{arguments}
+%   \item output token list variable of current sectioning name
+% \end{arguments}
+%    \begin{macrocode}
+\cs_new:Npn \pret_get_cur_sec:N #1 {
+  \bool_if:NTF \g_@@_star_mark_bool
+    { \tl_set:Nn #1 { star } }
+    {
+      \seq_get:NNTF \g_@@_sec_lv_seq \l_tmpb_int
+        { \pret_get_lv_sec:nN { \l_tmpb_int } #1 }
+        { \tl_set:Nn #1 { part } }
+    }
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \iffalse
 %</package>
 % \fi
