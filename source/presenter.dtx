@@ -291,7 +291,9 @@
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/sectioning}
-% Handle the sectioning logic.
+% Handle the sectioning logic. Use in pair with \texttt{foreground/headline}.
+% The call of \cs{pretsec_register_name_title:nn} is required for every
+% implementation code of this object type.
 % \begin{arguments}
 %   \item the name of sectioning.
 %   \item the content of the sectioning title.
