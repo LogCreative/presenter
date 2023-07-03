@@ -18,3 +18,18 @@ function docinit_hook()
     cp("*.pdf", testdir, typesetdir)
     return 0
 end
+
+-- Simple tagging, copyright information needs manual update.
+tagfiles         = {"*.dtx","presenter.tex"}
+function update_tag(file, content, tagname, tagdate)
+    local iso = "%d%d%d%d%-%d%d%-%d%d"
+    local ver = "v%d.%d.%d"
+    if string.match(file, "%.dtx$") then
+        return string.gsub(content, "{" .. iso .. "}{" .. ver .. "}", 
+        "{" .. tagdate .. "}{" .. tagname .. "}")
+    elseif string.match(file, "%.tex$") then
+        return string.gsub(content, "\\date{" .. iso .. " \\quad " .. ver .. "}",
+        "\\date{" .. tagdate .. " \\quad " .. tagname .. "}")
+    end
+    return content
+end
