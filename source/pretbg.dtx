@@ -56,6 +56,7 @@
 % \TemplateKey{stroke}{boolean}{if there is a block underline}{false}
 % \TemplateKey{stroke-color}{tokenlist}{stroke color}{black}
 % \TemplateKey{stroke-linewidth}{length}{stroke linewidth}{1pt}
+% \TemplateKey{stroke-length}{length}{stroke length}{\cs{paperwidth}}
 % \TemplateSemantics blocked headline.\\
 % \previewtest{block}
 %    \begin{macrocode}
@@ -70,7 +71,8 @@
     fill-color       : tokenlist = black!20 ,
     stroke           : boolean   = false ,
     stroke-color     : tokenlist = black ,
-    stroke-linewidth : length    = 1pt
+    stroke-linewidth : length    = 1pt ,
+    stroke-length    : length    = \paperwidth
   }
 %</block|iiiblock>
 %    \end{macrocode}
@@ -88,8 +90,8 @@
 % variable like \cs{tl_new:N} requires the variable is not declared before, and
 % the \pkg{docstrip} is not smart enough to replace \texttt{@@} into the
 % corresponding namespaces (\texttt{@@} will always affecting the contents below
-% until the next \texttt{@@} declaration), all the implementation will be rolled
-% up to avoid the re-declaration variable issue.
+% until the next \texttt{@@} declaration), all the implementation will be
+% separated to avoid the re-declaration variable issue.
 % \end{texnote}
 %
 % \paragraph{\pkg{default} style.}
@@ -109,6 +111,7 @@
 \bool_new:N \l_@@_bg_headline_stroke_bool
 \tl_new:N \l_@@_bg_headline_stroke_color_tl
 \dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\dim_new:N \l_@@_bg_headline_stroke_length_dim
 \dim_new:N \l_@@_bg_headline_height_dim
 \DeclareTemplateCode { background / headline } { block } { 0 }
   {
@@ -116,7 +119,8 @@
     fill-color       = \l_@@_bg_headline_fill_color_tl ,
     stroke           = \l_@@_bg_headline_stroke_bool ,
     stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
-    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
+    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
+    stroke-length    = \l_@@_bg_headline_stroke_length_dim
   }
   {
     \AssignTemplateKeys
@@ -134,7 +138,7 @@
         \exp_args:NV \color_select:n \l_@@_bg_headline_stroke_color_tl
         \linethickness { \dim_use:N \l_@@_bg_headline_stroke_linewidth_dim }
         \put (0, - \dim_use:N \l_@@_bg_headline_height_dim )
-          { \line ( 1 , 0 ) { \paperwidth } }
+          { \line ( 1 , 0 ) { \dim_use:N \l_@@_bg_headline_stroke_length_dim } }
       }
   }
 %</block>
@@ -150,6 +154,7 @@
 \bool_new:N \l_@@_bg_headline_stroke_bool
 \tl_new:N \l_@@_bg_headline_stroke_color_tl
 \dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\dim_new:N \l_@@_bg_headline_stroke_length_dim
 \dim_new:N \l_@@_bg_headline_height_dim
 \DeclareTemplateCode { background / headline } { iiiblock } { 0 }
   {
@@ -157,7 +162,8 @@
     fill-color       = \l_@@_bg_headline_fill_color_tl ,
     stroke           = \l_@@_bg_headline_stroke_bool ,
     stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
-    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
+    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
+    stroke-length    = \l_@@_bg_headline_stroke_length_dim
   }
   {
     \AssignTemplateKeys
@@ -178,7 +184,7 @@
           {
             \draw_linewidth:n { \l_@@_bg_headline_stroke_linewidth_dim }
             \draw_path_moveto:n { 0pt , 0pt }
-            \draw_path_lineto:n { \paperwidth, 0pt }
+            \draw_path_lineto:n { \l_@@_bg_headline_stroke_length_dim, 0pt }
             \exp_args:NV \color_select:n \l_@@_bg_headline_stroke_color_tl 
             \draw_path_use_clear:n { stroke }
           }
