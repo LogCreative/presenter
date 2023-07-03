@@ -161,7 +161,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\pret_put_sec_lv:nn { part } { 0 }
+\pretsec_put_name_lv:nn { part } { 0 }
 %    \end{macrocode}
 %
 % For \cls{report} class, unify the \tn{chapter} behavior.
@@ -171,8 +171,8 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-    \pret_put_sec_lv:nn { part    } { -1 }
-    \pret_put_sec_lv:nn { chapter } {  0 }
+    \pretsec_put_name_lv:nn { part    } { -1 }
+    \pretsec_put_name_lv:nn { chapter } {  0 }
 %    \end{macrocode}
 % To unify the behavior of chapter with other alph numbered sections, no page
 % style change will be made.
@@ -223,12 +223,12 @@
       { \protect \numberline { \use:c { the#1 } } }
     #7
   }
-  \pret_put_sec_lv:nn { #1 } { #2 }
+  \pretsec_put_name_lv:nn { #1 } { #2 }
   \use:c { #1mark } { #8 }
 }
 %    \end{macrocode}
 % NOTE: Since every section will create a new page, the update of using
-% \cs{pret_put_sec_lv:nn} will be consistent.
+% \cs{pretsec_put_name_lv:nn} will be consistent.
 % Is it necessary, or just pass the entire content?
 % TODO: do more research on this with other packages.
 % \end{macro}
@@ -265,7 +265,7 @@
 % \end{arguments}
 %    \begin{macrocode}
 \NewDocumentCommand { \printsecnum } { m } {
-  \pret_get_sec_lv:nN { #1 } \l_tmpa_int
+  \pretsec_get_name_lv:nN { #1 } \l_tmpa_int
   \int_compare:nNnF { \l_tmpa_int } > { \value { secnumdepth } }
     { \use:c { the#1 } \quad }
 }

@@ -42,55 +42,104 @@
 %
 % \subsection{Sectioning Name--level Relation Storage}
 %
-% \begin{variable}[int]{\g_@@_sec_lv_prop, \g_@@_lv_sec_prop}
+% \begin{texnote}
+% Since \texttt{prop} from \file{l3prop.dtx} only provides the way to look up
+% the value by its key, not the other way around, here \presenter{} uses two
+% \texttt{prop}'s to maintain the information on both directions.
+% \end{texnote}
+%
+% \begin{variable}[int]{\g_@@_name_lv_prop, \g_@@_lv_name_prop}
 % Global property lists to store the relations between the sectioning name and
 % the sectioning level. These private variables should be synced. There are
-% public functions \cs{pret_put_sec_lv:nn}, \cs{pret_get_sec_lv:nN},
-% \cs{pret_get_lv_sec:nN} to handle the operations on these variables.
+% public functions \cs{pretsec_put_name_lv:nn}, \cs{pretsec_get_name_lv:nN},
+% \cs{pretsec_get_lv_name:nN} to handle the operations on these variables.
 %    \begin{macrocode}
-\prop_new:N \g_@@_sec_lv_prop
-\prop_new:N \g_@@_lv_sec_prop
+\prop_new:N \g_@@_name_lv_prop
+\prop_new:N \g_@@_lv_name_prop
 %    \end{macrocode}
 % \end{variable}
-% \begin{macro}{\pret_put_sec_lv:nn}
+% \begin{macro}{\pretsec_put_name_lv:nn}
 % Store the relation of the input sectioning name and sectioning level.
 % \begin{arguments}
 %   \item sectioning name
 %   \item sectioning level
 % \end{arguments}
 %    \begin{macrocode}
-\cs_new:Npn \pret_put_sec_lv:nn #1#2 {
-  \prop_gput:Nnn \g_@@_sec_lv_prop { #1 } { #2 }
-  \prop_gput:Nnn \g_@@_lv_sec_prop { #2 } { #1 }
+\cs_new:Npn \pretsec_put_name_lv:nn #1#2 {
+  \prop_gput:Nnn \g_@@_name_lv_prop { #1 } { #2 }
+  \prop_gput:Nnn \g_@@_lv_name_prop { #2 } { #1 }
 }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\pret_get_sec_lv:nN}
+% \begin{macro}{\pretsec_get_name_lv:nN}
 % Get the level of the sectioning name and store it to the variable.
 % \begin{arguments}
 %   \item sectioning name
 %   \item output sectioning level (variable)
 % \end{arguments}
 %    \begin{macrocode}
-\cs_new:Npn \pret_get_sec_lv:nN #1#2 {
-  \prop_get:NnN \g_@@_sec_lv_prop { #1 } #2
+\cs_new:Npn \pretsec_get_name_lv:nN #1#2 {
+  \prop_get:NnN \g_@@_name_lv_prop { #1 } #2
 }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\pret_get_lv_sec:nN}
+% \begin{macro}{\pretsec_get_lv_name:nN}
 % Get the sectioning name of the level and store it to the variable.
 % \begin{arguments}
 %   \item sectioning level
 %   \item output sectioning name (variable)
 % \end{arguments}
 %    \begin{macrocode}
-\cs_new:Npn \pret_get_lv_sec:nN #1#2 {
-  \prop_get:NnN \g_@@_lv_sec_prop { #1 } #2
+\cs_new:Npn \pretsec_get_lv_name:nN #1#2 {
+  \prop_get:NnN \g_@@_lv_name_prop { #1 } #2
 }
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsection{Sectioning Advanced Title Generation}
+% \subsection{Sectioning Title Management}
+%
+% \pkg{pretsec} uses two stacks for storing both the level and the title info
+% of sectioning.
+%
+% \begin{figure}[H]
+%   \newcommand{\docseqitem}[1]{\framebox[6em]{\vphantom{girl}#1}}
+%   \begin{tabular}{ll@{}l@{}l}
+%     \cs{g_@@_lv_seq}    & \docseqitem{4} &
+%                           \docseqitem{2} &
+%                           \docseqitem{1} \\
+%     \cs{g_@@_title_seq} & \docseqitem{\meta{paragraph}}  &
+%                           \docseqitem{\meta{subsection}} & 
+%                           \docseqitem{\meta{section}}
+%   \end{tabular}
+% \end{figure}
+%
+% \begin{texnote}
+%
+% In the current implementation of \file{l3seq.dtx}, for the sequence of length
+% $n$, the complexity of the opereations on this sequence:
+%
+% \begin{center}
+%   \begin{tabular}{ccc}
+%     \toprule
+%     position & left & right \\
+%     \midrule
+%     push & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ \\
+%     get  & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
+%     pop  & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
+%     \bottomrule
+%   \end{tabular}
+% \end{center}
+%
+% It costs more to operate on the right position. Thus, for the use of stacks,
+% \file{l3seq.dtx} recommends using left position operations and defines alias
+% for such operations.
+% Though when traverse the sequence, one needs to reverse the sequence first
+% which is also $\mathcal{O}(n)$. At least in \pkg{pretsec}, such operation only
+% occurred in the final output, and the regular operations are more frequent
+% since they are even in loops, so it is better to follow the guidance even
+% though the internal data distribution may not match the regular thoughts.
+%
+% \end{texnote}
 %
 % \begin{variable}[int]{\g_@@_star_mark_bool}
 % Boolean variable to indicate whether this page is a stared section or not.
@@ -114,14 +163,14 @@
 %    \end{macrocode}
 % \end{variable}
 %
-% \begin{macro}{\pret_push_sec_title:nn}
+% \begin{macro}{\pretsec_push_name_title:nn}
 % Store the title at the level of sectioning name.
 % \begin{arguments}
 %   \item sectioning name
 %   \item title
 % \end{arguments}
 %    \begin{macrocode}
-\cs_new:Npn \pret_push_sec_title:nn #1#2 {
+\cs_new:Npn \pretsec_push_name_title:nn #1#2 {
   \tl_if_eq:nnTF { #1 } { star }
   {
     \bool_set_true:N \g_@@_star_mark_bool
@@ -135,7 +184,7 @@
         \seq_clear:N \g_@@_lv_seq
       }
       {
-        \pret_get_sec_lv:nN { #1 } \l_tmpb_int
+        \pretsec_get_name_lv:nN { #1 } \l_tmpb_int
         \bool_set_true:N \l_tmpa_bool
         \bool_do_while:Nn \l_tmpa_bool
           {
@@ -158,14 +207,14 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\pret_get_parent_child_title:NN}
+% \begin{macro}{\pretsec_get_parent_child_title:NN}
 % Get the parent title sequence (lowest is in the first) and the child title.
 % \begin{arguments}
 %   \item parent nodes sequence variable in bottom-up (reversed) order
 %   \item child node token list variable
 % \end{arguments}
 %    \begin{macrocode}
-\cs_new:Npn \pret_get_parent_child_title:NN #1#2 {
+\cs_new:Npn \pretsec_get_parent_child_title:NN #1#2 {
   \seq_clear:N #1
   \tl_clear:N #2
   \bool_if:NTF \g_@@_star_mark_bool
@@ -184,10 +233,10 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\pret_get_cur_sec:N}
+% \begin{macro}{\pretsec_get_cur_name:N}
 % Get the current sectioning name.
-% NOTICE: when the sequence \cs{g_@@_sec_lv_seq} is empty, according to the
-%         current algorithm of \cs{pret_push_sec_title:nn}, it is regarded as
+% NOTICE: when the sequence \cs{g_@@_lv_seq} is empty, according to the
+%         current algorithm of \cs{pretsec_push_name_title:nn}, it is regarded as
 %         \texttt{part}. A reasonable explanation about the scenario where no
 %         sectioning command has been issued at the beginning of the document is
 %         that it is in Part 0 of this document.
@@ -195,12 +244,12 @@
 %   \item output token list variable of current sectioning name
 % \end{arguments}
 %    \begin{macrocode}
-\cs_new:Npn \pret_get_cur_sec:N #1 {
+\cs_new:Npn \pretsec_get_cur_name:N #1 {
   \bool_if:NTF \g_@@_star_mark_bool
     { \tl_set:Nn #1 { star } }
     {
       \seq_get:NNTF \g_@@_lv_seq \l_tmpb_int
-        { \pret_get_lv_sec:nN { \l_tmpb_int } #1 }
+        { \pretsec_get_lv_name:nN { \l_tmpb_int } #1 }
         { \tl_set:Nn #1 { part } }
     }
 }

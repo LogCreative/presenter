@@ -80,16 +80,17 @@
 %
 % \begin{implementation}
 %
-% NOTE: For the same apperence there may be more than one implementations, like
-%       \pkg{block} and \pkg{iiiblock} here. When declaring the template
-%       interface, no \LaTeX3 variable is involved. But when declaring the
-%       template implementation, the key value needs to be assigned to a given
-%       variable. Since declaring a new variable like \cs{tl_new:N} requires the
-%       variable is not declared before, and the \pkg{docstrip} is not smart
-%       enough to replace \texttt{@@} into the corresponding namespaces
-%       (\texttt{@@} will always affecting the contents below until the next
-%       \texttt{@@} declaration), all the implementation will be rolled up to
-%       avoid the re-declaration variable issue.
+% \begin{texnote}
+% For the same apperence there may be more than one implementations, like
+% \pkg{block} and \pkg{iiiblock} here. When declaring the template interface, no 
+% \LaTeX3 variable is involved. But when declaring the template implementation,
+% the key value needs to be assigned to a given variable. Since declaring a new
+% variable like \cs{tl_new:N} requires the variable is not declared before, and
+% the \pkg{docstrip} is not smart enough to replace \texttt{@@} into the
+% corresponding namespaces (\texttt{@@} will always affecting the contents below
+% until the next \texttt{@@} declaration), all the implementation will be rolled
+% up to avoid the re-declaration variable issue.
+% \end{texnote}
 %
 % \paragraph{\pkg{default} style.}
 %    \begin{macrocode}

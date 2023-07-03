@@ -150,13 +150,15 @@
 %
 % \begin{implementation}
 %
-% NOTE: For the implementation of foreground/sectioning, use variable of \LaTeX3
-%       directly instead of the traditional mark, since the traditional mark
-%       only gets updated when the page is created. Sometimes a higher level of
-%       sectioning gets inserted and no intermediate information until the next
-%       sectioning level, and the information could be swallowed since it only
-%       compares the information from the previous page state, which is not 
-%       beneficial for the new \presenter{} mechanism running.
+% \begin{texnote}
+% For the implementation of foreground/sectioning, use variable of \LaTeX3
+% directly instead of the traditional mark, since the traditional mark only gets
+% updated when the page is created. Sometimes a higher level of sectioning gets
+% inserted and no intermediate information until the next sectioning level, and
+% the information could be swallowed since it only compares the information from
+% the previous page state, which is not beneficial for the new \presenter{}
+% mechanism running.
+% \end{texnote}
 %
 % \paragraph{\pkg{default} style.}
 %    \begin{macrocode}
@@ -217,7 +219,7 @@
   {
     \AssignTemplateKeys
     \group_begin:
-    \pret_get_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
+    \pretsec_get_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
     \seq_if_empty:NTF \l_tmpa_seq
       {
         \l_@@_fg_headline_child_style_tl \l_tmpb_tl
@@ -237,7 +239,7 @@
 \DeclareTemplateCode { foreground / sectioning } { dual } { 2 }
   { }
   {
-    \pret_push_sec_title:nn { #1 } { #2 }
+    \pretsec_push_name_title:nn { #1 } { #2 }
   }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { dual } { 0 }
@@ -257,7 +259,7 @@
 % \paragraph{\pkg{cascade} style.}
 %
 % Almost the same as \pkg{dual} style. But all the parent nodes are displayed.
-% Since the parent sequence returned from \cs{pret_get_parent_child_title:NN}
+% Since the parent sequence returned from \cs{pretsec_get_parent_child_title:NN}
 % is in the reversed order, when displaying it, reverese the sequence first.
 %
 %    \begin{macrocode}
@@ -275,7 +277,7 @@
   {
     \AssignTemplateKeys
     \group_begin:
-    \pret_get_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
+    \pretsec_get_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
     \seq_if_empty:NTF \l_tmpa_seq
       {
         \l_@@_fg_headline_child_style_tl \l_tmpb_tl
@@ -297,7 +299,7 @@
 \DeclareTemplateCode { foreground / sectioning } { cascade } { 2 }
   { }
   {
-    \pret_push_sec_title:nn { #1 } { #2 }
+    \pretsec_push_name_title:nn { #1 } { #2 }
   }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { cascade } { 0 }
