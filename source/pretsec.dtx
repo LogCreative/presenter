@@ -71,16 +71,17 @@
 }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\pretsec_get_name_lv:nN}
+% \begin{macro}{\pretsec_get_name_lv:nN, \pretsec_get_name_lv:VN}
 % Get the level of the sectioning name and store it to the variable.
 % \begin{arguments}
-%   \item sectioning name
+%   \item sectioning name (token list or variable)
 %   \item output sectioning level (variable)
 % \end{arguments}
 %    \begin{macrocode}
 \cs_new:Npn \pretsec_get_name_lv:nN #1#2 {
   \prop_get:NnN \g_@@_name_lv_prop { #1 } #2
 }
+\cs_generate_variant:Nn \pretsec_get_name_lv:nN { VN }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\pretsec_get_lv_name:nN}
@@ -128,11 +129,28 @@
 }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\pretsec_cur_name:, \pretsec_cur_title:}
-% Macro of current sectioning name or the current sectioning title.
+% \begin{macro}{
+%   \pretsec_get_cur_name:N, \pretsec_get_cur_lv:N, \pretsec_get_cur_title:N
+% }
+% Get the current sectioning name, or level, or title and store it to the
+% variable.
+% \begin{texnote}
+% \cs{pretsec_get_cur_lv:N} is implemented by calling \cs{pretsec_get_name_lv:VN}
+% to look up the \cs{g_@@_cur_name_tl}, where the current level is not stored
+% directly compared with other functions. Since when using variable as the key
+% for the property list, \cs{prop_get:NVN} is more recommended instead of
+% \cs{prop_get:NnN} where improper process of the token list will end up
+% \cs{q_no_value} as the return result. What's more, only looking up when using
+% will reduce the cost compared with looking up when storing (which is more
+% frequent).
+% \end{texnote}
 %    \begin{macrocode}
-\cs_new:Nn \pretsec_cur_name:  { \g_@@_cur_name_tl  }
-\cs_new:Nn \pretsec_cur_title: { \g_@@_cur_title_tl }
+\cs_new:Npn \pretsec_get_cur_name:N #1
+  { \tl_set_eq:NN #1 \g_@@_cur_name_tl  }
+\cs_new:Npn \pretsec_get_cur_lv:N #1
+  { \pretsec_get_name_lv:VN \g_@@_cur_name_tl #1 }
+\cs_new:Npn \pretsec_get_cur_title:N #1
+  { \tl_set_eq:NN #1 \g_@@_cur_title_tl }
 %    \end{macrocode}
 % \end{macro}
 %

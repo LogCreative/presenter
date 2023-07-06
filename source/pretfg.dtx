@@ -170,8 +170,9 @@
   { style = \l_@@_fg_headline_style_tl }
   {
     \AssignTemplateKeys
-    \group_begin:  
-      \l_@@_fg_headline_style_tl \pretsec_cur_title:
+    \pretsec_get_cur_title:N \l_tmpa_tl
+    \group_begin:
+      \l_@@_fg_headline_style_tl \l_tmpa_tl
     \group_end:
     \hfil
   }
