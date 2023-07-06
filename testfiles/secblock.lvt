@@ -1,0 +1,32 @@
+\input{regression-test}
+\documentclass[report]{presenter}
+\LoadPresenterBackground{secblock}
+\begin{document}
+\START
+\part{Example}
+
+\chapter{Block}
+
+Testing the text in the chapter.
+
+\section{A segment}
+
+Testing the text in the section.
+
+\subsection{A small segment}
+
+Testing the text in the subsection.
+
+\subsubsection{A very small segment}
+
+Testing the text in the subsubsection.
+
+\paragraph{A point}
+
+Testing the text in the paragraph.
+
+\subparagraph{A small point}
+
+Testing the text in the subparagraph.
+
+\end{document}

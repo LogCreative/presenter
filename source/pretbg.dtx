@@ -23,10 +23,12 @@
 %<default>  {pretbg-default}
 %<block>  {pretbg-block}
 %<iiiblock>  {pretbg-iiiblock}
+%<secblock>  {pretbg-secblock}
   {2023-07-03}{0.4.0}
 %<default>  {default background style for presenter}
 %<block>  {block background style for presenter}
-%<iiiblock>  {block background style for presenter implemented in l3draw}
+%<iiiblock>  {iiiblock background style for presenter implemented in l3draw}
+%<secblock>  {secblock background style based on block style}
 %</package>
 % \fi
 %
@@ -75,6 +77,27 @@
     stroke-length    : length    = \paperwidth
   }
 %</block|iiiblock>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/headline}{secblock}
+% \TemplateKey{from-color}{tokenlist}{background color at sectioning level 0
+%   (chapter)}{black!39}
+% \TemplateKey{color-decay}{integer}{color decay at each level, should in the
+%    range of 0 to 100}{61}
+% \TemplateKey{to-color}{tokenlist}{the target color to mix up with from-color}
+%    {white}
+% \TemplateSemantics blocked headline with color decay at each level.\\
+% \previewtest[3]{secblock}\previewtest[4]{secblock}
+%    \begin{macrocode}
+%<*secblock>
+\DeclareTemplateInterface { background / headline } { secblock } { 0 }
+  {
+    from-color  : tokenlist = black!39,
+    color-decay : integer   = 61,
+    to-color    : tokenlist = white
+  }
+%</secblock>
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -192,6 +215,66 @@
       }
   }
 %</iiiblock>
+%    \end{macrocode}
+%
+% \paragraph{\pkg{secblock} style.}
+% This style is based on \pkg{pretbg-block} style.
+% The background block fill color at sectioning level \meta{level} is
+% \begin{equation*}
+%   \meta{from-color} \texttt{!}
+%   \texttt{ round}
+%   \left( 100 \left(\frac{\meta{color-decay}}{100}\right)^{\meta{level}}\right) 
+%   \texttt{!} \meta{to-color}
+% \end{equation*}
+% where \texttt{round()} will round the floating number to the closest integer
+% by function \cs{fp_to_int:n}.
+%
+% For \meta{from-color}, a special case is required to be handled: the color
+% expresion omits the second color to be mixed, e.g. \texttt{black!39}. As is
+% in the implementation of \file{l3color.dtx}, the expression will be completed
+% with \texttt{!white} automatically if it is used directly. But for the style
+% \pkg{secblock} here, the processed color expression could be \texttt{black!39!80}
+% without additional care, which will end up an error. Thus, the
+% \meta{from-color} will be normalized first with the possible appendence of
+% \texttt{!white}, which is not necessary for \meta{to-color} because it is
+% the tail of the color expression.
+%    \begin{macrocode}
+%<*secblock>
+%<@@=pretbg_secblock>
+\RequirePackage { pretbg-block }
+\tl_new:N \l_@@_bg_headline_from_color_tl
+\int_new:N \l_@@_bg_headline_color_decay_int
+\tl_new:N \l_@@_bg_headline_to_color_tl
+\DeclareTemplateCode { background / headline } { secblock } { 0 }
+  {
+    from-color  = \l_@@_bg_headline_from_color_tl   ,
+    color-decay = \l_@@_bg_headline_color_decay_int ,
+    to-color    = \l_@@_bg_headline_to_color_tl
+  }
+  {
+    \AssignTemplateKeys
+    \pretsec_get_cur_lv:N \l_tmpa_int
+    \exp_args:NNx \int_set:Nn \l_tmpb_int
+      {
+        \fp_to_int:n
+          {
+            \l_tmpa_int < 0 ? 100 :
+            ( \l_@@_bg_headline_color_decay_int / 100.0 ) ** \l_tmpa_int * 100
+          }
+      }
+    \exp_args:Nnx \regex_match:nnT { ! \d+ \z }
+      { \l_@@_bg_headline_from_color_tl }
+      { \tl_put_right:Nn \l_@@_bg_headline_from_color_tl { ! white } }
+    \exp_args:NNx \tl_set:Nn \l_tmpa_tl
+      {
+        \l_@@_bg_headline_from_color_tl !
+        \int_use:N \l_tmpb_int !
+        \l_@@_bg_headline_to_color_tl
+      }
+    \exp_args:Nnnx \UseTemplate { background / headline } { block }
+      { fill-color = \l_tmpa_tl }
+  }
+%</secblock>
 %    \end{macrocode}
 %
 % \end{implementation}
