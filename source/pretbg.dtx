@@ -135,7 +135,7 @@
 \tl_new:N \l_@@_bg_headline_stroke_color_tl
 \dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
 \dim_new:N \l_@@_bg_headline_stroke_length_dim
-\dim_new:N \l_@@_bg_headline_height_dim
+\dim_new:N \l_@@_height_dim
 \DeclareTemplateCode { background / headline } { block } { 0 }
   {
     fill             = \l_@@_bg_headline_fill_bool ,
@@ -147,20 +147,20 @@
   }
   {
     \AssignTemplateKeys
-    \dim_set_eq:NN \l_@@_bg_headline_height_dim
+    \dim_set_eq:NN \l_@@_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
     \bool_if:NT \l_@@_bg_headline_fill_bool 
       {
         \exp_args:NV \color_select:n \l_@@_bg_headline_fill_color_tl
-        \linethickness { \dim_use:N \l_@@_bg_headline_height_dim }
-        \put (0, \dim_eval:n { - \l_@@_bg_headline_height_dim / 2 } )
+        \linethickness { \dim_use:N \l_@@_height_dim }
+        \put (0, \dim_eval:n { - \l_@@_height_dim / 2 } )
           { \line ( 1 , 0 ) { \paperwidth } }
       }
     \bool_if:NT \l_@@_bg_headline_stroke_bool
       {
         \exp_args:NV \color_select:n \l_@@_bg_headline_stroke_color_tl
         \linethickness { \dim_use:N \l_@@_bg_headline_stroke_linewidth_dim }
-        \put (0, - \dim_use:N \l_@@_bg_headline_height_dim )
+        \put (0, - \dim_use:N \l_@@_height_dim )
           { \line ( 1 , 0 ) { \dim_use:N \l_@@_bg_headline_stroke_length_dim } }
       }
   }
@@ -178,7 +178,7 @@
 \tl_new:N \l_@@_bg_headline_stroke_color_tl
 \dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
 \dim_new:N \l_@@_bg_headline_stroke_length_dim
-\dim_new:N \l_@@_bg_headline_height_dim
+\dim_new:N \l_@@_height_dim
 \DeclareTemplateCode { background / headline } { iiiblock } { 0 }
   {
     fill             = \l_@@_bg_headline_fill_bool ,
@@ -190,16 +190,16 @@
   }
   {
     \AssignTemplateKeys
-    \dim_set_eq:NN \l_@@_bg_headline_height_dim
+    \dim_set_eq:NN \l_@@_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
-    \put ( 0, - \dim_use:N \l_@@_bg_headline_height_dim )
+    \put ( 0, - \dim_use:N \l_@@_height_dim )
       {
         \draw_begin:
         \bool_if:NT \l_@@_bg_headline_fill_bool
           {
             \draw_path_rectangle:nn
               { 0pt, 0pt }
-              { \paperwidth, \l_@@_bg_headline_height_dim }
+              { \paperwidth, \l_@@_height_dim }
             \exp_args:NV \color_fill:n \l_@@_bg_headline_fill_color_tl
             \draw_path_use_clear:n { fill }
           }
@@ -245,6 +245,9 @@
 \tl_new:N \l_@@_bg_headline_from_color_tl
 \int_new:N \l_@@_bg_headline_color_decay_int
 \tl_new:N \l_@@_bg_headline_to_color_tl
+\int_new:N \l_@@_cur_lv_int
+\int_new:N \l_@@_color_pvt_int
+\tl_new:N \l_@@_color_expr_tl
 \DeclareTemplateCode { background / headline } { secblock } { 0 }
   {
     from-color  = \l_@@_bg_headline_from_color_tl   ,
@@ -253,26 +256,27 @@
   }
   {
     \AssignTemplateKeys
-    \pretsec_get_cur_lv:N \l_tmpa_int
-    \exp_args:NNx \int_set:Nn \l_tmpb_int
+    \pretsec_get_cur_lv:N \l_@@_cur_lv_int
+    \exp_args:NNx \int_set:Nn \l_@@_color_pvt_int
       {
         \fp_to_int:n
           {
-            \l_tmpa_int < 0 ? 100 :
-            ( \l_@@_bg_headline_color_decay_int / 100.0 ) ** \l_tmpa_int * 100
+            \l_@@_cur_lv_int < 0 ? 100 :
+            ( \l_@@_bg_headline_color_decay_int / 100.0 ) 
+              ** \l_@@_cur_lv_int * 100
           }
       }
     \exp_args:Nnx \regex_match:nnT { ! \d+ \z }
       { \l_@@_bg_headline_from_color_tl }
       { \tl_put_right:Nn \l_@@_bg_headline_from_color_tl { ! white } }
-    \exp_args:NNx \tl_set:Nn \l_tmpa_tl
+    \exp_args:NNx \tl_set:Nn \l_@@_color_expr_tl
       {
         \l_@@_bg_headline_from_color_tl !
-        \int_use:N \l_tmpb_int !
+        \int_use:N \l_@@_color_pvt_int !
         \l_@@_bg_headline_to_color_tl
       }
     \exp_args:Nnnx \UseTemplate { background / headline } { block }
-      { fill-color = \l_tmpa_tl }
+      { fill-color = \l_@@_color_expr_tl }
   }
 %</secblock>
 %    \end{macrocode}

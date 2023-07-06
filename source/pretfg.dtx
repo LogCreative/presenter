@@ -166,13 +166,14 @@
 %<@@=pretfg_default>
 \tl_new:N \l_@@_fg_headline_title_tl
 \tl_new:N \l_@@_fg_headline_style_tl
+\tl_new:N \l_@@_cur_title_tl
 \DeclareTemplateCode { foreground / headline } { default } { 0 }
   { style = \l_@@_fg_headline_style_tl }
   {
     \AssignTemplateKeys
-    \pretsec_get_cur_title:N \l_tmpa_tl
+    \pretsec_get_cur_title:N \l_@@_cur_title_tl
     \group_begin:
-      \l_@@_fg_headline_style_tl \l_tmpa_tl
+      \l_@@_fg_headline_style_tl \l_@@_cur_title_tl
     \group_end:
     \hfil
   }
@@ -211,6 +212,9 @@
 %<@@=pretfg_dual>
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
+\seq_new:N \l_@@_parent_seq
+\tl_new:N \l_@@_parent_tl
+\tl_new:N \l_@@_child_tl
 \DeclareTemplateCode { foreground / headline } { dual } { 0 }
   {
     parent-style = \l_@@_fg_headline_parent_style_tl ,
@@ -219,18 +223,18 @@
   {
     \AssignTemplateKeys
     \group_begin:
-    \pretsec_get_stack_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
-    \seq_if_empty:NTF \l_tmpa_seq
+    \pretsec_get_stack_parent_child_title:NN \l_@@_parent_seq \l_@@_child_tl
+    \seq_if_empty:NTF \l_@@_parent_seq
       {
-        \l_@@_fg_headline_child_style_tl \l_tmpb_tl
+        \l_@@_fg_headline_child_style_tl \l_@@_child_tl
       }
       {
-        \seq_get:NN \l_tmpa_seq \l_tmpa_tl
+        \seq_get:NN \l_@@_parent_seq \l_@@_parent_tl
         \vbox:n
           {
-            \l_@@_fg_headline_parent_style_tl \l_tmpa_tl
+            \l_@@_fg_headline_parent_style_tl \l_@@_parent_tl
             \skip_vertical:N \c_zero_dim
-            \l_@@_fg_headline_child_style_tl \l_tmpb_tl
+            \l_@@_fg_headline_child_style_tl \l_@@_child_tl
           }
       }
     \group_end:
@@ -269,6 +273,8 @@
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
 \tl_new:N \l_@@_fg_headline_parent_separator_tl
+\seq_new:N \l_@@_parent_seq
+\tl_new:N \l_@@_child_tl
 \DeclareTemplateCode { foreground / headline } { cascade } { 0 }
   {
     parent-style = \l_@@_fg_headline_parent_style_tl ,
@@ -278,20 +284,20 @@
   {
     \AssignTemplateKeys
     \group_begin:
-    \pretsec_get_stack_parent_child_title:NN \l_tmpa_seq \l_tmpb_tl
-    \seq_if_empty:NTF \l_tmpa_seq
+    \pretsec_get_stack_parent_child_title:NN \l_@@_parent_seq \l_@@_child_tl
+    \seq_if_empty:NTF \l_@@_parent_seq
       {
-        \l_@@_fg_headline_child_style_tl \l_tmpb_tl
+        \l_@@_fg_headline_child_style_tl \l_@@_child_tl
       }
       {
-        \seq_reverse:N \l_tmpa_seq
+        \seq_reverse:N \l_@@_parent_seq
         \vbox:n
           {
             \l_@@_fg_headline_parent_style_tl
-            \seq_use:Nn \l_tmpa_seq
+            \seq_use:Nn \l_@@_parent_seq
               { \l_@@_fg_headline_parent_separator_tl }
             \skip_vertical:N \c_zero_dim
-            \l_@@_fg_headline_child_style_tl \l_tmpb_tl
+            \l_@@_fg_headline_child_style_tl \l_@@_child_tl
           }
       }
     \group_end:

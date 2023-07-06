@@ -254,6 +254,9 @@
 %   \item title
 % \end{arguments}
 %    \begin{macrocode}
+\bool_new:N \l_@@_geq_bool
+\int_new:N \l_@@_top_lv_int
+\int_new:N \l_@@_cur_lv_int
 \cs_new:Npn \pretsec_push_stack_name_title:nn #1#2 {
   \tl_if_eq:nnTF { #1 } { star }
   {
@@ -268,22 +271,22 @@
         \seq_clear:N \g_@@_lv_seq
       }
       {
-        \pretsec_get_name_lv:nN { #1 } \l_tmpb_int
-        \bool_set_true:N \l_tmpa_bool
-        \bool_do_while:Nn \l_tmpa_bool
+        \pretsec_get_name_lv:nN { #1 } \l_@@_cur_lv_int
+        \bool_set_true:N \l_@@_geq_bool
+        \bool_do_while:Nn \l_@@_geq_bool
           {
-            \seq_get:NNTF \g_@@_lv_seq \l_tmpa_int
+            \seq_get:NNTF \g_@@_lv_seq \l_@@_top_lv_int
               {
-                \int_compare:nNnTF { \l_tmpa_int } < { \l_tmpb_int }
-                  { \bool_set_false:N \l_tmpa_bool }
+                \int_compare:nNnTF { \l_@@_top_lv_int } < { \l_@@_cur_lv_int }
+                  { \bool_set_false:N \l_@@_geq_bool }
                   {
-                    \seq_pop:NN \g_@@_lv_seq \l_tmpa_int
-                    \seq_pop:NN \g_@@_title_seq \l_tmpa_tl
+                    \seq_pop:NN \g_@@_lv_seq \l_pret_tmpa_int
+                    \seq_pop:NN \g_@@_title_seq \l_pret_tmpa_tl
                   }
               }
-              { \bool_set_false:N \l_tmpa_bool }
+              { \bool_set_false:N \l_@@_geq_bool }
           }
-        \seq_push:NV \g_@@_lv_seq \l_tmpb_int
+        \seq_push:NV \g_@@_lv_seq \l_@@_cur_lv_int
         \seq_push:Nn \g_@@_title_seq { #2 }
       }
   }
@@ -298,6 +301,7 @@
 %   \item child node token list variable
 % \end{arguments}
 %    \begin{macrocode}
+\seq_new:N \l_@@_parent_seq
 \cs_new:Npn \pretsec_get_stack_parent_child_title:NN #1#2 {
   \seq_clear:N #1
   \tl_clear:N #2
@@ -306,11 +310,11 @@
       \tl_set_eq:NN #2 \g_@@_star_title_tl
     }
     {
-      \seq_get:NNT \g_@@_lv_seq \l_tmpb_int
+      \seq_get:NNT \g_@@_lv_seq \l_pret_tmpb_int
         {
-          \seq_set_eq:NN \l_tmpa_seq \g_@@_title_seq
-          \seq_pop:NN \l_tmpa_seq #2
-          \seq_set_eq:NN #1 \l_tmpa_seq
+          \seq_set_eq:NN \l_@@_parent_seq \g_@@_title_seq
+          \seq_pop:NN \l_@@_parent_seq #2
+          \seq_set_eq:NN #1 \l_@@_parent_seq
         }
     }
 }

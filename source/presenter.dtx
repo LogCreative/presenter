@@ -89,6 +89,22 @@
 %<@@=pret>
 %    \end{macrocode}
 %
+% \begin{macro}[int]{\l_pret_tmpa_tl, \l_pret_tmpb_tl}
+% Internal temporary token list variables.
+%    \begin{macrocode}
+\tl_new:N \l_pret_tmpa_tl
+\tl_new:N \l_pret_tmpb_tl
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\l_pret_tmpa_int, \l_pret_tmpb_int}
+% Internal temporary integer variables.
+%    \begin{macrocode}
+\int_new:N \l_pret_tmpa_int
+\int_new:N \l_pret_tmpb_int
+%    \end{macrocode}
+% \end{macro}
+%
 % When using \pkg{hyperref} package, the internal link will jump to the whole
 % page (fits the page to the window), which confirms the behavior as a slide.
 % TODO: It seems that \cs{AtEndOfPackage} is not available for \pkg{hyperref}.
@@ -264,9 +280,10 @@
 %   \item name
 % \end{arguments}
 %    \begin{macrocode}
+\int_new:N \l_@@_in_lv_int
 \NewDocumentCommand { \printsecnum } { m } {
-  \pretsec_get_name_lv:nN { #1 } \l_tmpa_int
-  \int_compare:nNnF { \l_tmpa_int } > { \value { secnumdepth } }
+  \pretsec_get_name_lv:nN { #1 } \l_@@_in_lv_int
+  \int_compare:nNnF { \l_@@_in_lv_int } > { \value { secnumdepth } }
     { \use:c { the#1 } \quad }
 }
 %    \end{macrocode}
