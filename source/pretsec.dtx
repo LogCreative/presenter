@@ -40,6 +40,27 @@
 %<@@=pretsec>
 %    \end{macrocode}
 %
+% \begin{macro}[int]{\l_@@_tmpa_tl, \l_@@_tmpb_tl}
+% Internal temporary token list variables, for the output which is never used.
+%    \begin{macrocode}
+\tl_new:N \l_@@_tmpa_tl
+\tl_new:N \l_@@_tmpb_tl
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\l_@@_tmpa_int, \l_@@_tmpb_int}
+% Internal temporary integer variables, for the output which is never used.
+%    \begin{macrocode}
+\int_new:N \l_@@_tmpa_int
+\int_new:N \l_@@_tmpb_int
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{texnote}
+% Temporary variables should not be used across different namespaces since it
+% is uncontrollable for other modules to misuse them.
+% \end{texnote}
+%
 % \subsection{Sectioning Name--level Relation Storage}
 %
 % \begin{texnote}
@@ -280,8 +301,8 @@
                 \int_compare:nNnTF { \l_@@_top_lv_int } < { \l_@@_cur_lv_int }
                   { \bool_set_false:N \l_@@_geq_bool }
                   {
-                    \seq_pop:NN \g_@@_lv_seq \l_pret_tmpa_int
-                    \seq_pop:NN \g_@@_title_seq \l_pret_tmpa_tl
+                    \seq_pop:NN \g_@@_lv_seq \l_@@_tmpa_int
+                    \seq_pop:NN \g_@@_title_seq \l_@@_tmpa_tl
                   }
               }
               { \bool_set_false:N \l_@@_geq_bool }
@@ -310,7 +331,7 @@
       \tl_set_eq:NN #2 \g_@@_star_title_tl
     }
     {
-      \seq_get:NNT \g_@@_lv_seq \l_pret_tmpb_int
+      \seq_get:NNT \g_@@_lv_seq \l_@@_tmpb_int
         {
           \seq_set_eq:NN \l_@@_parent_seq \g_@@_title_seq
           \seq_pop:NN \l_@@_parent_seq #2
