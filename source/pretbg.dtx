@@ -108,7 +108,7 @@
 % \TemplateKey{stroke-linewidth}{length}{stroke linewidth of the progressbar}{1pt}
 % \TemplateSemantics A progressbar style to indicate the page progress compared
 % with the total page number, which requires two \TeX{} runs to make the output
-% correct.\\
+% correct. If only one run is processed, the progress will always be 100\%.\\
 % \previewtest[3]{progressbar}
 %    \begin{macrocode}
 %<*progressbar>
@@ -305,10 +305,9 @@
 % \paragraph{\pkg{progressbar} style.}
 % This style is based on \pkg{pretbg-block} style. The fill is set to false.
 % Only uses stroke-length to indicate the progress. The progress is calculated
-% by \cs{thepage}/\cs{PreviousTotalPages}. \cs{PreviousTotalPages} requires
-% two runs to get the correct output from the aux file, if only one run is
-% processed, this macro will expand to 0 where this style will always set the
-% progress to 100\%.
+% by \cs{thepage}/\cs{PreviousTotalPages}. \cs{PreviousTotalPages} defined in
+% \file{ltshipout.dtx} requires two runs to get the correct output from the aux
+% file.
 %    \begin{macrocode}
 %<*progressbar>
 %<@@=pretbg_progressbar>
