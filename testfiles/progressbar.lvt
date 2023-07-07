@@ -1,13 +1,14 @@
 \input{regression-test}
-\documentclass[report]{presenter}
+\documentclass{presenter}
 \LoadPresenterBackground{progressbar}
+\makeatletter
+\gdef\@abspage@last{6}  % assume it is the second run
+\makeatother
 \begin{document}
 \START
 \part{Example}
 
-\chapter{Block}
-
-Testing the text in the chapter.
+Testing the text under the part.
 
 \section{A segment}
 
