@@ -24,11 +24,13 @@
 %<block>  {pretbg-block}
 %<iiiblock>  {pretbg-iiiblock}
 %<secblock>  {pretbg-secblock}
+%<progressbar>  {pretbg-progressbar}
   {2023-07-03}{0.4.0}
 %<default>  {default background style for presenter}
 %<block>  {block background style for presenter}
 %<iiiblock>  {iiiblock background style for presenter implemented in l3draw}
 %<secblock>  {secblock background style based on block style}
+%<progressbar>  {progressbar background style based on block style}
 %</package>
 % \fi
 %
@@ -98,6 +100,24 @@
     to-color    : tokenlist = white
   }
 %</secblock>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/headline}{progressbar}
+% \TemplateKey{stroke-color}{tokenlist}{stroke color of the progressbar}{black}
+% \TemplateKey{stroke-linewidth}{length}{stroke linewidth of the progressbar}{1pt}
+% \TemplateSemantics A progressbar style to indicate the page progress compared
+% with the total page number, which requires two \TeX{} runs to make the output
+% correct.\\
+% \previewtest[3]{progressbar}
+%    \begin{macrocode}
+%<*progressbar>
+\DeclareTemplateInterface { background / headline } { progressbar } { 0 }
+  {
+    stroke-color     : tokenlist = black ,
+    stroke-linewidth : length    = 1pt
+  }
+%</progressbar>
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -280,6 +300,44 @@
       { fill-color = \l_@@_color_expr_tl }
   }
 %</secblock>
+%    \end{macrocode}
+%
+% \paragraph{\pkg{progressbar} style.}
+% This style is based on \pkg{pretbg-block} style. The fill is set to false.
+% Only uses stroke-length to indicate the progress. The progress is calculated
+% by \cs{thepage}/\cs{PreviousTotalPages}. \cs{PreviousTotalPages} requires
+% two runs to get the correct output from the aux file, if only one run is
+% processed, this macro will expand to 0 where this style will always set the
+% progress to 100\%.
+%    \begin{macrocode}
+%<*progressbar>
+%<@@=pretbg_progressbar>
+\RequirePackage { pretbg-block }
+\tl_new:N \l_@@_bg_headline_stroke_color_tl
+\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\fp_new:N \l_@@_progress_fp
+\dim_new:N \l_@@_stroke_length_dim
+\DeclareTemplateCode { background / headline } { progressbar } { 0 }
+  {
+    stroke-color     = \l_@@_bg_headline_stroke_color_tl      ,
+    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
+  }
+  {
+    \int_compare:nNnTF { \PreviousTotalPages } = { 0 }
+      { \fp_set:Nn \l_@@_progress_fp { 1.0 } }
+      { \fp_set:Nn \l_@@_progress_fp { \thepage / \PreviousTotalPages } }
+    \dim_set:Nn \l_@@_stroke_length_dim 
+      { \fp_use:N \l_@@_progress_fp \paperwidth }
+    \exp_args:Nnnx \UseTemplate { background / headline } { block }
+      {
+        fill             = false ,
+        stroke           = true ,
+        stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
+        stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
+        stroke-length    = \l_@@_stroke_length_dim
+      }
+  }
+%</progressbar>
 %    \end{macrocode}
 %
 % \end{implementation}
