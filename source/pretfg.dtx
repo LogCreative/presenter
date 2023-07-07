@@ -150,7 +150,19 @@
 %
 % \begin{implementation}
 %
+% Most of the foreground style requires the sectioning information provided by
+% package \pkg{pretsec}.
+%    \begin{macrocode}
+\RequirePackage { pretsec }
+%    \end{macrocode}
+%
 % \begin{texnote}
+%
+% The main package has already loaded \pkg{pretsec}. The reason to write the
+% requirement here again is to meet the standing-free property of the package.
+% And \tn{RequirePackage} designed by \LaTeX{} is smart enough to redefine those
+% loaded packages to \tn{endinput}, where no overhead is introduced. 
+%
 % For the implementation of foreground/sectioning, use variable of \LaTeX3
 % directly instead of the traditional mark, since the traditional mark only gets
 % updated when the page is created. Sometimes a higher level of sectioning gets
@@ -158,6 +170,7 @@
 % the information could be swallowed since it only compares the information from
 % the previous page state, which is not beneficial for the new \presenter{}
 % mechanism running.
+%
 % \end{texnote}
 %
 % \paragraph{\pkg{default} style.}
