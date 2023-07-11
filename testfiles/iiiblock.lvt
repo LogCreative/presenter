@@ -2,8 +2,8 @@
 \documentclass{presenter}
 \usepackage{xcolor}
 \LoadPresenterBackground{iiiblock}
-\EditInstance{background/headline}{base}{fill-color=blue!70!green}
-\EditInstance{foreground/headline}{base}{style={\Large\color{white}}}
+\EditPresenterBackground{headline}{fill-color=blue!70!green}
+\EditPresenterForeground{headline}{style={\Large\color{white}}}
 \begin{document}
 \START
 

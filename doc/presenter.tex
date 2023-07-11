@@ -14,7 +14,7 @@
 %% The Current Maintainer of this work is Log Creative.
 %% ------------------------------------------------------------------------
 
-\documentclass[full]{l3doc}
+\documentclass{l3doc}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -144,12 +144,16 @@
     \end{verbatim}
   \end{texnote}
 
-  \section{Load Templates}
+  \section{Templates}
 
   \presenter{} provides some built-in templates for changing the visual
-  presentation. The following command provides the interface for changing the
-  theme or one of the components. You could visit the \texttt{testfiles/} folder
-  for the code example of using these themes.
+  presentation. The following command provides the interfaces for loading or
+  editing the theme.
+  
+  You could visit the \texttt{testfiles/} folder for the code example of using
+  these themes.
+
+  \subsection{Load Templates}
 
   \begin{function}[added=2023-03-17]{\LoadPresenterBackground}
     \begin{syntax}
@@ -172,6 +176,39 @@
     modify one or more components. \meta{component} could be one of
     \verb"headline", \verb"sectioning" and \verb"footline". This command could
     only be used in the preamble.
+  \end{function}
+
+  \subsection{Edit Templates}
+
+  \begin{function}[added=2023-07-11]{\EditPresenterBackground}
+    \begin{syntax}
+      \cs{EditPresenterBackground} \marg{component} \marg{key-value list}
+    \end{syntax}
+    Edit the \meta{component} by the changed properties indicated by the
+    \meta{key-value list} (\textit{e.g.} \verb"stroke=true,strok-color=blue"
+    for background style \texttt{block}).
+    
+    The style is indicated by the last \cs{LoadPresenterBackground}. Different
+    styles may have different property keys, which could be referred to in
+    Section \ref{sec:pretbg}. The editing is invalid after the next
+    \cs{LoadPresenterBackground} since the loading will initialize the template
+    with the default values of that style.
+  \end{function}
+
+  \begin{function}[added=2023-07-11]{\EditPresenterForeground}
+    \begin{syntax}
+      \cs{EditPresenterForeground} \marg{component} \marg{key-value list}
+    \end{syntax}
+    Edit the \meta{component} by the changed properties indicated by the
+    \meta{key-value list} (\textit{e.g.}
+    \verb"parent-style=\Large,child-style=\normalsize" for foreground style
+    \texttt{dual}).
+    
+    The style is indicated by the last \cs{LoadPresenterForeground}. Different
+    styles may have different property keys, which could be referred to in
+    Section \ref{sec:pretfg}. The editing is invalid after the next
+    \cs{LoadPresenterForeground} since the loading will initialize the template
+    with the default values of that style.
   \end{function}
 
 \end{documentation}

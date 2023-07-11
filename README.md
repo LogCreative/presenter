@@ -52,8 +52,8 @@ Hello, world!
 \documentclass{presenter}
 \usepackage{xcolor}
 \LoadPresenterBackground{block}
-\EditInstance{background/headline}{base}{fill-color=blue!70!green}
-\EditInstance{foreground/headline}{base}{style={\Large\color{white}}}
+\EditPresenterBackground{headline}{fill-color=blue!70!green}
+\EditPresenterForeground{headline}{style={\Large\color{white}}}
 \begin{document}
 
 \paragraph{Some text}

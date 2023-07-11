@@ -404,11 +404,38 @@
 %
 % One could only load the template in the preamble.
 % It is too heavy to load all the templates.
-% The user could only edit the instance in the body.
 %    \begin{macrocode}
 \LoadPresenterBackground { default }
 \LoadPresenterForeground { default }
 %    \end{macrocode}
+%
+% \begin{macro}{\EditPresenterBackground}
+% Edit the background component \meta{component name} on instance \texttt{base}
+% by the property list \meta{key-value}.
+% \begin{arguments}
+%   \item component name
+%   \item key-value property list
+% \end{arguments}
+%    \begin{macrocode}
+\NewDocumentCommand { \EditPresenterBackground } { m m } {
+  \EditInstance { background / #1 } { base } { #2 }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\EditPresenterForeground}
+% Edit the foreground component \meta{component name} on instance \texttt{base}
+% by the property list \meta{key-value}.
+% \begin{arguments}
+%   \item component name
+%   \item key-value property list
+% \end{arguments}
+%    \begin{macrocode}
+\NewDocumentCommand { \EditPresenterForeground } { m m } {
+  \EditInstance { foreground / #1 } { base } { #2 }
+}
+%    \end{macrocode}
+% \end{macro}
 %
 % Patch the page style \verb"plain".
 %    \begin{macrocode}
