@@ -310,6 +310,45 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}[int,TF]{\pret_if_template_exist:nn}
+% If the \meta{object type} in style \meta{template name} exists for the
+% current loaded code.
+% \begin{arguments}
+%   \item Object type
+%   \item Template name
+% \end{arguments}
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \pret_if_template_exist:nn #1#2 { T, F, TF }
+{
+  \cs_if_exist:cTF { \c__xtemplate_code_root_tl #1 / #2 }
+    { \prg_return_true: }
+    { \prg_return_false: }
+}
+%    \end{macrocode}
+% \begin{texnote}
+% Package \pkg{xtemplate} does not provide a user interface like
+% \cs{IfInstanceExistTF} to detect whether the template exists. And the internal
+% interface \cs{__xtemplate_execute_if_code_exist:nnT} will raise the error if
+% the template code does not exist (can be seen as only \texttt{T} conditional
+% exists). This macro is referred to the code of the internal interface but
+% won't raise error if it does not exist.
+%
+% \pkg{xtemplate} collection model is suitable for the use of \presenter{}, 
+% which may be the reason why the user interface for detecting template does
+% not exist. But the collection model has been marked as deprecated now
+% and \presenter{} has to use a cutomized interface for the use of the package
+% \pkg{xtemplate} at present.
+% \end{texnote}
+% \end{macro}
+%
+% The message for presenting the information about no template exists.
+% It is recommended to use the \texttt{info} level since the style file may
+% not provide all the customized object types.
+%    \begin{macrocode}
+\msg_new:nnn { presenter } { no-template }
+  { Object~ type~ `#1 / #2'~ in~ style~ `#3'~ does~ not~ exist. }
+%    \end{macrocode}
+%
 % \begin{macro}{\LoadPresenterBackground}
 % Load the style file \file{pretbg-#2.sty} and set the component template based
 % on the first argument (could be a comma list).
@@ -324,7 +363,12 @@
   {
     \RequirePackage { pretbg-#2 }
     \clist_map_inline:nn { #1 } {
-      \DeclareInstance { background / ##1 } { base } { #2 } { }
+      \pret_if_template_exist:nnTF { background / ##1 } { #2 }
+        { \DeclareInstance { background / ##1 } { base } { #2 } { } }
+        {
+          \msg_info:nnnnn { presenter } { no-template }
+            { background } { ##1 } { #2 }
+        }
     }
   }
 %    \end{macrocode}
@@ -344,7 +388,12 @@
   {
     \RequirePackage { pretfg-#2 }
     \clist_map_inline:nn { #1 } {
-      \DeclareInstance { foreground / ##1 } { base } { #2 } { }
+      \pret_if_template_exist:nnTF { foreground / ##1 } { #2 }
+        { \DeclareInstance { foreground / ##1 } { base } { #2 } { } }
+        {
+          \msg_info:nnnnn { presenter } { no-template }
+            { foreground } { ##1 } { #2 }
+        }
     }
   }
 %    \end{macrocode}
