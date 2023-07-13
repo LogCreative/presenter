@@ -357,7 +357,7 @@
   {
     \pret_if_template_exist:nnTF { #1 } { #2 }
       { \DeclareInstance { #1 } { base } { #2 } { } }
-      { \msg_info:nnnnn { presenter } { no-template } { #1 } { #2 } }
+      { \msg_info:nnnn { presenter } { no-template } { #1 } { #2 } }
   }
 %    \end{macrocode}
 % \end{macro}
