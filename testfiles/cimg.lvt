@@ -1,0 +1,11 @@
+\input{regression-test}
+\documentclass{presenter}
+\usepackage{mwe}
+\LoadPresenterBackground{cimg}
+\EditPresenterBackground{canvas}{
+    img={\includegraphics[width=5cm]{example-image.pdf}}
+}
+\begin{document}
+\START
+There is a background image in the center of the page.
+\end{document}

@@ -25,12 +25,14 @@
 %<iiiblock>  {pretbg-iiiblock}
 %<secblock>  {pretbg-secblock}
 %<progressbar>  {pretbg-progressbar}
+%<cimg>  {pretbg-cimg}
   {2023-07-07}{0.5.0}
 %<default>  {default background style for presenter}
 %<block>  {block background style for presenter}
 %<iiiblock>  {iiiblock background style for presenter implemented in l3draw}
 %<secblock>  {secblock background style based on block style}
 %<progressbar>  {progressbar background style based on block style}
+%<cimg>  {cimg background style for presenter}
 %</package>
 % \fi
 %
@@ -134,6 +136,20 @@
     stroke-linewidth : length    = 1pt
   }
 %</progressbar>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/canvas}{cimg}
+% \TemplateKey{img}{tokenlist}{image insertion control sequences}{}
+% \TemplateSemantics The \meta{img} will be placed in the center of the
+% background. It is encouraged to use a picture with low opacity. Be aware it
+% is in the horizontal mode where newline \verb"\\" should be avoided.\\
+% \previewtest{cimg}
+%    \begin{macrocode}
+%<*cimg>
+\DeclareTemplateInterface { background / canvas } { cimg } { 0 }
+  { img : tokenlist = }
+%</cimg>
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -355,6 +371,51 @@
       }
   }
 %</progressbar>
+%    \end{macrocode}
+%
+% \paragraph{\pkg{cimg} style.}
+% Assume the \tn{paperwidth} is $W$, \tn{paperheight} is $H$, the width of the
+% image box is $w$, the height is $h$. Then to make the image box centered in
+% in the page, the bottom-left coordinate $(x,y)$ of the image box is (where
+% $y$ is typically negative, the coordinate is relative to the upper-left point
+% of the page):
+% \begin{equation*}
+%   \begin{cases}
+%     2x+w      = W \\
+%     2(-y-h)+h = H
+%   \end{cases} \Rightarrow
+%   \begin{cases}
+%     x = \frac{W-w}{2} \\
+%     y = \frac{H+h}{-2}
+%   \end{cases}
+% \end{equation*}
+% \begin{texnote}
+% It seems that \cs{dim_eval:n} does not support braces (\verb"(" and \verb")")
+% well. \tn{vbox} can have a box width of the \tn{textwidth}, so an \tn{hbox} is
+% used instead but be aware to change to the vertical mode if you want to insert
+% a newline.
+% \end{texnote}
+%    \begin{macrocode}
+%<*cimg>
+%<@@=pretbg_cimg>
+\tl_new:N \l_@@_bg_canvas_img_tl
+\box_new:N \l_@@_img_box
+\dim_new:N \l_@@_x_pos_dim
+\dim_new:N \l_@@_y_pos_dim
+\DeclareTemplateCode { background / canvas } { cimg } { 0 }
+  {
+    img = \l_@@_bg_canvas_img_tl
+  }
+  {
+    \hbox_set:Nn \l_@@_img_box { \l_@@_bg_canvas_img_tl }
+    \dim_set:Nn \l_@@_x_pos_dim
+      { \dim_eval:n { \paperwidth / 2 - \box_wd:N \l_@@_img_box / 2 } }
+    \dim_set:Nn \l_@@_y_pos_dim
+      { \dim_eval:n { - \paperheight / 2 - \box_ht:N \l_@@_img_box / 2 } }
+    \put ( \dim_use:N \l_@@_x_pos_dim , \dim_use:N \l_@@_y_pos_dim )
+      { \box_use:N \l_@@_img_box }
+  }
+%</cimg>
 %    \end{macrocode}
 %
 % \end{implementation}
