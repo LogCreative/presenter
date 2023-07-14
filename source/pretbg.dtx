@@ -185,20 +185,20 @@
   }
   {
     \AssignTemplateKeys
-    \dim_set_eq:NN \l_@@_height_dim
+    \dim_set:Nn \l_@@_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
     \bool_if:NT \l_@@_bg_headline_fill_bool 
       {
         \exp_args:NV \color_select:n \l_@@_bg_headline_fill_color_tl
         \linethickness { \dim_use:N \l_@@_height_dim }
-        \put (0, \dim_eval:n { - \l_@@_height_dim / 2 } )
+        \put ( 0 , \dim_eval:n { - \l_@@_height_dim / 2 } )
           { \line ( 1 , 0 ) { \paperwidth } }
       }
     \bool_if:NT \l_@@_bg_headline_stroke_bool
       {
         \exp_args:NV \color_select:n \l_@@_bg_headline_stroke_color_tl
         \linethickness { \dim_use:N \l_@@_bg_headline_stroke_linewidth_dim }
-        \put (0, - \dim_use:N \l_@@_height_dim )
+        \put ( 0 , - \dim_use:N \l_@@_height_dim )
           { \line ( 1 , 0 ) { \dim_use:N \l_@@_bg_headline_stroke_length_dim } }
       }
   }
@@ -228,9 +228,9 @@
   }
   {
     \AssignTemplateKeys
-    \dim_set_eq:NN \l_@@_height_dim
+    \dim_set:Nn \l_@@_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
-    \put ( 0, - \dim_use:N \l_@@_height_dim )
+    \put ( 0 , - \dim_use:N \l_@@_height_dim )
       {
         \draw_begin:
         \bool_if:NT \l_@@_bg_headline_fill_bool
