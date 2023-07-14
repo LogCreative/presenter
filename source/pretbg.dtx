@@ -43,13 +43,29 @@
 %
 % \begin{documentation}
 % 
-% \begin{TemplateDescription}{background/headline}{default}
+% \begin{TemplateDescription}{background/canvas}{default}
 % \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Default blank page.\\
-% \previewtest{package}
+% \TemplateSemantics Default blank page background canvas.
 %    \begin{macrocode}
 %<*default>
+\DeclareTemplateInterface { background / canvas } { default } { 0 } { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/headline}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default blank headline background.\\
+% \previewtest{package}
+%    \begin{macrocode}
 \DeclareTemplateInterface { background / headline } { default } { 0 } { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/footline}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Default blank footline background.
+%    \begin{macrocode}
+\DeclareTemplateInterface { background / footline } { default } { 0 } { }
 %</default>
 %    \end{macrocode}
 % \end{TemplateDescription}
@@ -141,7 +157,9 @@
 %    \begin{macrocode}
 %<@@=pretbg_default>
 %<*default>
+\DeclareTemplateCode { background / canvas } { default } { 0 } { } { }
 \DeclareTemplateCode { background / headline } { default } { 0 } { } { }
+\DeclareTemplateCode { background / footline } { default } { 0 } { } { }
 %</default>
 %    \end{macrocode}
 %

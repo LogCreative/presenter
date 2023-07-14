@@ -279,10 +279,22 @@
 %    \end{macrocode}
 %
 % Declare object types.
+% \begin{macro}{background/canvas}
+% The background bottom layer.
+%    \begin{macrocode}
+\DeclareObjectType { background / canvas } { 0 }
+%    \end{macrocode}
+% \end{macro}
 % \begin{macro}{background/headline}
 % The background rendering of the headline.
 %    \begin{macrocode}
 \DeclareObjectType { background / headline } { 0 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{background/footline}
+% The background rendering of the footline.
+%    \begin{macrocode}
+\DeclareObjectType { background / footline } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/headline}
@@ -307,6 +319,12 @@
 % The foreground display of the footline.
 %    \begin{macrocode}
 \DeclareObjectType { foreground / footline } { 0 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{foreground/canvas}
+% The foreground top layer.
+%    \begin{macrocode}
+\DeclareObjectType { foreground / canvas } { 0 }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -372,7 +390,7 @@
 % \end{arguments}
 %    \begin{macrocode}
 \NewDocumentCommand { \LoadPresenterBackground }
-  { O{headline} m }
+  { O{canvas, headline, footline} m }
   {
     \RequirePackage { pretbg-#2 }
     \clist_map_inline:nn { #1 } {
@@ -392,7 +410,7 @@
 % \end{arguments}
 %    \begin{macrocode}
 \NewDocumentCommand { \LoadPresenterForeground } 
-  { O{headline, sectioning, footline} m }
+  { O{headline, sectioning, footline, canvas} m }
   {
     \RequirePackage { pretfg-#2 }
     \clist_map_inline:nn { #1 } {
@@ -452,13 +470,21 @@
 % background on every page.
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
+  \AddToHook { shipout / background } {
+    \UseInstance { background / canvas } { base }
+  }
   \renewcommand { \@oddhead } {
     \UseInstance { foreground / headline } { base }
     \AddToHookNext { shipout / background } {
       \UseInstance { background / headline } { base }
     }
   }
-  \renewcommand { \@oddfoot } { \UseInstance { foreground / footline } { base } }
+  \renewcommand { \@oddfoot } {
+    \UseInstance { foreground / footline } { base }
+    \AddToHookNext { shipout / background } {
+      \UseInstance { background / footline } { base }
+    }
+  }
   \bool_if:NT \g_@@_chapter_bool
     {
       \RenewDocumentCommand { \chaptermark } { +m } {
@@ -496,6 +522,9 @@
       \UseInstance { foreground / sectioning } { base } { star }
         { ##1 }
     }
+  \AddToHook { shipout / foreground } {
+    \UseInstance { foreground / canvas } { base }
+  }
 }
 %    \end{macrocode}
 %
