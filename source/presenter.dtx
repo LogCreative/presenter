@@ -285,14 +285,13 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% Patch the page style \verb"plain".
-% The default \tn{@oddfoot} will typeset a relatively big page number in the
-% center of the bottom. \presenter{} will clear the page number by default to
-% make the page cleaner.
+% Patch the page style \verb"plain". This will use the \presenter{} footline
+% instead of the default footline of centred page number.
 %    \begin{macrocode}
 \xapptocmd { \ps@plain }
   {
-    \renewcommand { \@oddfoot } { }
+    \renewcommand { \@oddfoot } 
+      { \UseInstance { foreground / footline } { base } }
   } { } { }
 %    \end{macrocode}
 %
