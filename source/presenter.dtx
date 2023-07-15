@@ -306,7 +306,7 @@
 % \begin{macro}[int]{\ps@presenterpage}
 % Define the page style \verb"presenterpage".
 %
-% As is descrided in \file{ltpage.dtx}, a page style needs to define
+% As is described in \file{ltpage.dtx}, a page style needs to define
 % \tn{@oddhead}, \tn{@oddfoot} (\tn{@evenhead} and \tn{@evenfoot} if it is in
 % double-sided mode, but for the current \presenter{}, only single-sided mode
 % is required) to control the headline and footline, and \tn{chaptermark},
@@ -317,19 +317,23 @@
 %
 % For more customization abilities, \presenter{} introduces \cs{starmark}
 % for the starred version command. \presenter{} also make instances hook to
-% \texttt{shipout/background} and \texttt{shipout/foreground} for customizing
-% every page, which could only be controlled by re-declaring the instances.
-% Use the hook by \cs{AddToHookNext} inside \tn{@oddhead} or \tn{@oddfoot}
-% command to render the background on every page, which could be controlled by
-% the page style.
+% \texttt{shipout/background} and \texttt{shipout/foreground} by \cs{AddToHook}
+% for customizing every page, which could only be controlled by re-declaring the
+% instances. Use the hook by \cs{AddToHookNext} inside \tn{@oddhead} or
+% \tn{@oddfoot} command to render the background or foreground overlay on every
+% next page, which could be controlled by the page style (\textit{i.e.}, if it
+% in the other page style, the instance will not be rendered).
 %
 % The order of the rendering instances could be described as follows:
 % \begin{align*}
 % &\texttt{background/canvas} \rightarrow \\
+% \text{\parbox{12em}{Only available in \\
+% \tn{@oddhead} or \tn{@oddfoot}}}&\begin{cases}
 % &\texttt{background/headline} \rightarrow \texttt{background/footline} \rightarrow \\
-% &\text{Handling sectioning by }\texttt{foreground/sectioning} \rightarrow \\
-% &\texttt{foreground/headline} \rightarrow \texttt{foreground/footline} \rightarrow \\
-% &\texttt{foreground/canvas}
+% &\text{Handle sectioning by }\texttt{foreground/sectioning} \rightarrow \\
+% &\texttt{foreground/headline} \rightarrow \texttt{foreground/footline}
+% \end{cases}\\
+% &\rightarrow \texttt{foreground/canvas}
 % \end{align*}
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
