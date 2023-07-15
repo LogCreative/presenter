@@ -286,11 +286,13 @@
 % \end{macro}
 %
 % Patch the page style \verb"plain".
+% The default \tn{@oddfoot} will typeset a relatively big page number in the
+% center of the bottom. \presenter{} will clear the page number by default to
+% make the page cleaner.
 %    \begin{macrocode}
 \xapptocmd { \ps@plain }
   {
-    \renewcommand { \@oddfoot } 
-      { \UseInstance { foreground / footline } { base } }
+    \renewcommand { \@oddfoot } { }
   } { } { }
 %    \end{macrocode}
 %
