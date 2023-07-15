@@ -133,6 +133,18 @@
 }
 %    \end{macrocode}
 %
+% Load \pkg{prettpl} package for template management.
+%    \begin{macrocode}
+\RequirePackage { prettpl }
+%    \end{macrocode}
+%
+% One could only load the template in the preamble.
+% It is too heavy to load all the templates. Load \pkg{default} template as base.
+%    \begin{macrocode}
+\LoadPresenterBackground { default }
+\LoadPresenterForeground { default }
+%    \end{macrocode}
+%
 % Introduce \pkg{xpatch} for patching command by searching the query.
 %    \begin{macrocode}
 \RequirePackage { xpatch }
@@ -269,188 +281,6 @@
   \pretsec_get_name_lv:nN { #1 } \l_@@_in_lv_int
   \int_compare:nNnF { \l_@@_in_lv_int } > { \value { secnumdepth } }
     { \use:c { the#1 } \quad }
-}
-%    \end{macrocode}
-% \end{macro}
-%
-% Introduce package \pkg{xtemplate} for customize headline.
-%    \begin{macrocode}
-\RequirePackage { xtemplate }
-%    \end{macrocode}
-%
-% Declare object types.
-% \begin{macro}{background/canvas}
-% The background bottom layer.
-%    \begin{macrocode}
-\DeclareObjectType { background / canvas } { 0 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{background/headline}
-% The background rendering of the headline.
-%    \begin{macrocode}
-\DeclareObjectType { background / headline } { 0 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{background/footline}
-% The background rendering of the footline.
-%    \begin{macrocode}
-\DeclareObjectType { background / footline } { 0 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{foreground/headline}
-% The foreground display method of the headline.
-%    \begin{macrocode}
-\DeclareObjectType { foreground / headline } { 0 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{foreground/sectioning}
-% Handle the sectioning logic. Use in pair with \texttt{foreground/headline}.
-% The call of \cs{pretsec_register_name_title:nn} is required for every
-% implementation code of this object type.
-% \begin{arguments}
-%   \item the name of sectioning.
-%   \item the content of the sectioning title.
-% \end{arguments}
-%    \begin{macrocode}
-\DeclareObjectType { foreground / sectioning } { 2 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{foreground/footline}
-% The foreground display of the footline.
-%    \begin{macrocode}
-\DeclareObjectType { foreground / footline } { 0 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{foreground/canvas}
-% The foreground top layer.
-%    \begin{macrocode}
-\DeclareObjectType { foreground / canvas } { 0 }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}[TF]{\pret_if_template_exist:nn}
-% If the \meta{object type} in style \meta{template name} exists for the
-% current loaded code.
-% \begin{arguments}
-%   \item Object type
-%   \item Template name
-% \end{arguments}
-%    \begin{macrocode}
-\prg_new_conditional:Npnn \pret_if_template_exist:nn #1#2 { T, F, TF }
-{
-  \cs_if_exist:cTF { \c__xtemplate_code_root_tl #1 / #2 }
-    { \prg_return_true: }
-    { \prg_return_false: }
-}
-%    \end{macrocode}
-% \begin{texnote}
-% Package \pkg{xtemplate} does not provide a user interface like
-% \cs{IfInstanceExistTF} to detect whether the template exists. And the internal
-% interface \cs{__xtemplate_execute_if_code_exist:nnT} will raise the error if
-% the template code does not exist (can be seen as only \texttt{T} conditional
-% exists). This macro is referred to the code of the internal interface but
-% won't raise error if it does not exist.
-%
-% \pkg{xtemplate} collection model is suitable for the use of \presenter{}, 
-% which may be the reason why the user interface for detecting template does
-% not exist. But the collection model has been marked as deprecated now
-% and \presenter{} has to use a cutomized interface for the use of the package
-% \pkg{xtemplate} at present.
-% \end{texnote}
-% \end{macro}
-%
-% \begin{macro}{\pret_load_template:nn}
-% Load the \meta{object type} in style \meta{template name}. Mainly redeclare
-% the instance \texttt{base} to the new template.
-% If the template code does not exists, then an info message will be recorded
-% in the log file.
-% \begin{arguments}
-%   \item Object type
-%   \item Template name
-% \end{arguments}
-%    \begin{macrocode}
-\msg_new:nnn { presenter } { no-template }
-  { Object~ type~ `#1'~ in~ style~ `#2'~ does~ not~ exist. }
-\cs_new:Npn \pret_load_template:nn #1#2
-  {
-    \pret_if_template_exist:nnTF { #1 } { #2 }
-      { \DeclareInstance { #1 } { base } { #2 } { } }
-      { \msg_info:nnnn { presenter } { no-template } { #1 } { #2 } }
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\LoadPresenterBackground}
-% Load the style file \file{pretbg-#2.sty} and set the component template based
-% on the first argument (could be a comma list).
-% \begin{arguments}
-%   \item component comma list.
-%         The default value will set up all components of this style.
-%   \item background style name.
-% \end{arguments}
-%    \begin{macrocode}
-\NewDocumentCommand { \LoadPresenterBackground }
-  { O{canvas, headline, footline} m }
-  {
-    \RequirePackage { pretbg-#2 }
-    \clist_map_inline:nn { #1 } {
-      \pret_load_template:nn { background / ##1 } { #2 }
-    }
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\LoadPresenterForeground}
-% Load the style file \file{pretfg-#2.sty} and set the component template based
-% on the first argument (could be a comma list).
-% \begin{arguments}
-%   \item component comma list.
-%         The default value will set up all components of this style.
-%   \item foreground style name.
-% \end{arguments}
-%    \begin{macrocode}
-\NewDocumentCommand { \LoadPresenterForeground } 
-  { O{headline, sectioning, footline, canvas} m }
-  {
-    \RequirePackage { pretfg-#2 }
-    \clist_map_inline:nn { #1 } {
-      \pret_load_template:nn { foreground / ##1 } { #2 }
-    }
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% One could only load the template in the preamble.
-% It is too heavy to load all the templates.
-%    \begin{macrocode}
-\LoadPresenterBackground { default }
-\LoadPresenterForeground { default }
-%    \end{macrocode}
-%
-% \begin{macro}{\EditPresenterBackground}
-% Edit the background component \meta{component name} on instance \texttt{base}
-% by the property list \meta{key-value}.
-% \begin{arguments}
-%   \item component name
-%   \item key-value property list
-% \end{arguments}
-%    \begin{macrocode}
-\NewDocumentCommand { \EditPresenterBackground } { m m } {
-  \EditInstance { background / #1 } { base } { #2 }
-}
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\EditPresenterForeground}
-% Edit the foreground component \meta{component name} on instance \texttt{base}
-% by the property list \meta{key-value}.
-% \begin{arguments}
-%   \item component name
-%   \item key-value property list
-% \end{arguments}
-%    \begin{macrocode}
-\NewDocumentCommand { \EditPresenterForeground } { m m } {
-  \EditInstance { foreground / #1 } { base } { #2 }
 }
 %    \end{macrocode}
 % \end{macro}
