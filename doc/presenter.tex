@@ -27,14 +27,16 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{booktabs}
+
+% Preview test PDF, should use `l3build check' first before `l3build doc'.
 \usepackage{graphicx}
-\NewDocumentCommand{\previewtest}{O{1} m}{
+\NewDocumentCommand{\previewtest}{O{} m}{
   \IfFileExists{#2.pdf}%
     {
       \begingroup
         \setlength{\fboxsep}{0pt}
         \framebox{%
-          \includegraphics[width=0.5\linewidth,page=#1]{#2.pdf}%
+          \includegraphics[width=0.5\linewidth,#1]{#2.pdf}%
         }
       \endgroup
     }
@@ -45,6 +47,12 @@
       typesetting the document}
     }
 }
+
+% Make adjustment to TOC
+\makeatletter
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{2.8em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{4.3em}{3.7em}}
+\makeatother
 
 \begin{document}
 

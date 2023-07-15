@@ -39,23 +39,23 @@
 %
 % \begin{documentation}
 %
+% \begin{TemplateDescription}{foreground/sectioning}{default}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Handle sectioning marks.\\
+% \previewtest[page=4]{sectioning}
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / sectioning } { default } { 2 }
+  { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
 % \begin{TemplateDescription}{foreground/headline}{default}
 % \TemplateKey{style}{tokenlist}{Style of the headline text.}{\cs{Large}}
-% \TemplateSemantics Default single headline style.\\
-% \previewtest[4]{sectioning}
+% \TemplateSemantics Default single headline style.
 %    \begin{macrocode}
 %<*default>
 \DeclareTemplateInterface { foreground / headline } { default } { 0 }
   { style : tokenlist = \Large }
-%    \end{macrocode}
-% \end{TemplateDescription}
-%
-% \begin{TemplateDescription}{foreground/sectioning}{default}
-% \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Handle sectioning marks.
-%    \begin{macrocode}
-\DeclareTemplateInterface { foreground / sectioning } { default } { 2 }
-  { }
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -77,12 +77,22 @@
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
+% \begin{TemplateDescription}{foreground/sectioning}{dual}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Handle sectioning mark logic for displaying two levels of
+% titles.\\
+% \previewtest[page=4]{dual}
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / sectioning } { dual } { 2 }
+  { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
 % \begin{TemplateDescription}{foreground/headline}{dual}
 % \TemplateKey{parent-style}{tokenlist}{Style of parent level text}{\cs{normalsize}}
 % \TemplateKey{child-style}{tokenlist}{Style of main text}{\cs{Large}}
 % \TemplateSemantics Display the parent level (except the empty nodes) and
-% the current level titles.\\
-% \previewtest[4]{dual}
+% the current level titles.
 %    \begin{macrocode}
 %<*dual>
 \DeclareTemplateInterface { foreground / headline } { dual } { 0 }
@@ -90,16 +100,6 @@
     parent-style : tokenlist = \normalsize ,
     child-style : tokenlist = \Large
   }
-%    \end{macrocode}
-% \end{TemplateDescription}
-%
-% \begin{TemplateDescription}{foreground/sectioning}{dual}
-% \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Handle sectioning mark logic for displaying two levels of
-% titles.
-%    \begin{macrocode}
-\DeclareTemplateInterface { foreground / sectioning } { dual } { 2 }
-  { }
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -114,14 +114,24 @@
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
+% \begin{TemplateDescription}{foreground/sectioning}{cascade}
+% \TemplateKey{none}{---}{}{}
+% \TemplateSemantics Handle sectioning mark logic for displaying the parent
+% multi-level titles and the child title.\\
+% \previewtest[page=5]{cascade}
+%    \begin{macrocode}
+\DeclareTemplateInterface { foreground / sectioning } { cascade } { 2 }
+  { }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
 % \begin{TemplateDescription}{foreground/headline}{cascade}
 % \TemplateKey{parent-style}{tokenlist}{Style of parent level text}{\cs{normalsize}}
 % \TemplateKey{child-style}{tokenlist}{Style of main text}{\cs{Large}}
 % \TemplateKey{parent-separator}{tokenlist}{Connection tokens between different
 % different levels of titles in the parent title}{\verb"\quad{}$\triangleright$\quad{}"}
 % \TemplateSemantics Display all the parent level titles separated by the
-% parent-separator and the current level title.\\
-% \previewtest[5]{cascade}
+% parent-separator and the current level title.
 %    \begin{macrocode}
 %<*cascade>
 \DeclareTemplateInterface { foreground / headline } { cascade } { 0 }
@@ -130,16 +140,6 @@
     child-style : tokenlist = \Large ,
     parent-separator : tokenlist = { \quad{}$\triangleright$\quad{} } ,
   }
-%    \end{macrocode}
-% \end{TemplateDescription}
-%
-% \begin{TemplateDescription}{foreground/sectioning}{cascade}
-% \TemplateKey{none}{---}{}{}
-% \TemplateSemantics Handle sectioning mark logic for displaying the parent
-% multi-level titles and the child title.
-%    \begin{macrocode}
-\DeclareTemplateInterface { foreground / sectioning } { cascade } { 2 }
-  { }
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -157,6 +157,8 @@
 % \end{documentation}
 %
 % \begin{implementation}
+%
+% \subsection{Implementation Code}
 %
 % Most of the foreground style requires the sectioning information provided by
 % package \pkg{pretsec}.
@@ -181,10 +183,17 @@
 %
 % \end{texnote}
 %
-% \paragraph{\pkg{default} style.}
+% \begin{macro}[int]{foreground/headline/default,foreground/sectioning/default,
+%   foreground/footline/default,foreground/canvas/default}
+% \textbf{\pkg{default} style.}
 %    \begin{macrocode}
 %<*default>
 %<@@=pretfg_default>
+\DeclareTemplateCode { foreground / sectioning } { default } { 2 }
+  { }
+  {
+    \pretsec_register_name_title:nn { #1 } { #2 }
+  }
 \tl_new:N \l_@@_fg_headline_title_tl
 \tl_new:N \l_@@_fg_headline_style_tl
 \tl_new:N \l_@@_cur_title_tl
@@ -197,11 +206,6 @@
       \l_@@_fg_headline_style_tl \l_@@_cur_title_tl
     \group_end:
     \hfil
-  }
-\DeclareTemplateCode { foreground / sectioning } { default } { 2 }
-  { }
-  {
-    \pretsec_register_name_title:nn { #1 } { #2 }
   }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { default } { 0 }
@@ -217,9 +221,11 @@
 \DeclareTemplateCode { foreground / canvas } { default } { 0 } { } { }
 %</default>
 %    \end{macrocode}
+% \end{macro}
 %
-% \paragraph{\pkg{dual} style.}
-%
+% \begin{macro}[int]{foreground/headline/dual,foreground/sectioning/dual,
+%   foreground/footline/dual}
+% \textbf{\pkg{dual} style.}
 % It seems to be in horizontal mode in the header, use a \cs{vbox} to create a
 % vertical mode environment in order to adjust the vertical position of the
 % titles.
@@ -232,6 +238,12 @@
 %    \begin{macrocode}
 %<*dual>
 %<@@=pretfg_dual>
+\DeclareTemplateCode { foreground / sectioning } { dual } { 2 }
+  { }
+  {
+    \pretsec_register_name_title:nn { #1 } { #2 }
+    \pretsec_push_stack_name_title:nn { #1 } { #2 }
+  }
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
 \seq_new:N \l_@@_parent_seq
@@ -263,12 +275,6 @@
     \group_end:
     \hfil
   }
-\DeclareTemplateCode { foreground / sectioning } { dual } { 2 }
-  { }
-  {
-    \pretsec_register_name_title:nn { #1 } { #2 }
-    \pretsec_push_stack_name_title:nn { #1 } { #2 }
-  }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { dual } { 0 }
   { style = \l_@@_fg_footline_style_tl }
@@ -283,9 +289,11 @@
   }
 %</dual>
 %    \end{macrocode}
+% \end{macro}
 %
-% \paragraph{\pkg{cascade} style.}
-%
+% \begin{macro}[int]{foreground/headline/cascade,foreground/sectioning/cascade,
+%   foreground/footline/cascade}
+% \textbf{\pkg{cascade} style.}
 % Almost the same as \pkg{dual} style. But all the parent nodes are displayed.
 % Since the parent sequence returned from \cs{pretsec_get_stack_parent_child_title:NN}
 % is in the reversed order, when displaying it, reverese the sequence first.
@@ -293,6 +301,12 @@
 %    \begin{macrocode}
 %<*cascade>
 %<@@=pretfg_cascade>
+\DeclareTemplateCode { foreground / sectioning } { cascade } { 2 }
+  { }
+  {
+    \pretsec_register_name_title:nn { #1 } { #2 }
+    \pretsec_push_stack_name_title:nn { #1 } { #2 }
+  }
 \tl_new:N \l_@@_fg_headline_parent_style_tl
 \tl_new:N \l_@@_fg_headline_child_style_tl
 \tl_new:N \l_@@_fg_headline_parent_separator_tl
@@ -327,12 +341,6 @@
     \group_end:
     \hfil
   }
-\DeclareTemplateCode { foreground / sectioning } { cascade } { 2 }
-  { }
-  {
-    \pretsec_register_name_title:nn { #1 } { #2 }
-    \pretsec_push_stack_name_title:nn { #1 } { #2 }
-  }
 \tl_new:N \l_@@_fg_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { cascade } { 0 }
   { style = \l_@@_fg_footline_style_tl }
@@ -349,6 +357,7 @@
   }
 %</cascade>
 %    \end{macrocode}
+% \end{macro}
 %
 % \end{implementation}
 %

@@ -150,6 +150,7 @@
 \RequirePackage { xpatch }
 %    \end{macrocode}
 %
+% \begin{macro}{\maketitle}
 % The default \cs{maketitle} implementation for \cls{report} has a hard-coded
 % vertical skip of 60pt which will make troubles in the current page size
 % configuration. Remove the vertical skip.
@@ -159,58 +160,59 @@
 %    \begin{macrocode}
 \xpatchcmd { \maketitle } { \vskip 60\p@ } { } { } { }
 %    \end{macrocode}
+% \end{macro}
 %
+% \begin{macro}{\part}
 % Patch part page here if you want to use \cls{article} as the base class.
 % It is not harmful for \cls{report} base class as well, which will clear the
 % page twice in equivalence to clear the page once.
 % Process the part sectioning after clearing the page.
+%
+% The sectioning level of \tn{part} is defined as 0 initially, for document
+% class like \cls{article}.
 %    \begin{macrocode}
 \xpretocmd { \part } {
   \clearpage
   \thispagestyle { plain }
   \UseInstance { foreground / sectioning } { base } { part } { }
 } {  } {  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
 \pretsec_put_name_lv:nn { part } { 0 }
 %    \end{macrocode}
+% \end{macro}
 %
-% For \cls{report} class, unify the \tn{chapter} behavior.
-%    \begin{macrocode}
-\bool_if:NT \g_@@_chapter_bool
-  {
-%    \end{macrocode}
+% \begin{macro}{\chapter}
+% For \cls{report} class or any other document class with \tn{chapter} command,
+% unify the \tn{chapter} behavior.
 %
-%    \begin{macrocode}
-    \pretsec_put_name_lv:nn { part    } { -1 }
-    \pretsec_put_name_lv:nn { chapter } {  0 }
-%    \end{macrocode}
 % To unify the behavior of chapter with other alph numbered sections, no page
 % style change will be made.
-%    \begin{macrocode}
-    \xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
-%    \end{macrocode}
+%
 % The default \tn{chapter} (or \tn{chapter*}) implementation includes
 % \tn{@makechapterhead} (or \tn{@makeschapterhead}) to format the chapter head.
 % Remove the typesetting in the body.
+%
+% And add the information to mark for stared version \tn{@schapter}, which will
+% be called by \tn{chapter*}.
 %    \begin{macrocode}
+\bool_if:NT \g_@@_chapter_bool
+  {
+    \pretsec_put_name_lv:nn { part    } { -1 }
+    \pretsec_put_name_lv:nn { chapter } {  0 }
+    \xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
     \renewcommand { \@makechapterhead  } [ 1 ] { }
     \renewcommand { \@makeschapterhead } [ 1 ] { }
-%    \end{macrocode}
-% And add the information to mark for stared version \tn{chapter*}.
-%    \begin{macrocode}
     \xpretocmd { \@schapter } { \starmark{#1} } { } { }
-%    \end{macrocode}
-%    \begin{macrocode}
   }
 %    \end{macrocode}
+% \end{macro}
 %
+% \begin{macro}[int]{\@startsection}
 % For the rest of the sectioning commands, \tn{@startsection} will be called to
 % handle them. When using them, clear the page at the beginning.
 %    \begin{macrocode}
 \xpretocmd { \@startsection } { \clearpage } { } { }
 %    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}[int]{\@sect}
 % For the non-star version, \tn{@sect} will be called as the child command.
@@ -285,6 +287,11 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}[int]{\ps@empty}
+% There is no need to patch \verb"empty" page style.
+% \end{macro}
+%
+% \begin{macro}[int]{\ps@plain}
 % Patch the page style \verb"plain". This will use the \presenter{} footline
 % instead of the default footline of centred page number.
 %    \begin{macrocode}
@@ -294,11 +301,36 @@
       { \UseInstance { foreground / footline } { base } }
   } { } { }
 %    \end{macrocode}
+% \end{macro}
 %
+% \begin{macro}[int]{\ps@presenterpage}
 % Define the page style \verb"presenterpage".
 %
-% Use the hook by \cs{AddToHookNext} inside \tn{@oddhead} command to render the
-% background on every page.
+% As is descrided in \file{ltpage.dtx}, a page style needs to define
+% \tn{@oddhead}, \tn{@oddfoot} (\tn{@evenhead} and \tn{@evenfoot} if it is in
+% double-sided mode, but for the current \presenter{}, only single-sided mode
+% is required) to control the headline and footline, and \tn{chaptermark},
+% \tn{sectionmark}, \tn{subsectionmark}, \tn{subsubsectionmark},
+% \tn{paragraphmark}, \tn{subparagraphmark} for the sectioning command to
+% produce marks, which will be handled by \texttt{foreground/sectioning} in
+% \presenter{} and not actually marks.
+%
+% For more customization abilities, \presenter{} introduces \cs{starmark}
+% for the starred version command. \presenter{} also make instances hook to
+% \texttt{shipout/background} and \texttt{shipout/foreground} for customizing
+% every page, which could only be controlled by re-declaring the instances.
+% Use the hook by \cs{AddToHookNext} inside \tn{@oddhead} or \tn{@oddfoot}
+% command to render the background on every page, which could be controlled by
+% the page style.
+%
+% The order of the rendering instances could be described as follows:
+% \begin{align*}
+% &\texttt{background/canvas} \rightarrow \\
+% &\texttt{background/headline} \rightarrow \texttt{background/footline} \rightarrow \\
+% &\text{Handling sectioning by }\texttt{foreground/sectioning} \rightarrow \\
+% &\texttt{foreground/headline} \rightarrow \texttt{foreground/footline} \rightarrow \\
+% &\texttt{foreground/canvas}
+% \end{align*}
 %    \begin{macrocode}
 \newcommand { \ps@presenterpage } {
   \AddToHook { shipout / background } {
@@ -358,6 +390,7 @@
   }
 }
 %    \end{macrocode}
+% \end{macro}
 %
 % Set page style to \verb"presenterpage".
 %    \begin{macrocode}

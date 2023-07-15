@@ -119,14 +119,10 @@
 \DeclareObjectType { background / footline } { 0 }
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{foreground/headline}
-% The foreground display method of the headline.
-%    \begin{macrocode}
-\DeclareObjectType { foreground / headline } { 0 }
-%    \end{macrocode}
-% \end{macro}
 % \begin{macro}{foreground/sectioning}
-% Handle the sectioning logic. Use in pair with \texttt{foreground/headline}.
+% Handle the sectioning logic. Use in pair with \texttt{foreground/headline}
+% (or \texttt{foreground/footline} if you want to show the sectioning
+% information in the footline).
 % The call of \cs{pretsec_register_name_title:nn} is required for every
 % implementation code of this object type.
 % \begin{arguments}
@@ -135,6 +131,12 @@
 % \end{arguments}
 %    \begin{macrocode}
 \DeclareObjectType { foreground / sectioning } { 2 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{foreground/headline}
+% The foreground display method of the headline.
+%    \begin{macrocode}
+\DeclareObjectType { foreground / headline } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/footline}
