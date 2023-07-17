@@ -260,6 +260,7 @@
     \AssignTemplateKeys
     \dim_set:Nn \l_@@_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
+    \color_group_begin:
     \bool_if:NT \l_@@_bg_headline_fill_bool 
       {
         \exp_args:NV \color_select:n \l_@@_bg_headline_fill_color_tl
@@ -274,6 +275,7 @@
         \put ( 0 , - \dim_use:N \l_@@_height_dim )
           { \line ( 1 , 0 ) { \dim_use:N \l_@@_bg_headline_stroke_length_dim } }
       }
+    \color_group_end:
   }
 %</block>
 %    \end{macrocode}
