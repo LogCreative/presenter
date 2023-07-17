@@ -12,27 +12,29 @@
 
 There is an image in the center of the background.
 
-\paragraph{top-left corner image}
-\EditPresenterBackground{canvas}{
-    img={\includegraphics[width=1cm]{example-image-1x1.pdf}},
-    pos=top-left,
-    margin-x=0.6cm,
-    margin-y=0.4cm
-}
-
-There is an image in the top-left corner of the background.
-
 \paragraph{bottom-right corner image}
 \EditPresenterBackground{canvas}{
-    img=
-}
-\EditPresenterForeground{canvas}{
     img={\includegraphics[width=1cm]{example-image-1x1.pdf}},
     pos=bottom-right,
     margin-x=0.6cm,
     margin-y=0.6cm
 }
 
-There is an image in the bottom-right corner, but in the foreground canvas.
+There is an image in the bottom-right corner of the background.
+
+\paragraph{top-left corner image}
+\EditPresenterBackground{canvas}{
+    img=
+}
+\EditPresenterForeground{canvas}{
+    img={\includegraphics[width=1cm]{example-image-1x1.pdf}},
+    pos=top-left,
+    margin-x=0.6cm,
+    margin-y=0.4cm
+}
+
+There is an image in the top-left corner, but in the foreground canvas.
+In case that there is a \texttt{background/headline} template that covers the
+image.
 
 \end{document}
