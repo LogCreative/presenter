@@ -1,0 +1,33 @@
+\input{regression-test}
+\documentclass{presenter}
+\usepackage{mwe}
+\LoadPresenterBackground{img}
+\begin{document}
+\START
+
+\paragraph{center image}
+\EditPresenterBackground{canvas}{
+    img={\includegraphics[width=5cm]{example-image.pdf}},
+}
+
+There is an image in the center of the background.
+
+\paragraph{top-left corner image}
+\EditPresenterBackground{canvas}{
+    img={\includegraphics[width=1cm]{example-image-1x1.pdf}},
+    pos=top-left,
+    margin-x=0.6cm,
+    margin-y=0.4cm
+}
+
+There is an image in the top-left corner of the background.
+
+\paragraph{bottom-right corner image}
+\EditPresenterBackground{canvas}{
+    pos=bottom-right,
+    margin-y=0.6cm
+}
+
+There is an image in the bottom-right corner of the background.
+
+\end{document}

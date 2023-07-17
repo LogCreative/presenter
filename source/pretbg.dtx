@@ -25,14 +25,14 @@
 %<iiiblock>  {pretbg-iiiblock}
 %<secblock>  {pretbg-secblock}
 %<progressbar>  {pretbg-progressbar}
-%<cimg>  {pretbg-cimg}
+%<img>  {pretbg-img}
   {2023-07-07}{0.5.0}
 %<default>  {default background style for presenter}
 %<block>  {block background style for presenter}
 %<iiiblock>  {iiiblock background style for presenter implemented in l3draw}
 %<secblock>  {secblock background style based on block style}
 %<progressbar>  {progressbar background style based on block style}
-%<cimg>  {cimg background style for presenter}
+%<img>  {img background style for presenter}
 %</package>
 % \fi
 %
@@ -139,17 +139,36 @@
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
-% \begin{TemplateDescription}{background/canvas}{cimg}
+% \begin{TemplateDescription}{background/canvas}{img}
 % \TemplateKey{img}{tokenlist}{image insertion control sequences}{}
-% \TemplateSemantics The \meta{img} will be placed in the center of the
-% background. It is encouraged to use a picture with low opacity. Be aware it
-% is in the horizontal mode where newline \verb"\\" should be avoided.\\
-% \previewtest{cimg}
+% \TemplateKey{pos}{choice}{one of center position \texttt{center}, or corner
+%   position \texttt{top-left}, \texttt{top-right}, \texttt{bottom-left},
+%   \texttt{bottom-right}}{center}
+% \TemplateKey{margin-x}{length}{image margin in horizontal direction}{0cm}
+% \TemplateKey{margin-y}{length}{image margin in vertical direction}{0cm}
+% \TemplateSemantics The \meta{img} will be placed in the center or in the
+% corner of the background. It is encouraged to use a picture with low opacity
+% when it is in the center of the page or a small logo when it is in the corner.
+% Be aware it is in the horizontal mode where newline \verb"\\" should be
+% avoided.
+%
+% You could manually pin-point the position where the \meta{img} is by assigning
+% values to \meta{margin-x} and \meta{margin-y}. For the traditional adjustment
+% method, after assigning \meta{pos} as \texttt{top-left}, \meta{margin-x} and
+% \meta{margin-y} will be the natural coordinates relative to the top-left
+% corner of the background.\\
+% \previewtest[page=1]{img}\previewtest[page=2]{img}
 %    \begin{macrocode}
-%<*cimg>
-\DeclareTemplateInterface { background / canvas } { cimg } { 0 }
-  { img : tokenlist = }
-%</cimg>
+%<*img>
+\DeclareTemplateInterface { background / canvas } { img } { 0 }
+  {
+    img      : tokenlist = ,
+    pos      : choice
+      { center, top-left, top-right, bottom-left, bottom-right } = center ,
+    margin-x : length = 0cm ,
+    margin-y : length = 0cm
+  }
+%</img>
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
@@ -403,6 +422,7 @@
     stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
   }
   {
+    \AssignTemplateKeys
     \int_compare:nNnTF { \PreviousTotalPages } = { 0 }
       { \fp_set:Nn \l_@@_progress_fp { 1.0 } }
       { \fp_set:Nn \l_@@_progress_fp { \thepage / \PreviousTotalPages } }
@@ -421,13 +441,30 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{background/canvas/cimg}
-% \textbf{\pkg{cimg} style.}
-% Assume the \tn{paperwidth} is $W$, \tn{paperheight} is $H$, the width of the
+% \begin{macro}[int]{background/canvas/img}
+% \textbf{\pkg{img} style.}
+% The anchor point of the image is in the bottom-left of the object. This style
+% is not designed as indicating x-pos and y-pos directly for three reasons:
+% \begin{itemize}
+%   \item The original coordinate system inside \verb"shipout/background" is not
+%         straight forward: the origin is in the top-left, and the y coordinate
+%         is usually negative as the canvas can be regarded as the fourth
+%         quadrant.
+%   \item The anchor point of the box is not in the top-left corner, which will
+%         mess around the judgement of the y coordinate.
+%   \item Given choices on which corner as the reference will make the
+%         adjustment easier, as it is not in the what you see is what you get
+%         interface where user could drag the component to the desired visual
+%         position. And this also fits the widely-accepted container concept.
+% \end{itemize}
+%
+% The calculation on the corner will consider the margin, but not for the
+% centering position since the margin is symmetrical and as if the margin does
+% not exist. The calculation of the corner cases is straightforward, but for the
+% center position it needs some deduction:
+% Assume \tn{paperwidth} is $W$, \tn{paperheight} is $H$, the width of the
 % image box is $w$, the height is $h$. Then to make the image box centered in
-% in the page, the bottom-left coordinate $(x,y)$ of the image box is (where
-% $y$ is typically negative, the coordinate is relative to the upper-left point
-% of the page):
+% in the page, the bottom-left coordinate $(x,y)$ of the image box is:
 % \begin{equation*}
 %   \begin{cases}
 %     2x+w      = W \\
@@ -438,33 +475,86 @@
 %     y = \frac{H+h}{-2}
 %   \end{cases}
 % \end{equation*}
+%
 % \begin{texnote}
 % It seems that \cs{dim_eval:n} does not support braces (\verb"(" and \verb")")
 % well. \tn{vbox} can have a box width of the \tn{textwidth}, so an \tn{hbox} is
 % used instead but be aware to change to the vertical mode if you want to insert
 % a newline.
+%
+% As for repeated images, the compiler(s) will only load once and make
+% reference to the object for the second use, so no need to worry about the
+% extra space which may be made from this operation. You could see such in the
+% \file{img.tlg} where there is only one \verb"File" line for reading the
+% graphic file \file{example-image-1x1.pdf}.
 % \end{texnote}
 %    \begin{macrocode}
-%<*cimg>
-%<@@=pretbg_cimg>
+%<*img>
+%<@@=pretbg_img>
 \tl_new:N \l_@@_bg_canvas_img_tl
+\dim_new:N \l_@@_bg_canvas_margin_x_dim
+\dim_new:N \l_@@_bg_canvas_margin_y_dim
+\tl_new:N \l_@@_x_pos_expr_tl
+\tl_new:N \l_@@_y_pos_expr_tl
 \box_new:N \l_@@_img_box
-\dim_new:N \l_@@_x_pos_dim
-\dim_new:N \l_@@_y_pos_dim
-\DeclareTemplateCode { background / canvas } { cimg } { 0 }
+\DeclareTemplateCode { background / canvas } { img } { 0 }
   {
-    img = \l_@@_bg_canvas_img_tl
+    img      = \l_@@_bg_canvas_img_tl ,
+    margin-x = \l_@@_bg_canvas_margin_x_dim ,
+    margin-y = \l_@@_bg_canvas_margin_y_dim ,
+    pos      =
+      {
+        center       = 
+          {
+            \tl_set:Nn \l_@@_x_pos_expr_tl
+              { \paperwidth / 2 - \box_wd:N \l_@@_img_box / 2 }
+            \tl_set:Nn \l_@@_y_pos_expr_tl
+              { - \paperheight / 2 - \box_ht:N \l_@@_img_box / 2 }
+          },
+        top-left     =
+          {
+            \tl_set:Nn \l_@@_x_pos_expr_tl
+              { \l_@@_bg_canvas_margin_x_dim }
+            \tl_set:Nn \l_@@_y_pos_expr_tl
+              { - \box_ht:N \l_@@_img_box - \l_@@_bg_canvas_margin_y_dim }
+          },
+        top-right    =
+          {
+            \tl_set:Nn \l_@@_x_pos_expr_tl
+              {
+                \paperwidth - \box_wd:N \l_@@_img_box
+                  - \l_@@_bg_canvas_margin_x_dim
+              }
+            \tl_set:Nn \l_@@_y_pos_expr_tl
+              { - \box_ht:N \l_@@_img_box - \l_@@_bg_canvas_margin_y_dim }
+          },
+        bottom-left  = 
+          {
+            \tl_set:Nn \l_@@_x_pos_expr_tl
+              { \l_@@_bg_canvas_margin_x_dim }
+            \tl_set:Nn \l_@@_y_pos_expr_tl
+              { - \paperheight + \l_@@_bg_canvas_margin_y_dim }
+          },
+        bottom-right =
+          {
+            \tl_set:Nn \l_@@_x_pos_expr_tl
+              {
+                \paperwidth - \box_wd:N \l_@@_img_box
+                  - \l_@@_bg_canvas_margin_x_dim
+              }
+            \tl_set:Nn \l_@@_y_pos_expr_tl
+              { - \paperheight + \l_@@_bg_canvas_margin_y_dim }
+          }
+      }
   }
   {
+    \AssignTemplateKeys
     \hbox_set:Nn \l_@@_img_box { \l_@@_bg_canvas_img_tl }
-    \dim_set:Nn \l_@@_x_pos_dim
-      { \dim_eval:n { \paperwidth / 2 - \box_wd:N \l_@@_img_box / 2 } }
-    \dim_set:Nn \l_@@_y_pos_dim
-      { \dim_eval:n { - \paperheight / 2 - \box_ht:N \l_@@_img_box / 2 } }
-    \put ( \dim_use:N \l_@@_x_pos_dim , \dim_use:N \l_@@_y_pos_dim )
+    \put ( \dim_eval:n { \l_@@_x_pos_expr_tl } ,
+      \dim_eval:n { \l_@@_y_pos_expr_tl } )
       { \box_use:N \l_@@_img_box }
   }
-%</cimg>
+%</img>
 %    \end{macrocode}
 % \end{macro}
 %
