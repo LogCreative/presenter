@@ -268,40 +268,40 @@
 %    \begin{macrocode}
 %<*block>
 %<@@=pretbg_block>
-\bool_new:N \l_@@_bg_headline_fill_bool
-\tl_new:N \l_@@_bg_headline_fill_color_tl
-\bool_new:N \l_@@_bg_headline_stroke_bool
-\tl_new:N \l_@@_bg_headline_stroke_color_tl
-\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
-\dim_new:N \l_@@_bg_headline_stroke_length_dim
+\bool_new:N \l_@@_headline_fill_bool
+\tl_new:N \l_@@_headline_fill_color_tl
+\bool_new:N \l_@@_headline_stroke_bool
+\tl_new:N \l_@@_headline_stroke_color_tl
+\dim_new:N \l_@@_headline_stroke_linewidth_dim
+\dim_new:N \l_@@_headline_stroke_length_dim
 \dim_new:N \l_@@_height_dim
 \DeclareTemplateCode { background / headline } { block } { 0 }
   {
-    fill             = \l_@@_bg_headline_fill_bool ,
-    fill-color       = \l_@@_bg_headline_fill_color_tl ,
-    stroke           = \l_@@_bg_headline_stroke_bool ,
-    stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
-    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
-    stroke-length    = \l_@@_bg_headline_stroke_length_dim
+    fill             = \l_@@_headline_fill_bool ,
+    fill-color       = \l_@@_headline_fill_color_tl ,
+    stroke           = \l_@@_headline_stroke_bool ,
+    stroke-color     = \l_@@_headline_stroke_color_tl ,
+    stroke-linewidth = \l_@@_headline_stroke_linewidth_dim ,
+    stroke-length    = \l_@@_headline_stroke_length_dim
   }
   {
     \AssignTemplateKeys
     \dim_set:Nn \l_@@_height_dim
       { \dim_eval:n { 1 in + \voffset + \topmargin + \headheight + \headsep / 2 } }
     \color_group_begin:
-    \bool_if:NT \l_@@_bg_headline_fill_bool 
+    \bool_if:NT \l_@@_headline_fill_bool 
       {
-        \exp_args:NV \color_select:n \l_@@_bg_headline_fill_color_tl
+        \exp_args:NV \color_select:n \l_@@_headline_fill_color_tl
         \linethickness { \dim_use:N \l_@@_height_dim }
         \put ( 0 , \dim_eval:n { - \l_@@_height_dim / 2 } )
           { \line ( 1 , 0 ) { \paperwidth } }
       }
-    \bool_if:NT \l_@@_bg_headline_stroke_bool
+    \bool_if:NT \l_@@_headline_stroke_bool
       {
-        \exp_args:NV \color_select:n \l_@@_bg_headline_stroke_color_tl
-        \linethickness { \dim_use:N \l_@@_bg_headline_stroke_linewidth_dim }
+        \exp_args:NV \color_select:n \l_@@_headline_stroke_color_tl
+        \linethickness { \dim_use:N \l_@@_headline_stroke_linewidth_dim }
         \put ( 0 , - \dim_use:N \l_@@_height_dim )
-          { \line ( 1 , 0 ) { \dim_use:N \l_@@_bg_headline_stroke_length_dim } }
+          { \line ( 1 , 0 ) { \dim_use:N \l_@@_headline_stroke_length_dim } }
       }
     \color_group_end:
   }
@@ -315,21 +315,21 @@
 %<*iiiblock>
 %<@@=pretbg_iiiblock>
 \RequirePackage { l3draw }
-\bool_new:N \l_@@_bg_headline_fill_bool
-\tl_new:N \l_@@_bg_headline_fill_color_tl
-\bool_new:N \l_@@_bg_headline_stroke_bool
-\tl_new:N \l_@@_bg_headline_stroke_color_tl
-\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
-\dim_new:N \l_@@_bg_headline_stroke_length_dim
+\bool_new:N \l_@@_headline_fill_bool
+\tl_new:N \l_@@_headline_fill_color_tl
+\bool_new:N \l_@@_headline_stroke_bool
+\tl_new:N \l_@@_headline_stroke_color_tl
+\dim_new:N \l_@@_headline_stroke_linewidth_dim
+\dim_new:N \l_@@_headline_stroke_length_dim
 \dim_new:N \l_@@_height_dim
 \DeclareTemplateCode { background / headline } { iiiblock } { 0 }
   {
-    fill             = \l_@@_bg_headline_fill_bool ,
-    fill-color       = \l_@@_bg_headline_fill_color_tl ,
-    stroke           = \l_@@_bg_headline_stroke_bool ,
-    stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
-    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
-    stroke-length    = \l_@@_bg_headline_stroke_length_dim
+    fill             = \l_@@_headline_fill_bool ,
+    fill-color       = \l_@@_headline_fill_color_tl ,
+    stroke           = \l_@@_headline_stroke_bool ,
+    stroke-color     = \l_@@_headline_stroke_color_tl ,
+    stroke-linewidth = \l_@@_headline_stroke_linewidth_dim ,
+    stroke-length    = \l_@@_headline_stroke_length_dim
   }
   {
     \AssignTemplateKeys
@@ -338,20 +338,20 @@
     \put ( 0 , - \dim_use:N \l_@@_height_dim )
       {
         \draw_begin:
-        \bool_if:NT \l_@@_bg_headline_fill_bool
+        \bool_if:NT \l_@@_headline_fill_bool
           {
             \draw_path_rectangle:nn
               { 0pt, 0pt }
               { \paperwidth, \l_@@_height_dim }
-            \exp_args:NV \color_fill:n \l_@@_bg_headline_fill_color_tl
+            \exp_args:NV \color_fill:n \l_@@_headline_fill_color_tl
             \draw_path_use_clear:n { fill }
           }
-        \bool_if:NT \l_@@_bg_headline_stroke_bool
+        \bool_if:NT \l_@@_headline_stroke_bool
           {
-            \draw_linewidth:n { \l_@@_bg_headline_stroke_linewidth_dim }
+            \draw_linewidth:n { \l_@@_headline_stroke_linewidth_dim }
             \draw_path_moveto:n { 0pt , 0pt }
-            \draw_path_lineto:n { \l_@@_bg_headline_stroke_length_dim, 0pt }
-            \exp_args:NV \color_select:n \l_@@_bg_headline_stroke_color_tl 
+            \draw_path_lineto:n { \l_@@_headline_stroke_length_dim, 0pt }
+            \exp_args:NV \color_select:n \l_@@_headline_stroke_color_tl 
             \draw_path_use_clear:n { stroke }
           }
         \draw_end:
@@ -397,17 +397,17 @@
 %<@@=pretbg_secblock>
 \RequirePackage { pretsec }
 \RequirePackage { pretbg-block }
-\tl_new:N \l_@@_bg_headline_from_color_tl
-\int_new:N \l_@@_bg_headline_color_decay_int
-\tl_new:N \l_@@_bg_headline_to_color_tl
+\tl_new:N \l_@@_headline_from_color_tl
+\int_new:N \l_@@_headline_color_decay_int
+\tl_new:N \l_@@_headline_to_color_tl
 \int_new:N \l_@@_cur_lv_int
 \int_new:N \l_@@_color_pvt_int
 \tl_new:N \l_@@_color_expr_tl
 \DeclareTemplateCode { background / headline } { secblock } { 0 }
   {
-    from-color  = \l_@@_bg_headline_from_color_tl   ,
-    color-decay = \l_@@_bg_headline_color_decay_int ,
-    to-color    = \l_@@_bg_headline_to_color_tl
+    from-color  = \l_@@_headline_from_color_tl   ,
+    color-decay = \l_@@_headline_color_decay_int ,
+    to-color    = \l_@@_headline_to_color_tl
   }
   {
     \AssignTemplateKeys
@@ -417,18 +417,18 @@
         \fp_to_int:n
           {
             \l_@@_cur_lv_int < 0 ? 100 :
-            ( \l_@@_bg_headline_color_decay_int / 100.0 ) 
+            ( \l_@@_headline_color_decay_int / 100.0 ) 
               ** \l_@@_cur_lv_int * 100
           }
       }
     \exp_args:Nnx \regex_match:nnT { ! \d+ \z }
-      { \l_@@_bg_headline_from_color_tl }
-      { \tl_put_right:Nn \l_@@_bg_headline_from_color_tl { ! white } }
+      { \l_@@_headline_from_color_tl }
+      { \tl_put_right:Nn \l_@@_headline_from_color_tl { ! white } }
     \exp_args:NNx \tl_set:Nn \l_@@_color_expr_tl
       {
-        \l_@@_bg_headline_from_color_tl !
+        \l_@@_headline_from_color_tl !
         \int_use:N \l_@@_color_pvt_int !
-        \l_@@_bg_headline_to_color_tl
+        \l_@@_headline_to_color_tl
       }
     \exp_args:Nnnx \UseTemplate { background / headline } { block }
       { fill-color = \l_@@_color_expr_tl }
@@ -471,19 +471,19 @@
 % where the fill is set to false and only stroke is enabled. It uses
 % \meta{stroke-length} to indicate the progress.
 %    \begin{macrocode}
-\bool_new:N \l_@@_bg_headline_stroke_bool
-\tl_new:N \l_@@_bg_headline_stroke_color_tl
-\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\bool_new:N \l_@@_headline_stroke_bool
+\tl_new:N \l_@@_headline_stroke_color_tl
+\dim_new:N \l_@@_headline_stroke_linewidth_dim
 \RequirePackage { pretbg-block }
 \DeclareTemplateCode { background / headline } { progressbar } { 0 }
   {
-    stroke           = \l_@@_bg_headline_stroke_bool          ,
-    stroke-color     = \l_@@_bg_headline_stroke_color_tl      ,
-    stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
+    stroke           = \l_@@_headline_stroke_bool          ,
+    stroke-color     = \l_@@_headline_stroke_color_tl      ,
+    stroke-linewidth = \l_@@_headline_stroke_linewidth_dim
   }
   {
     \AssignTemplateKeys
-    \bool_if:NT \l_@@_bg_headline_stroke_bool
+    \bool_if:NT \l_@@_headline_stroke_bool
       {
         \pretbg_progressbar_get_progress:N \l_@@_progress_fp
         \dim_set:Nn \l_@@_stroke_length_dim 
@@ -492,8 +492,8 @@
           {
             fill             = false ,
             stroke           = true ,
-            stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
-            stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
+            stroke-color     = \l_@@_headline_stroke_color_tl ,
+            stroke-linewidth = \l_@@_headline_stroke_linewidth_dim ,
             stroke-length    = \l_@@_stroke_length_dim
           }
       }
@@ -503,29 +503,29 @@
 % vertical position, since there may be footnotes in the bottom of the body and
 % it is not suitable to add a progress bar at the position.
 %    \begin{macrocode}
-\bool_new:N \l_@@_bg_footline_stroke_bool
-\tl_new:N \l_@@_bg_footline_stroke_color_tl
-\dim_new:N \l_@@_bg_footline_stroke_linewidth_dim
+\bool_new:N \l_@@_footline_stroke_bool
+\tl_new:N \l_@@_footline_stroke_color_tl
+\dim_new:N \l_@@_footline_stroke_linewidth_dim
 \DeclareTemplateCode { background / footline } { progressbar } { 0 }
   {
-    stroke           = \l_@@_bg_footline_stroke_bool          ,
-    stroke-color     = \l_@@_bg_footline_stroke_color_tl      ,
-    stroke-linewidth = \l_@@_bg_footline_stroke_linewidth_dim
+    stroke           = \l_@@_footline_stroke_bool          ,
+    stroke-color     = \l_@@_footline_stroke_color_tl      ,
+    stroke-linewidth = \l_@@_footline_stroke_linewidth_dim
   }
   {
     \AssignTemplateKeys
-    \bool_if:NT \l_@@_bg_footline_stroke_bool
+    \bool_if:NT \l_@@_footline_stroke_bool
       {
         \pretbg_progressbar_get_progress:N \l_@@_progress_fp
         \dim_set:Nn \l_@@_stroke_length_dim 
           { \fp_use:N \l_@@_progress_fp \paperwidth }
         \color_group_begin:
-        \exp_args:NV \color_select:n \l_@@_bg_footline_stroke_color_tl
-        \linethickness { \dim_use:N \l_@@_bg_footline_stroke_linewidth_dim }
+        \exp_args:NV \color_select:n \l_@@_footline_stroke_color_tl
+        \linethickness { \dim_use:N \l_@@_footline_stroke_linewidth_dim }
         \put (
           0 ,
           - \dim_eval:n
-            { \paperheight - \l_@@_bg_footline_stroke_linewidth_dim / 2 }
+            { \paperheight - \l_@@_footline_stroke_linewidth_dim / 2 }
           )
           { \line ( 1 , 0 ) { \dim_use:N \l_@@_stroke_length_dim } }
         \color_group_end:
@@ -585,17 +585,17 @@
 %    \begin{macrocode}
 %<*img>
 %<@@=pretbg_img>
-\tl_new:N \l_@@_bg_canvas_img_tl
-\dim_new:N \l_@@_bg_canvas_margin_x_dim
-\dim_new:N \l_@@_bg_canvas_margin_y_dim
+\tl_new:N \l_@@_canvas_img_tl
+\dim_new:N \l_@@_canvas_margin_x_dim
+\dim_new:N \l_@@_canvas_margin_y_dim
 \tl_new:N \l_@@_x_pos_expr_tl
 \tl_new:N \l_@@_y_pos_expr_tl
 \box_new:N \l_@@_img_box
 \DeclareTemplateCode { background / canvas } { img } { 0 }
   {
-    img      = \l_@@_bg_canvas_img_tl ,
-    margin-x = \l_@@_bg_canvas_margin_x_dim ,
-    margin-y = \l_@@_bg_canvas_margin_y_dim ,
+    img      = \l_@@_canvas_img_tl ,
+    margin-x = \l_@@_canvas_margin_x_dim ,
+    margin-y = \l_@@_canvas_margin_y_dim ,
     pos      =
       {
         center       = 
@@ -608,42 +608,42 @@
         top-left     =
           {
             \tl_set:Nn \l_@@_x_pos_expr_tl
-              { \l_@@_bg_canvas_margin_x_dim }
+              { \l_@@_canvas_margin_x_dim }
             \tl_set:Nn \l_@@_y_pos_expr_tl
-              { - \box_ht:N \l_@@_img_box - \l_@@_bg_canvas_margin_y_dim }
+              { - \box_ht:N \l_@@_img_box - \l_@@_canvas_margin_y_dim }
           },
         top-right    =
           {
             \tl_set:Nn \l_@@_x_pos_expr_tl
               {
                 \paperwidth - \box_wd:N \l_@@_img_box
-                  - \l_@@_bg_canvas_margin_x_dim
+                  - \l_@@_canvas_margin_x_dim
               }
             \tl_set:Nn \l_@@_y_pos_expr_tl
-              { - \box_ht:N \l_@@_img_box - \l_@@_bg_canvas_margin_y_dim }
+              { - \box_ht:N \l_@@_img_box - \l_@@_canvas_margin_y_dim }
           },
         bottom-left  = 
           {
             \tl_set:Nn \l_@@_x_pos_expr_tl
-              { \l_@@_bg_canvas_margin_x_dim }
+              { \l_@@_canvas_margin_x_dim }
             \tl_set:Nn \l_@@_y_pos_expr_tl
-              { - \paperheight + \l_@@_bg_canvas_margin_y_dim }
+              { - \paperheight + \l_@@_canvas_margin_y_dim }
           },
         bottom-right =
           {
             \tl_set:Nn \l_@@_x_pos_expr_tl
               {
                 \paperwidth - \box_wd:N \l_@@_img_box
-                  - \l_@@_bg_canvas_margin_x_dim
+                  - \l_@@_canvas_margin_x_dim
               }
             \tl_set:Nn \l_@@_y_pos_expr_tl
-              { - \paperheight + \l_@@_bg_canvas_margin_y_dim }
+              { - \paperheight + \l_@@_canvas_margin_y_dim }
           }
       }
   }
   {
     \AssignTemplateKeys
-    \hbox_set:Nn \l_@@_img_box { \l_@@_bg_canvas_img_tl }
+    \hbox_set:Nn \l_@@_img_box { \l_@@_canvas_img_tl }
     \put ( \dim_eval:n { \l_@@_x_pos_expr_tl } ,
       \dim_eval:n { \l_@@_y_pos_expr_tl } )
       { \box_use:N \l_@@_img_box }

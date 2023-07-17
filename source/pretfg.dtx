@@ -222,26 +222,26 @@
   {
     \pretsec_register_name_title:nn { #1 } { #2 }
   }
-\tl_new:N \l_@@_fg_headline_title_tl
-\tl_new:N \l_@@_fg_headline_style_tl
+\tl_new:N \l_@@_headline_title_tl
+\tl_new:N \l_@@_headline_style_tl
 \tl_new:N \l_@@_cur_title_tl
 \DeclareTemplateCode { foreground / headline } { default } { 0 }
-  { style = \l_@@_fg_headline_style_tl }
+  { style = \l_@@_headline_style_tl }
   {
     \AssignTemplateKeys
     \pretsec_get_cur_title:N \l_@@_cur_title_tl
     \group_begin:
-      \l_@@_fg_headline_style_tl \l_@@_cur_title_tl
+      \l_@@_headline_style_tl \l_@@_cur_title_tl
     \group_end:
     \hfil
   }
-\tl_new:N \l_@@_fg_footline_style_tl
+\tl_new:N \l_@@_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { default } { 0 }
-  { style = \l_@@_fg_footline_style_tl }
+  { style = \l_@@_footline_style_tl }
   {
     \AssignTemplateKeys
     \group_begin:
-      \l_@@_fg_footline_style_tl
+      \l_@@_footline_style_tl
       \hfil
       \thepage
     \group_end:
@@ -272,15 +272,15 @@
     \pretsec_register_name_title:nn { #1 } { #2 }
     \pretsec_push_stack_name_title:nn { #1 } { #2 }
   }
-\tl_new:N \l_@@_fg_headline_parent_style_tl
-\tl_new:N \l_@@_fg_headline_child_style_tl
+\tl_new:N \l_@@_headline_parent_style_tl
+\tl_new:N \l_@@_headline_child_style_tl
 \seq_new:N \l_@@_parent_seq
 \tl_new:N \l_@@_parent_tl
 \tl_new:N \l_@@_child_tl
 \DeclareTemplateCode { foreground / headline } { dual } { 0 }
   {
-    parent-style = \l_@@_fg_headline_parent_style_tl ,
-    child-style = \l_@@_fg_headline_child_style_tl
+    parent-style = \l_@@_headline_parent_style_tl ,
+    child-style = \l_@@_headline_child_style_tl
   }
   {
     \AssignTemplateKeys
@@ -289,27 +289,27 @@
       \l_@@_child_tl
     \seq_if_empty:NTF \l_@@_parent_seq
       {
-        \l_@@_fg_headline_child_style_tl \l_@@_child_tl
+        \l_@@_headline_child_style_tl \l_@@_child_tl
       }
       {
         \seq_get:NN \l_@@_parent_seq \l_@@_parent_tl
         \vbox:n
           {
-            \l_@@_fg_headline_parent_style_tl \l_@@_parent_tl
+            \l_@@_headline_parent_style_tl \l_@@_parent_tl
             \skip_vertical:N \c_zero_dim
-            \l_@@_fg_headline_child_style_tl \l_@@_child_tl
+            \l_@@_headline_child_style_tl \l_@@_child_tl
           }
       }
     \group_end:
     \hfil
   }
-\tl_new:N \l_@@_fg_footline_style_tl
+\tl_new:N \l_@@_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { dual } { 0 }
-  { style = \l_@@_fg_footline_style_tl }
+  { style = \l_@@_footline_style_tl }
   {
     \AssignTemplateKeys
     \group_begin:
-      \l_@@_fg_footline_style_tl
+      \l_@@_footline_style_tl
       \@title
       \hfil
       \thepage
@@ -335,16 +335,16 @@
     \pretsec_register_name_title:nn { #1 } { #2 }
     \pretsec_push_stack_name_title:nn { #1 } { #2 }
   }
-\tl_new:N \l_@@_fg_headline_parent_style_tl
-\tl_new:N \l_@@_fg_headline_child_style_tl
-\tl_new:N \l_@@_fg_headline_parent_separator_tl
+\tl_new:N \l_@@_headline_parent_style_tl
+\tl_new:N \l_@@_headline_child_style_tl
+\tl_new:N \l_@@_headline_parent_separator_tl
 \seq_new:N \l_@@_parent_seq
 \tl_new:N \l_@@_child_tl
 \DeclareTemplateCode { foreground / headline } { cascade } { 0 }
   {
-    parent-style = \l_@@_fg_headline_parent_style_tl ,
-    child-style = \l_@@_fg_headline_child_style_tl ,
-    parent-separator = \l_@@_fg_headline_parent_separator_tl
+    parent-style = \l_@@_headline_parent_style_tl ,
+    child-style = \l_@@_headline_child_style_tl ,
+    parent-separator = \l_@@_headline_parent_separator_tl
   }
   {
     \AssignTemplateKeys
@@ -353,29 +353,29 @@
       \l_@@_child_tl
     \seq_if_empty:NTF \l_@@_parent_seq
       {
-        \l_@@_fg_headline_child_style_tl \l_@@_child_tl
+        \l_@@_headline_child_style_tl \l_@@_child_tl
       }
       {
         \seq_reverse:N \l_@@_parent_seq
         \vbox:n
           {
-            \l_@@_fg_headline_parent_style_tl
+            \l_@@_headline_parent_style_tl
             \seq_use:Nn \l_@@_parent_seq
-              { \l_@@_fg_headline_parent_separator_tl }
+              { \l_@@_headline_parent_separator_tl }
             \skip_vertical:N \c_zero_dim
-            \l_@@_fg_headline_child_style_tl \l_@@_child_tl
+            \l_@@_headline_child_style_tl \l_@@_child_tl
           }
       }
     \group_end:
     \hfil
   }
-\tl_new:N \l_@@_fg_footline_style_tl
+\tl_new:N \l_@@_footline_style_tl
 \DeclareTemplateCode { foreground / footline } { cascade } { 0 }
-  { style = \l_@@_fg_footline_style_tl }
+  { style = \l_@@_footline_style_tl }
   {
     \AssignTemplateKeys
     \group_begin:
-      \l_@@_fg_footline_style_tl
+      \l_@@_footline_style_tl
       \@author
       \hfil
       \@title
@@ -398,25 +398,25 @@
 %<*img>
 %<@@=pretfg_img>
 \RequirePackage { pretbg-img }
-\tl_new:N \l_@@_fg_canvas_img_tl
-\tl_new:N \l_@@_fg_canvas_pos_tl
-\dim_new:N \l_@@_fg_canvas_margin_x_dim
-\dim_new:N \l_@@_fg_canvas_margin_y_dim
+\tl_new:N \l_@@_canvas_img_tl
+\tl_new:N \l_@@_canvas_pos_tl
+\dim_new:N \l_@@_canvas_margin_x_dim
+\dim_new:N \l_@@_canvas_margin_y_dim
 \DeclareTemplateCode { foreground / canvas } { img } { 0 }
   {
-    img      = \l_@@_fg_canvas_img_tl ,
-    pos      = \l_@@_fg_canvas_pos_tl ,
-    margin-x = \l_@@_fg_canvas_margin_x_dim ,
-    margin-y = \l_@@_fg_canvas_margin_y_dim
+    img      = \l_@@_canvas_img_tl ,
+    pos      = \l_@@_canvas_pos_tl ,
+    margin-x = \l_@@_canvas_margin_x_dim ,
+    margin-y = \l_@@_canvas_margin_y_dim
   }
   {
     \AssignTemplateKeys
     \UseTemplate { background / canvas } { img }
       {
-        img      = \l_@@_fg_canvas_img_tl ,
-        pos      = \l_@@_fg_canvas_pos_tl ,
-        margin-x = \l_@@_fg_canvas_margin_x_dim ,
-        margin-y = \l_@@_fg_canvas_margin_y_dim
+        img      = \l_@@_canvas_img_tl ,
+        pos      = \l_@@_canvas_pos_tl ,
+        margin-x = \l_@@_canvas_margin_x_dim ,
+        margin-y = \l_@@_canvas_margin_y_dim
       }
   }
 %</img>
