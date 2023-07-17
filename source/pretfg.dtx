@@ -44,6 +44,7 @@
 % \TemplateSemantics Handle sectioning marks.\\
 % \previewtest[page=4]{sectioning}
 %    \begin{macrocode}
+%<*default>
 \DeclareTemplateInterface { foreground / sectioning } { default } { 2 }
   { }
 %    \end{macrocode}
@@ -53,7 +54,6 @@
 % \TemplateKey{style}{tokenlist}{Style of the headline text.}{\cs{Large}}
 % \TemplateSemantics Default single headline style.
 %    \begin{macrocode}
-%<*default>
 \DeclareTemplateInterface { foreground / headline } { default } { 0 }
   { style : tokenlist = \Large }
 %    \end{macrocode}
@@ -83,6 +83,7 @@
 % titles.\\
 % \previewtest[page=4]{dual}
 %    \begin{macrocode}
+%<*dual>
 \DeclareTemplateInterface { foreground / sectioning } { dual } { 2 }
   { }
 %    \end{macrocode}
@@ -94,7 +95,6 @@
 % \TemplateSemantics Display the parent level (except the empty nodes) and
 % the current level titles.
 %    \begin{macrocode}
-%<*dual>
 \DeclareTemplateInterface { foreground / headline } { dual } { 0 }
   { 
     parent-style : tokenlist = \normalsize ,
@@ -120,6 +120,7 @@
 % multi-level titles and the child title.\\
 % \previewtest[page=5]{cascade}
 %    \begin{macrocode}
+%<*cascade>
 \DeclareTemplateInterface { foreground / sectioning } { cascade } { 2 }
   { }
 %    \end{macrocode}
@@ -133,7 +134,6 @@
 % \TemplateSemantics Display all the parent level titles separated by the
 % parent-separator and the current level title.
 %    \begin{macrocode}
-%<*cascade>
 \DeclareTemplateInterface { foreground / headline } { cascade } { 0 }
   { 
     parent-style : tokenlist = \normalsize ,
