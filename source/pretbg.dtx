@@ -122,6 +122,8 @@
 % \end{TemplateDescription}
 %
 % \begin{TemplateDescription}{background/headline}{progressbar}
+% \label{tpl:pretbg-progressbar-headline}
+% \TemplateKey{stroke}{boolean}{whether headline progressbar is enabled}{true}
 % \TemplateKey{stroke-color}{tokenlist}{stroke color of the progressbar}{black}
 % \TemplateKey{stroke-linewidth}{length}{stroke linewidth of the progressbar}{1pt}
 % \TemplateSemantics A progressbar style to indicate the page progress compared
@@ -132,8 +134,30 @@
 %<*progressbar>
 \DeclareTemplateInterface { background / headline } { progressbar } { 0 }
   {
+    stroke           : boolean   = true ,
     stroke-color     : tokenlist = black ,
     stroke-linewidth : length    = 1pt
+  }
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
+% \begin{TemplateDescription}{background/footline}{progressbar}
+% \label{tpl:pretbg-progressbar-footline}
+% \TemplateKey{stroke}{boolean}{whether footline progressbar is enabled}{false}
+% \TemplateKey{stroke-color}{tokenlist}{stroke color of the progressbar}{black}
+% \TemplateKey{stroke-linewidth}{length}{stroke linewidth of the progressbar}{2pt}
+% \TemplateSemantics Similar to \texttt{background/headline/progressbar} in
+% Section \ref{tpl:pretbg-progressbar-headline}, but in the bottom of the
+% footline (or the page). The default value for \meta{stroke-linewidth} is
+% increased to 2pt to make it a little more noticeable. The footline progressbar
+% is initially disabled since the headline progressbar is initially enabled.\\
+% \previewtest[page=5]{progressbar}
+%    \begin{macrocode}
+\DeclareTemplateInterface { background / footline } { progressbar } { 0 }
+  {
+    stroke           : boolean   = false ,
+    stroke-color     : tokenlist = black ,
+    stroke-linewidth : length    = 2pt
   }
 %</progressbar>
 %    \end{macrocode}
@@ -236,6 +260,10 @@
 %                          \frac{\cs{baselineskip}}{2} \\
 %   \meta{footline height} =&\,\cs{paperheight} - \meta{footline top}
 % \end{align*}
+% What's more, there may be footnotes in the position, which could mess up the
+% layout. That's why \texttt{background/footline/progress} template in Section
+% \ref{tpl:pretbg-progressbar-footline} uses the bottom of the page to place
+% the progressbar.
 % \end{texnote}
 %    \begin{macrocode}
 %<*block>
@@ -409,11 +437,13 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{background/headline/progressbar}
+% \begin{macro}[int]{
+%   \pretbg_progressbar_get_progress:N,
+%   background/headline/progressbar,
+%   background/footline/progressbar}
 % \textbf{\pkg{progressbar} style.}
-% This style is based on \pkg{pretbg-block} style. The fill is set to false.
-% Only uses stroke-length to indicate the progress. The progress is calculated
-% by
+% A common function \cs{pretbg_progressbar_get_progress:N} is defined to
+% calculate the progress. The progress is calculated by
 % \begin{equation*}
 %   \meta{progress} = \frac{\cs{thepage}}{\cs{PreviousTotalPages}}
 % \end{equation*}
@@ -422,30 +452,83 @@
 %    \begin{macrocode}
 %<*progressbar>
 %<@@=pretbg_progressbar>
-\RequirePackage { pretbg-block }
-\tl_new:N \l_@@_bg_headline_stroke_color_tl
-\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\cs_new:Npn \pretbg_progressbar_get_progress:N #1
+  {
+    \int_compare:nNnTF { \PreviousTotalPages } = { 0 }
+      { \fp_set:Nn #1 { 1.0 } }
+      { \fp_set:Nn #1 { \thepage / \PreviousTotalPages } }
+  }
+%    \end{macrocode}
+% Common variables \cs{l_@@_progress_fp} and \cs{l_@@_stroke_length_dim} are
+% used to store the progress and the stroke length respectively.
+% (There is only one progress in the same page.)
+%    \begin{macrocode}
 \fp_new:N \l_@@_progress_fp
 \dim_new:N \l_@@_stroke_length_dim
+%    \end{macrocode}
+% \texttt{background/headline/progressbar} is based on \pkg{pretbg-block} style
+% to reuse the calculation of the vertical position of the bottom of headline,
+% where the fill is set to false and only stroke is enabled. It uses
+% \meta{stroke-length} to indicate the progress.
+%    \begin{macrocode}
+\bool_new:N \l_@@_bg_headline_stroke_bool
+\tl_new:N \l_@@_bg_headline_stroke_color_tl
+\dim_new:N \l_@@_bg_headline_stroke_linewidth_dim
+\RequirePackage { pretbg-block }
 \DeclareTemplateCode { background / headline } { progressbar } { 0 }
   {
+    stroke           = \l_@@_bg_headline_stroke_bool          ,
     stroke-color     = \l_@@_bg_headline_stroke_color_tl      ,
     stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim
   }
   {
     \AssignTemplateKeys
-    \int_compare:nNnTF { \PreviousTotalPages } = { 0 }
-      { \fp_set:Nn \l_@@_progress_fp { 1.0 } }
-      { \fp_set:Nn \l_@@_progress_fp { \thepage / \PreviousTotalPages } }
-    \dim_set:Nn \l_@@_stroke_length_dim 
-      { \fp_use:N \l_@@_progress_fp \paperwidth }
-    \exp_args:Nnnx \UseTemplate { background / headline } { block }
+    \bool_if:NT \l_@@_bg_headline_stroke_bool
       {
-        fill             = false ,
-        stroke           = true ,
-        stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
-        stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
-        stroke-length    = \l_@@_stroke_length_dim
+        \pretbg_progressbar_get_progress:N \l_@@_progress_fp
+        \dim_set:Nn \l_@@_stroke_length_dim 
+          { \fp_use:N \l_@@_progress_fp \paperwidth }
+        \exp_args:Nnnx \UseTemplate { background / headline } { block }
+          {
+            fill             = false ,
+            stroke           = true ,
+            stroke-color     = \l_@@_bg_headline_stroke_color_tl ,
+            stroke-linewidth = \l_@@_bg_headline_stroke_linewidth_dim ,
+            stroke-length    = \l_@@_stroke_length_dim
+          }
+      }
+  }
+%    \end{macrocode}
+% \texttt{background/footline/progressbar} uses the bottom of the page as the
+% vertical position, since there may be footnotes in the bottom of the body and
+% it is not suitable to add a progress bar at the position.
+%    \begin{macrocode}
+\bool_new:N \l_@@_bg_footline_stroke_bool
+\tl_new:N \l_@@_bg_footline_stroke_color_tl
+\dim_new:N \l_@@_bg_footline_stroke_linewidth_dim
+\DeclareTemplateCode { background / footline } { progressbar } { 0 }
+  {
+    stroke           = \l_@@_bg_footline_stroke_bool          ,
+    stroke-color     = \l_@@_bg_footline_stroke_color_tl      ,
+    stroke-linewidth = \l_@@_bg_footline_stroke_linewidth_dim
+  }
+  {
+    \AssignTemplateKeys
+    \bool_if:NT \l_@@_bg_footline_stroke_bool
+      {
+        \pretbg_progressbar_get_progress:N \l_@@_progress_fp
+        \dim_set:Nn \l_@@_stroke_length_dim 
+          { \fp_use:N \l_@@_progress_fp \paperwidth }
+        \color_group_begin:
+        \exp_args:NV \color_select:n \l_@@_bg_footline_stroke_color_tl
+        \linethickness { \dim_use:N \l_@@_bg_footline_stroke_linewidth_dim }
+        \put (
+          0 ,
+          - \dim_eval:n
+            { \paperheight - \l_@@_bg_footline_stroke_linewidth_dim / 2 }
+          )
+          { \line ( 1 , 0 ) { \dim_use:N \l_@@_stroke_length_dim } }
+        \color_group_end:
       }
   }
 %</progressbar>

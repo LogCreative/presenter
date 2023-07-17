@@ -23,6 +23,8 @@ Testing the text in the subsection.
 Testing the text in the subsubsection.
 
 \paragraph{A point}
+\EditPresenterBackground{headline}{stroke=false}
+\EditPresenterBackground{footline}{stroke=true}
 
 Testing the text in the paragraph.
 
