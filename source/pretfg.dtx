@@ -23,10 +23,12 @@
 %<default>  {pretfg-default}
 %<dual>  {pretfg-dual}
 %<cascade>  {pretfg-cascade}
+%<img>  {pretfg-img}
   {2023-07-07}{0.5.0}
 %<default>  {default foreground style for presenter}
 %<dual>  {dual foreground style for presenter}
 %<cascade>  {cascade foreground style for presenter}
+%<img>  {img foreground style for presenter}
 %</package>
 % \fi
 %
@@ -154,16 +156,42 @@
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
+% \begin{TemplateDescription}{foreground/canvas}{img}
+% \TemplateKey{img}{tokenlist}{image insertion control sequences}{}
+% \TemplateKey{pos}{choice}{one of center position \texttt{center}, or corner
+%   position \texttt{top-left}, \texttt{top-right}, \texttt{bottom-left},
+%   \texttt{bottom-right}}{center}
+% \TemplateKey{margin-x}{length}{image margin in horizontal direction}{0cm}
+% \TemplateKey{margin-y}{length}{image margin in vertical direction}{0cm}
+% \TemplateSemantics Alias to template \texttt{background/canvas/img} in
+% Section \ref{tpl:pretbg-img} but in the \texttt{foreground/canvas} layer.
+% Use this template to make sure the \meta{img} will not be covered by the
+% text in the body.
+%    \begin{macrocode}
+%<*img>
+\DeclareTemplateInterface { foreground / canvas } { img } { 0 }
+  {
+    img      : tokenlist = ,
+    pos      : tokenlist = center ,
+    margin-x : length    = 0cm ,
+    margin-y : length    = 0cm
+  }
+%</img>
+%    \end{macrocode}
+% \end{TemplateDescription}
+%
 % \end{documentation}
 %
 % \begin{implementation}
 %
 % \subsection{Implementation Code}
 %
-% Most of the foreground style requires the sectioning information provided by
+% Most of the foreground styles require the sectioning information provided by
 % package \pkg{pretsec}.
 %    \begin{macrocode}
+%<*!img>
 \RequirePackage { pretsec }
+%</!img>
 %    \end{macrocode}
 %
 % \begin{texnote}
@@ -356,6 +384,42 @@
     \group_end:
   }
 %</cascade>
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{foreground/canvas/img}
+% \textbf{\pkg{img} style.}
+% This style is an alias to \texttt{background/canvas/img}.
+% \begin{texnote}
+% The use of \cs{UseTemplate} here does not under \cs{exp_args} since the
+% special parsing of \verb"choice" type key could not take that.
+% \end{texnote}
+%    \begin{macrocode}
+%<*img>
+%<@@=pretfg_img>
+\RequirePackage { pretbg-img }
+\tl_new:N \l_@@_fg_canvas_img_tl
+\tl_new:N \l_@@_fg_canvas_pos_tl
+\dim_new:N \l_@@_fg_canvas_margin_x_dim
+\dim_new:N \l_@@_fg_canvas_margin_y_dim
+\DeclareTemplateCode { foreground / canvas } { img } { 0 }
+  {
+    img      = \l_@@_fg_canvas_img_tl ,
+    pos      = \l_@@_fg_canvas_pos_tl ,
+    margin-x = \l_@@_fg_canvas_margin_x_dim ,
+    margin-y = \l_@@_fg_canvas_margin_y_dim
+  }
+  {
+    \AssignTemplateKeys
+    \UseTemplate { background / canvas } { img }
+      {
+        img      = \l_@@_fg_canvas_img_tl ,
+        pos      = \l_@@_fg_canvas_pos_tl ,
+        margin-x = \l_@@_fg_canvas_margin_x_dim ,
+        margin-y = \l_@@_fg_canvas_margin_y_dim
+      }
+  }
+%</img>
 %    \end{macrocode}
 % \end{macro}
 %

@@ -139,7 +139,7 @@
 %    \end{macrocode}
 % \end{TemplateDescription}
 %
-% \begin{TemplateDescription}{background/canvas}{img}
+% \begin{TemplateDescription}{background/canvas}{img}\label{tpl:pretbg-img}
 % \TemplateKey{img}{tokenlist}{image insertion control sequences}{}
 % \TemplateKey{pos}{choice}{one of center position \texttt{center}, or corner
 %   position \texttt{top-left}, \texttt{top-right}, \texttt{bottom-left},
@@ -353,6 +353,15 @@
 % \meta{from-color} will be normalized first with the possible appendence of
 % \texttt{!white}, which is not necessary for \meta{to-color} because it is
 % the tail of the color expression.
+%
+% \begin{texnote}
+% The color expression implemented in \file{l3color.dtx} uses the argument
+% detection loop to split the expression by \texttt{!} (see
+% \cs{\__color_parse_loop:w} in \file{l3color.dtx}), which will not expand the
+% \LaTeX3 variables in the argument automatically. When assigning template
+% values for the color key, \cs{exp_args} is required to instantialize the
+% variable for further parsing.
+% \end{texnote}
 %    \begin{macrocode}
 %<*secblock>
 %<@@=pretbg_secblock>
