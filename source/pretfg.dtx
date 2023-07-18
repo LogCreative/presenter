@@ -214,7 +214,7 @@
 %
 % \begin{macro}[int]{foreground/headline/default,foreground/sectioning/default,
 %   foreground/footline/default,foreground/canvas/default}
-% \textbf{\pkg{default} style.}
+% \textbf{\pkg{default} foreground style.}
 %    \begin{macrocode}
 %<*default>
 %<@@=pretfg_default>
@@ -254,7 +254,7 @@
 %
 % \begin{macro}[int]{foreground/headline/dual,foreground/sectioning/dual,
 %   foreground/footline/dual}
-% \textbf{\pkg{dual} style.}
+% \textbf{\pkg{dual} foreground style.}
 % It seems to be in horizontal mode in the header, use a \cs{vbox} to create a
 % vertical mode environment in order to adjust the vertical position of the
 % titles.
@@ -322,7 +322,7 @@
 %
 % \begin{macro}[int]{foreground/headline/cascade,foreground/sectioning/cascade,
 %   foreground/footline/cascade}
-% \textbf{\pkg{cascade} style.}
+% \textbf{\pkg{cascade} foreground style.}
 % Almost the same as \pkg{dual} style. But all the parent nodes are displayed.
 % Since the parent sequence returned from \cs{pretsec_get_stack_parent_child_title:NN}
 % is in the reversed order, when displaying it, reverese the sequence first.
@@ -389,7 +389,7 @@
 % \end{macro}
 %
 % \begin{macro}[int]{foreground/canvas/img}
-% \textbf{\pkg{img} style.}
+% \textbf{\pkg{img} foreground style.}
 % This style is an alias to \texttt{background/canvas/img}.
 % \begin{texnote}
 % The use of \cs{UseTemplate} here does not under \cs{exp_args} since the
