@@ -67,6 +67,41 @@
 
 \tableofcontents
 
+\vfil\vfil
+
+{
+
+\small
+
+GitHub Repository: \url{https://github.com/LogCreative/presenter}
+
+You could ask regular questions in
+\href{https://github.com/LogCreative/presenter/discussions}{Discussions}, report
+bugs in \href{https://github.com/LogCreative/presenter/issues}{Issues} or
+contribute to this project in
+\href{https://github.com/LogCreative/presenter/pulls}{Pull Requests}.
+
+\vfil
+
+Copyright \copyright{} 2023 Log Creative
+(\href{mailto:logcreative@outlook.com}{\texttt{logcreative@outlook.com}})
+
+This work may be distributed and/or modified under the
+conditions of the \LaTeX{} Project Public License, either version 1.3
+of this license or (at your option) any later version.
+The latest version of this license is in
+  \url{http://www.latex-project.org/lppl.txt}
+and version 1.3 or later is part of all distributions of \LaTeX{}
+version 2005/12/01 or later.
+
+This work has the LPPL maintenance status `maintained'.
+ 
+The Current Maintainer of this work is Log Creative.
+
+}
+
+\clearpage
+
 \begin{documentation}
 
   \section{Introduction}
@@ -134,20 +169,43 @@
     However, if you want to use \tn{chapter} level, pass the \verb"report"
     option to the document class \cls{presenter}. The default is \verb"article"
     based.
+
+    \begin{texnote}
+      It sounds not okay to use \cls{book} class as the base document class, since
+      they are typically pretty long. But if you want to use it as the base class,
+      or any other document class, use the package \pkg{presenter} instead.
+      \begin{verbatim}
+        \documentclass{book}
+        \usepackage{presenter}
+        \begin{document}
+          \chapter{Beginning of Everything}
+          This is the beginning of everything.
+        \end{document}
+      \end{verbatim}
+    \end{texnote}
   \end{function}
 
+  You can change the page style to \texttt{empty} after the sectioning commands
+  to remove the headline and footline temporarily. For example, you could create
+  a thank you page in this way (use \verb"\vspace*{5ex}" to make a vertical
+  space if you like):
+  \begin{verbatim}
+    \documentclass{presenter}
+    \begin{document}
+      \paragraph{}
+      \thispagestyle{empty}
+      \begin{center}
+        \Huge Thank you!
+      \end{center}
+    \end{document}
+  \end{verbatim}
+
   \begin{texnote}
-    It sounds not okay to use \cls{book} class as the base document class, since
-    they are typically pretty long. But if you want to use it as the base class,
-    or any other document class, use the package \pkg{presenter} instead.
-    \begin{verbatim}
-      \documentclass{book}
-      \usepackage{presenter}
-      \begin{document}
-        \chapter{Beginning of Everything}
-        This is the beginning of everything.
-      \end{document}
-    \end{verbatim}
+    Currently, there are three page styles supported by \presenter{}:
+    \texttt{empty} (no headline or footline, empty page for highlighting contents),
+    \texttt{plain} (which is used in the part page currently, only footline)
+    and \texttt{presenterpage} (a replacement of \texttt{headings}, both headline
+    and footline are displayed).
   \end{texnote}
 
   \section{Templates}
