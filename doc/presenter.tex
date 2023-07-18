@@ -27,6 +27,7 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{booktabs}
+\usepackage{l3draw}
 
 % Preview test PDF, should use `l3build check' first before `l3build doc'.
 \usepackage{graphicx}
@@ -153,12 +154,62 @@
 
   \section{Templates}
 
+  \subsection{Decomposition}
+
+  \presenter{} page can be divided into two major layers: \texttt{background}
+  and \texttt{foreground}. There are several components inside each layer to
+  composite the page, as is shown in Figure~\ref{fig:tpldecomp}. These layers
+  are rendered in this order to overlay one after another.
+
+  \begin{figure}
+  \ExplSyntaxOn
+  \draw_begin:
+  \hbox_set:Nn \l_tmpa_box { \fbox{\texttt{foreground/sectioning}} }
+  \draw_box_use:N \l_tmpa_box
+  \draw_transform_shift:n { ( -5cm , -6.4cm ) }
+  \draw_transform_xscale:n { 0.7 }
+  \draw_transform_yslant:n { 0.3 }
+  \hbox_set:Nn \l_tmpa_box { \previewtest[page=1]{decomp} }
+  \draw_box_use:N \l_tmpa_box
+  \draw_transform_xshift:n { 4cm }
+  \hbox_set:Nn \l_tmpa_box { \previewtest[page=2]{decomp} }
+  \draw_box_use:N \l_tmpa_box
+  \draw_transform_xshift:n { 4cm }
+  \hbox_set:Nn \l_tmpa_box { \previewtest[page=3]{decomp} }
+  \draw_box_use:N \l_tmpa_box
+  \draw_end:
+  \ExplSyntaxOff
+  \caption{Template Decomposition}
+  \label{fig:tpldecomp}
+  \end{figure}
+
+  \begin{description}
+    \item[\texttt{background}] currently contains three components: 
+      \texttt{canvas}, \texttt{headline}, and \texttt{footline}.
+      \begin{description}
+        \item[\texttt{background/canvas}] The bottom layer.
+        \item[\texttt{background/headline}] The headline background.
+          If there is no headline on the page, then this layer won't get rendered.
+        \item[\texttt{background/footline}] The footline background.
+          If there is no footline on the page, then this layer won't get rendered. 
+      \end{description}
+    \item[\texttt{foreground}] currently contains four components:
+      \texttt{sectioning}, \texttt{headline}, \texttt{footline} and \texttt{canvas}.
+      \begin{description}
+        \item[\texttt{foreground/sectioning}] A special layer handling the
+          sectioning logic during processing the body. The information processed
+          in this layer could be used globally (both \texttt{background} and
+          \texttt{foreground}).
+        \item[\texttt{foreground/headline}] The headline text.
+        \item[\texttt{foreground/footline}] The footline text.
+        \item[\texttt{foreground/canvas}] The top layer. 
+      \end{description}
+  \end{description}
+
   \presenter{} provides some built-in templates for changing the visual
-  presentation. The following command provides the interfaces for loading or
-  editing the theme.
-  
-  You could visit the \texttt{testfiles/} folder for the code example of using
-  these themes.
+  presentation of these components. The following command provides the
+  interfaces for loading or editing them. You could visit the \texttt{testfiles/}
+  folder for the code example of using these templates.
 
   \subsection{Load Templates}
 

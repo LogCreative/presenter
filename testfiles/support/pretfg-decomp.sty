@@ -1,0 +1,40 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage
+  {pretfg-decomp}
+  {2023-07-07}{0.5.0}
+  {decomp foreground style for presenter (only for doc)}
+\DeclareTemplateInterface { foreground / sectioning } { decomp } { 2 } { }
+\DeclareTemplateInterface { foreground / headline } { decomp } { 0 } { }
+\DeclareTemplateInterface { foreground / footline } { decomp } { 0 } { }
+\DeclareTemplateInterface { foreground / canvas } { decomp } { 0 } { }
+\RequirePackage { pretfg-default, pretfg-img }
+\DeclareTemplateCode { foreground / sectioning } { decomp } { 2 } { }
+  {
+    \UseTemplate { foreground / sectioning } { default } { } { #1 } { #2 }
+  }
+\DeclareTemplateCode { foreground / headline } { decomp } { 0 } { }
+  {
+    \Huge \hfill \texttt{foreground/headline} \hfill
+  }
+\DeclareTemplateCode { foreground / footline } { decomp } { 0 } { }
+  {
+    \Huge \hfill \texttt{foreground/footline} \hfill
+  }
+\DeclareTemplateCode { foreground / canvas } { decomp } { 0 } { }
+  {
+    \UseTemplate { foreground / canvas } { img } {
+      img = {
+        \begin { picture } ( \paperwidth , \paperheight )
+          % foreground canvas block
+          \color_select:n { black ! 3 }
+          \linethickness { \paperheight }
+          \put ( 0 , \paperheight / 2 )
+            { \line ( 1 , 0 ) { \paperwidth } }
+          % foreground canvas text
+          \color_select:n { black }
+          \put ( \paperwidth / 2 , \paperheight / 2 )
+            { \hbox_overlap_center:n { \Huge \texttt { foreground / canvas } } }
+        \end { picture }
+      }
+    }
+  }

@@ -8,6 +8,7 @@ typesetfiles     = {"presenter.tex"}
 sourcefiledir    = "source"
 
 testfiledir      = "testfiles"
+testsuppdir      = testfiledir .. "/support"
 
 maindir          = "."
 builddir         = maindir .. "/build"
