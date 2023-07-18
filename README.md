@@ -6,8 +6,6 @@ regular LaTeX documents without many modifications, which could be natively run 
 
 Compared to other existing packages, presenter won't need any additional frame or slide environment to split different pages, but uses sectioning commands as the natural way to split different points.
 
-**This project is still a Work In Progress (WIP).**
-
 ## Usage
 
 Since it is still in the development state, you need to unpack the dtx files before using the package. Use the command
@@ -15,12 +13,12 @@ Since it is still in the development state, you need to unpack the dtx files bef
 ```
 l3build unpack
 ```
-or
+to get the unpacked style files in the folder `build/local` use or
 ```
 cd source
 latex presenter.ins
 ```
-to get the unpacked style files as the dependency of your document. Or you could install the tds zip `presenter.tds.zip` from the release section to your computer for global use.
+to get the unpacked style files in the folder `source/` as the dependency of your document. Or you could install the tds zip `presenter.tds.zip` from the release section to your computer for global use.
 
 ## Examples
 
