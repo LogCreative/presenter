@@ -8,17 +8,18 @@ Compared to other existing packages, presenter won't need any additional frame o
 
 ## Usage
 
-Since it is still in the development state, you need to unpack the dtx files before using the package. Use the command
+Since it is still in the development state, you need to unpack the dtx files before using the package. There are three methods to get the unpacked style `.sty` files:
 
+- Use the command to get the unpacked style files in the folder `build/local`.
 ```
 l3build unpack
 ```
-to get the unpacked style files in the folder `build/local` use or
+- Use the command to get the unpacked style files in the folder `source/`.
 ```
 cd source
 latex presenter.ins
 ```
-to get the unpacked style files in the folder `source/` as the dependency of your document. Or you could install the tds zip `presenter.tds.zip` from the release section to your computer for global use.
+- Install the tds zip `presenter.tds.zip` from the [Releases](https://github.com/LogCreative/presenter/releases) section to your computer for global use.
 
 ## Examples
 
