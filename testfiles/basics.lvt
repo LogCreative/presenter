@@ -2,5 +2,6 @@
 \documentclass{presenter}
 \begin{document}
 \START
+\section{Get Started}
 Hello, world!
 \end{document}
