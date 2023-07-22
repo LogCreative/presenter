@@ -44,8 +44,7 @@ Hello, world!
 \end{document}
 ```
 
-<img width="440" alt="presenter" src="https://user-images.githubusercontent.com/61653082/225827335-07178eea-95af-4bed-adeb-f401ea97f997.png">
-
+<img width="440" alt="presenter" src="https://github.com/LogCreative/presenter/assets/61653082/e1dd9651-2d7e-4570-b97c-55d0db6cfe81">
 
 ```latex
 \documentclass{presenter}
