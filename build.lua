@@ -3,7 +3,7 @@
 module           = "presenter"
 
 docfiledir       = "doc"
-typesetfiles     = {"presenter.tex"}
+typesetfiles     = {"presenter-doc.tex"}
 
 sourcefiledir    = "source"
 
@@ -16,12 +16,13 @@ testdir          = builddir .. "/test"
 typesetdir       = builddir .. "/doc"
 -- prepare the test pdf in the doc
 function docinit_hook()
+    cp("*.lvt", testfiledir, typesetdir)
     cp("*.pdf", testdir, typesetdir)
     return 0
 end
 
 -- Simple tagging, copyright information needs manual update.
-tagfiles         = {"*.dtx","presenter.tex"}
+tagfiles         = {"*.dtx","presenter-doc.tex"}
 function update_tag(file, content, tagname, tagdate)
     local iso = "%d%d%d%d%-%d%d%-%d%d"
     local ver = "%d.%d.%d"
