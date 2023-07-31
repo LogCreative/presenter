@@ -4,34 +4,7 @@ A LaTeX presentation framework with seamless migration
 presenter is a package to create presentations from
 regular LaTeX documents without many modifications, which could be natively run by any latest TeX distributions.
 
-Compared to other existing packages, presenter won't need any additional frame or slide environment to split different pages, but uses sectioning commands as the natural way to split different points.
-
-## Usage
-
-Since it is still in the development state, you need to unpack the dtx files before using the package. There are three methods to get the unpacked style `.sty` files:
-
-- Use the command to get the unpacked style files in the folder `build/local`.
-```
-l3build unpack
-```
-- Use the command to get the unpacked style files in the folder `source/`.
-```
-cd source
-latex presenter.ins
-```
-- Install the tds zip `presenter.tds.zip` from the [Releases](https://github.com/LogCreative/presenter/releases) section to your computer for global use.
-
-## Examples
-
-You can see more examples in the [`testfiles/`](testfiles/) folder. Refer to the documentation for more instructions.
-
-## Documentation
-
-The test results from [`testfiles/`](testfiles/) are used in the documentation, thus to compile the documentation, the check should be run first.
-```
-l3build check
-l3build doc
-```
+Compared to other existing packages, presenter won't need any additional frame or slide environment to split different pages, but uses the original sectioning commands as the natural way to split different points.
 
 ## Demo
 
@@ -62,3 +35,13 @@ This is the content of this page.
 ```
 
 <img width="420" alt="bluepresenter" src="https://user-images.githubusercontent.com/61653082/225827991-a284fcab-ad4a-4da0-becf-d506053f961b.png">
+
+## License
+
+This work may be distributed and/or modified under the
+conditions of the [LaTeX Project Public License](http://www.latex-project.org/lppl.txt), either version 1.3
+of this license or (at your option) any later version.
+
+This work has the LPPL maintenance status "maintained".
+
+The Current Maintainer of this work is Log Creative.

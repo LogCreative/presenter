@@ -273,7 +273,9 @@
 % Insert the printed version numbers of sectioning counter \meta{name}.
 % This macro will compare the level of the \meta{name} with the counter
 % \verb"secnumdepth" to determine whether to print it out.
-% If it is printed out, a trailing hard space will be added.
+% If it is printed out, a trailing hard space will be added. The space is set
+% to \tn{quad}, which is the same setting of \tn{@seccntformat} from
+% \file{source2e.dtx} or the \cs{sectionmark} from \file{classes.dtx}.
 % \begin{arguments}
 %   \item name
 % \end{arguments}
@@ -285,6 +287,11 @@
     { \use:c { the#1 } \quad }
 }
 %    \end{macrocode}
+% \begin{texnote}
+% If you want to modify the space amount in the tail, you should redefine the
+% sectioning mark commands like \cs{sectionmark} directly. \cs{printsecnum} is
+% not necessary if you are confident about when to typeset the counter.
+% \end{texnote}
 % \end{macro}
 %
 % \begin{macro}[int]{\ps@empty}
@@ -407,6 +414,8 @@
 % NOTE: \cs{renewcommand} in \LaTeXe{} and \cs{RenewDocumentCommand} in \LaTeX3
 % are different, and don't use the latter one for time-critical work if not
 % necessary, and what's worse may turn into an error (in this case).
+%
+% TODO: Implement float types \verb"t" and \verb"b" for \presenter{}.
 %    \begin{macrocode}
 \renewcommand { \fps@figure } { hp }
 \renewcommand { \fps@table  } { hp }
