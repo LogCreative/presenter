@@ -50,20 +50,6 @@
     }
 }
 
-\usepackage{listings}
-\lstset{basicstyle=\ttfamily,flexiblecolumns}
-% Preview test code and PDF, the first two lines of lvt file will be deleted.
-\NewDocumentCommand{\previewtestfull}{O{} m}{
-  \begin{center}
-  \begin{minipage}[c]{0.45\textwidth}
-    \lstinputlisting[firstline=3]{#2.lvt}
-  \end{minipage}
-  \begin{minipage}[c]{0.5\textwidth}
-    \previewtest[#1]{#2}
-  \end{minipage}
-  \end{center}
-}
-
 % Make adjustment to TOC
 \makeatletter
 \renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{2.8em}}
@@ -156,14 +142,45 @@ package \cite{xtemplate}. \presenter{} highly recommends using the latest
 Using \cls{presenter} is very simple, just swap the line of \verb"\documentclass{article}"
 into \verb"\documentclass{presenter}" and you are almost done.
 
-\previewtestfull{basics}
+\begin{center}
+\begin{minipage}[c]{0.45\textwidth}
+\begin{verbatim}
+  \documentclass{presenter}
+  \begin{document}
+  \section{Get Started}
+  Hello, world!
+  \end{document}
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+  \previewtest{basics}
+\end{minipage}
+\end{center}
 
 You can change the page style to \texttt{empty} after the \tn{clearpage} or the
 sectioning commands to remove the headline and footline temporarily.
 For example, you could create a thank you page in this way
 (use \verb"\vspace*{5ex}" to make a vertical space):
 
-\previewtestfull{thankyou}
+\begin{center}
+\begin{minipage}[c]{0.45\textwidth}
+\begin{verbatim}
+  \documentclass{presenter}
+  \begin{document}
+  % previous contents ...
+  \clearpage
+  \thispagestyle{empty}
+  \vspace*{5ex}
+  \begin{center}
+    \Huge Thank you!
+  \end{center}
+  \end{document}
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+  \previewtest{thankyou}
+\end{minipage}
+\end{center}
 
 \begin{texnote}
   Currently, there are three page styles supported by \presenter{}:
@@ -186,7 +203,21 @@ For example, you could create a thank you page in this way
     they are typically pretty long. But if you want to use it as the base class,
     or any other document class, use the package \pkg{presenter} instead.
 
-    \previewtestfull{package}
+\begin{center}
+\begin{minipage}[c]{0.45\textwidth}
+\begin{verbatim}
+  \documentclass{book}
+  \usepackage{presenter}
+  \begin{document}
+  \chapter{Beginning of Everything}
+  This is the beginning of everything.
+  \end{document}
+\end{verbatim}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+  \previewtest{package}
+\end{minipage}
+\end{center}
   \end{texnote}
 \end{function}
 

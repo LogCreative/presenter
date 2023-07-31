@@ -16,7 +16,6 @@ testdir          = builddir .. "/test"
 typesetdir       = builddir .. "/doc"
 -- prepare the test pdf in the doc
 function docinit_hook()
-    cp("*.lvt", testfiledir, typesetdir)
     cp("*.pdf", testdir, typesetdir)
     return 0
 end
