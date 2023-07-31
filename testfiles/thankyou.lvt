@@ -1,0 +1,13 @@
+\input{regression-test}
+\documentclass{presenter}
+\begin{document}
+    \START
+    \paragraph{Previous paragraph}
+    Some contents about this.
+    \clearpage
+    \thispagestyle{empty}
+    \vspace*{5ex}
+    \begin{center}
+        \Huge Thank you!
+    \end{center}
+\end{document}

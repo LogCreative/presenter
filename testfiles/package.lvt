@@ -1,10 +1,8 @@
 \input{regression-test}
-\documentclass{article}
+\documentclass{book}
 \usepackage{presenter}
 \begin{document}
 \START
-\paragraph{presenter package}
-
-This page is loaded using presenter package.
-
+\chapter{Beginning of Everything}
+This is the beginning of everything.
 \end{document}
