@@ -1,9 +1,9 @@
 \input{regression-test}
+\AtBeginDocument{\START}
 \documentclass{presenter}
 \LoadPresenterBackground{block}
 \EditPresenterBackground{headline}{stroke=true}
 \begin{document}
-\START
 
 \paragraph{Some text}
 

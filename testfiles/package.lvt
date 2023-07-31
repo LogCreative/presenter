@@ -1,8 +1,8 @@
 \input{regression-test}
+\AtBeginDocument{\START}
 \documentclass{book}
 \usepackage{presenter}
 \begin{document}
-\START
 \chapter{Beginning of Everything}
 This is the beginning of everything.
 \end{document}

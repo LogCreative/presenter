@@ -1,8 +1,8 @@
 \input{regression-test}
+\AtBeginDocument{\START}
 \documentclass[report]{presenter}
 \LoadPresenterBackground{secblock}
 \begin{document}
-\START
 \part{Example}
 
 \chapter{Block}

@@ -1,10 +1,10 @@
 \input{regression-test}
+\AtBeginDocument{\START}
 \documentclass{presenter}
 \LoadPresenterForeground{dual}
 \title{Dual Style}
 \geometry{headheight=1.8cm,top=2.3cm}
 \begin{document}
-\START
 \part{Example}
 
 Testing the text under the part.

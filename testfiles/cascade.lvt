@@ -1,4 +1,5 @@
 \input{regression-test}
+\AtBeginDocument{\START}
 \documentclass{presenter}
 \LoadPresenterForeground{cascade}
 \EditPresenterForeground{headline}{parent-separator={\quad $\rightarrow$\quad}}
@@ -6,7 +7,6 @@
 \author{Your Name}
 \geometry{headheight=1.8cm,top=2.3cm}
 \begin{document}
-\START
 \part{Example}
 
 Testing the text under the part.

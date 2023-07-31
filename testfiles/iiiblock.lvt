@@ -1,11 +1,11 @@
 \input{regression-test}
+\AtBeginDocument{\START}
 \documentclass{presenter}
 \usepackage{xcolor}
 \LoadPresenterBackground{iiiblock}
 \EditPresenterBackground{headline}{fill-color=blue!70!green}
 \EditPresenterForeground{headline}{style={\Large\color{white}}}
 \begin{document}
-\START
 
 \paragraph{Some text}
 
