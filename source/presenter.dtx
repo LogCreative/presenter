@@ -241,9 +241,9 @@
   \use:c { #1mark } { #8 }
 }
 %    \end{macrocode}
-% NOTE: Since every section will create a new page, the update of using
-% \cs{pretsec_put_name_lv:nn} will be consistent.
-% Is it necessary, or just pass the entire content?
+% NOTE: The update of using \cs{pretsec_put_name_lv:nn} here is to make sure
+% the setting of the level of the sectioning command is consistent if there is
+% an update in the middle of the body.
 % TODO: do more research on this with other packages.
 % \end{macro}
 %
