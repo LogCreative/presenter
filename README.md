@@ -4,7 +4,7 @@ A LaTeX presentation framework with seamless migration
 presenter is a package to create presentations from
 regular LaTeX documents without many modifications, which could be natively run by any latest TeX distributions.
 
-Compared to other existing packages, presenter won't need any additional frame or slide environment to split different pages, but uses the original sectioning commands as the natural way to split different points.
+presenter won't need any additional frame or slide environment to split different pages, but uses the original sectioning commands as the natural way to split different points.
 
 ## Demo
 
