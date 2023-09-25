@@ -247,10 +247,17 @@
 % TODO: do more research on this with other packages.
 % \end{macro}
 %
+% \begin{variable}[int]{\c_@@_lowest_sec_lv_int}
+% The lowest section level constant.
+%    \begin{macrocode}
+\int_const:Nn \c_@@_lowest_sec_lv_int { 100 }
+%    \end{macrocode}
+% \end{variable}
+%
 % \begin{macro}[int]{\@ssect}
 % For the stared version of the sectioning command, \tn{@ssect} will be called
 % as the child command. No typesetting in the body and insert the information to
-% the mark.
+% the mark. The starred sectioning will have the lowest level.
 %
 % NOTICE: since there is no name or level of the sectioning in the paramenters
 % of \tn{@ssect}, the current implementation will make displaying the star
@@ -266,8 +273,16 @@
 \RenewDocumentCommand { \@ssect } { m m m m m } {
   \starmark { #5 }
 }
+\pretsec_put_name_lv:nV { star } \c_@@_lowest_sec_lv_int
 %    \end{macrocode}
 % \end{macro}
+%
+% Define \verb"empty" sectioning name with the lowest sectioning level for
+% initialization.
+%    \begin{macrocode}
+\pretsec_put_name_lv:nV { empty } \c_@@_lowest_sec_lv_int
+\pretsec_register_name_title:nn { empty } { }
+%    \end{macrocode}
 %
 % \begin{macro}{\printsecnum}
 % Insert the printed version numbers of sectioning counter \meta{name}.

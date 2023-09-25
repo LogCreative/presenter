@@ -79,7 +79,7 @@
 \prop_new:N \g_@@_lv_name_prop
 %    \end{macrocode}
 % \end{variable}
-% \begin{macro}{\pretsec_put_name_lv:nn}
+% \begin{macro}{\pretsec_put_name_lv:nn, \pretsec_put_name_lv:nV}
 % Store the relation of the input sectioning name and sectioning level.
 % \begin{arguments}
 %   \item sectioning name
@@ -90,6 +90,7 @@
   \prop_gput:Nnn \g_@@_name_lv_prop { #1 } { #2 }
   \prop_gput:Nnn \g_@@_lv_name_prop { #2 } { #1 }
 }
+\cs_generate_variant:Nn \pretsec_put_name_lv:nn { nV }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\pretsec_get_name_lv:nN, \pretsec_get_name_lv:VN}
