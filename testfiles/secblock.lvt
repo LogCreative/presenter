@@ -3,6 +3,9 @@
 \documentclass[report]{presenter}
 \LoadPresenterBackground{secblock}
 \begin{document}
+
+Testing the first empty sectioning page.
+
 \part{Example}
 
 \chapter{Block}
@@ -28,5 +31,9 @@ Testing the text in the paragraph.
 \subparagraph{A small point}
 
 Testing the text in the subparagraph.
+
+\subparagraph*{Star page}
+
+Testing the stared sectioning.
 
 \end{document}
