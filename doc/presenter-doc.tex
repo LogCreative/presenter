@@ -191,6 +191,15 @@ For example, you could create a thank you page in this way
   \texttt{plain} (which is used in the part page currently, only footline)
   and \texttt{presenterpage} (a replacement of \texttt{headings}, both headline
   and footline are displayed, but it is not encouraged to explicitly set this).
+
+  Even though the headline or the footline is removed in some page styles, the
+  geometry of the page is not modified, in the other word, the position and the
+  height of the body is not modified. The example could be rewritten by two
+  \verb"\vspace*{\fill}" around the ``thank you'' text, but it will not lead to
+  a not precise vertical centering result (a bit lower) since there is still a
+  \verb"headheight" even if it is in the \verb"empty" page style. But if the
+  page has a header, then it is suitable to write \verb"\vspace*{\fill}" to make
+  a vertically centered text in the page body.
 \end{texnote}
 
 \section{Options}
