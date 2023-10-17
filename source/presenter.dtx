@@ -100,7 +100,7 @@
 %
 % \begin{variable}[int]{\g_@@_chapter_bool}
 % Boolean variable indicate if \cls{presenter} need to patch \tn{chapter}
-% command. It is decided whether there is a \tn{chapter} command.
+% command. It is decided by whether there is a \tn{chapter} command.
 %    \begin{macrocode}
 \bool_new:N \g_@@_chapter_bool
 \cs_if_exist:NTF \chapter
@@ -191,7 +191,7 @@
 % \tn{@makechapterhead} (or \tn{@makeschapterhead}) to format the chapter head.
 % Remove the typesetting in the body.
 %
-% And add the information to mark for stared version \tn{@schapter}, which will
+% And add the information to mark for starred version \tn{@schapter}, which will
 % be called by \tn{chapter*}.
 %    \begin{macrocode}
 \bool_if:NT \g_@@_chapter_bool
