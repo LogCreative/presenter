@@ -2,10 +2,10 @@
 
 module           = "presenter"
 
-docfiledir       = "doc"
+docfiledir       = "texmf/doc/latex/" .. module
 typesetfiles     = {"presenter-doc.tex"}
 
-sourcefiledir    = "source"
+sourcefiledir    = "texmf/source/latex/" .. module
 
 testfiledir      = "testfiles"
 testsuppdir      = testfiledir .. "/support"
