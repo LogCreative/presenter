@@ -20,6 +20,9 @@ jobs:
             apk add zip diffutils
             l3build ctan
         name: build package
+      - name: check if generated files are of latest version
+        run: |
+          git diff --exit-code
       - uses: actions/create-release@latest
         id: create_release
         env:
