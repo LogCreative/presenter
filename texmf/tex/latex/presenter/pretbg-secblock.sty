@@ -1,0 +1,74 @@
+%%
+%% This is file `pretbg-secblock.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% pretbg.dtx  (with options: `package,secblock')
+%% ------------------------------------------------------------------------
+%% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Log Creative.
+%% ------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage
+  {pretbg-secblock}
+  {2023-07-18}{0.6.0}
+  {secblock background style based on block style}
+\DeclareTemplateInterface { background / headline } { secblock } { 0 }
+  {
+    from-color  : tokenlist = black!39,
+    color-decay : integer   = 61,
+    to-color    : tokenlist = white
+  }
+\RequirePackage { pretsec }
+\RequirePackage { pretbg-block }
+\tl_new:N \l__pretbg_secblock_headline_from_color_tl
+\int_new:N \l__pretbg_secblock_headline_color_decay_int
+\tl_new:N \l__pretbg_secblock_headline_to_color_tl
+\int_new:N \l__pretbg_secblock_cur_lv_int
+\int_new:N \l__pretbg_secblock_color_pvt_int
+\tl_new:N \l__pretbg_secblock_color_expr_tl
+\DeclareTemplateCode { background / headline } { secblock } { 0 }
+  {
+    from-color  = \l__pretbg_secblock_headline_from_color_tl   ,
+    color-decay = \l__pretbg_secblock_headline_color_decay_int ,
+    to-color    = \l__pretbg_secblock_headline_to_color_tl
+  }
+  {
+    \AssignTemplateKeys
+    \pretsec_get_cur_lv:N \l__pretbg_secblock_cur_lv_int
+    \exp_args:NNx \int_set:Nn \l__pretbg_secblock_color_pvt_int
+      {
+        \fp_to_int:n
+          {
+            \l__pretbg_secblock_cur_lv_int < 0 ? 100 :
+            ( \l__pretbg_secblock_headline_color_decay_int / 100.0 )
+              ** \l__pretbg_secblock_cur_lv_int * 100
+          }
+      }
+    \exp_args:Nnx \regex_match:nnT { ! \d+ \z }
+      { \l__pretbg_secblock_headline_from_color_tl }
+      { \tl_put_right:Nn \l__pretbg_secblock_headline_from_color_tl { ! white } }
+    \exp_args:NNx \tl_set:Nn \l__pretbg_secblock_color_expr_tl
+      {
+        \l__pretbg_secblock_headline_from_color_tl !
+        \int_use:N \l__pretbg_secblock_color_pvt_int !
+        \l__pretbg_secblock_headline_to_color_tl
+      }
+    \exp_args:Nnnx \UseTemplate { background / headline } { block }
+      { fill-color = \l__pretbg_secblock_color_expr_tl }
+  }
+\endinput
+%%
+%% End of file `pretbg-secblock.sty'.

@@ -1,0 +1,101 @@
+%%
+%% This is file `pretbg-img.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% pretbg.dtx  (with options: `package,img')
+%% ------------------------------------------------------------------------
+%% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Log Creative.
+%% ------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage
+  {pretbg-img}
+  {2023-07-18}{0.6.0}
+  {img background style for presenter}
+\DeclareTemplateInterface { background / canvas } { img } { 0 }
+  {
+    img      : tokenlist = ,
+    pos      : choice
+      { center, top-left, top-right, bottom-left, bottom-right } = center ,
+    margin-x : length = 0cm ,
+    margin-y : length = 0cm
+  }
+\tl_new:N \l__pretbg_img_canvas_img_tl
+\dim_new:N \l__pretbg_img_canvas_margin_x_dim
+\dim_new:N \l__pretbg_img_canvas_margin_y_dim
+\tl_new:N \l__pretbg_img_x_pos_expr_tl
+\tl_new:N \l__pretbg_img_y_pos_expr_tl
+\box_new:N \l__pretbg_img_img_box
+\DeclareTemplateCode { background / canvas } { img } { 0 }
+  {
+    img      = \l__pretbg_img_canvas_img_tl ,
+    margin-x = \l__pretbg_img_canvas_margin_x_dim ,
+    margin-y = \l__pretbg_img_canvas_margin_y_dim ,
+    pos      =
+      {
+        center       =
+          {
+            \tl_set:Nn \l__pretbg_img_x_pos_expr_tl
+              { \paperwidth / 2 - \box_wd:N \l__pretbg_img_img_box / 2 }
+            \tl_set:Nn \l__pretbg_img_y_pos_expr_tl
+              { - \paperheight / 2 - \box_ht:N \l__pretbg_img_img_box / 2 }
+          },
+        top-left     =
+          {
+            \tl_set:Nn \l__pretbg_img_x_pos_expr_tl
+              { \l__pretbg_img_canvas_margin_x_dim }
+            \tl_set:Nn \l__pretbg_img_y_pos_expr_tl
+              { - \box_ht:N \l__pretbg_img_img_box - \l__pretbg_img_canvas_margin_y_dim }
+          },
+        top-right    =
+          {
+            \tl_set:Nn \l__pretbg_img_x_pos_expr_tl
+              {
+                \paperwidth - \box_wd:N \l__pretbg_img_img_box
+                  - \l__pretbg_img_canvas_margin_x_dim
+              }
+            \tl_set:Nn \l__pretbg_img_y_pos_expr_tl
+              { - \box_ht:N \l__pretbg_img_img_box - \l__pretbg_img_canvas_margin_y_dim }
+          },
+        bottom-left  =
+          {
+            \tl_set:Nn \l__pretbg_img_x_pos_expr_tl
+              { \l__pretbg_img_canvas_margin_x_dim }
+            \tl_set:Nn \l__pretbg_img_y_pos_expr_tl
+              { - \paperheight + \l__pretbg_img_canvas_margin_y_dim }
+          },
+        bottom-right =
+          {
+            \tl_set:Nn \l__pretbg_img_x_pos_expr_tl
+              {
+                \paperwidth - \box_wd:N \l__pretbg_img_img_box
+                  - \l__pretbg_img_canvas_margin_x_dim
+              }
+            \tl_set:Nn \l__pretbg_img_y_pos_expr_tl
+              { - \paperheight + \l__pretbg_img_canvas_margin_y_dim }
+          }
+      }
+  }
+  {
+    \AssignTemplateKeys
+    \hbox_set:Nn \l__pretbg_img_img_box { \l__pretbg_img_canvas_img_tl }
+    \put ( \dim_eval:n { \l__pretbg_img_x_pos_expr_tl } ,
+      \dim_eval:n { \l__pretbg_img_y_pos_expr_tl } )
+      { \box_use:N \l__pretbg_img_img_box }
+  }
+\endinput
+%%
+%% End of file `pretbg-img.sty'.

@@ -34,3 +34,15 @@ function update_tag(file, content, tagname, tagdate)
     end
     return content
 end
+
+installfiles   = {"*.sty", "*.cls"}
+extraunpackdir = "texmf/tex/latex/" .. module
+
+-- Checking will copy the unpack files to the final directory.
+function checkinit_hook()
+    for _,src in pairs(installfiles) do
+        cp(src, unpackdir, extraunpackdir)
+    end
+
+    return 0
+end

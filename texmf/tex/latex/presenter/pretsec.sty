@@ -1,0 +1,117 @@
+%%
+%% This is file `pretsec.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% pretsec.dtx  (with options: `package')
+%% ------------------------------------------------------------------------
+%% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Log Creative.
+%% ------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage{pretsec}{2023-07-18}{0.6.0}
+  {sectioning support pack for presenter}
+\tl_new:N \l__pretsec_tmpa_tl
+\tl_new:N \l__pretsec_tmpb_tl
+\int_new:N \l__pretsec_tmpa_int
+\int_new:N \l__pretsec_tmpb_int
+\prop_new:N \g__pretsec_name_lv_prop
+\prop_new:N \g__pretsec_lv_name_prop
+\cs_new:Npn \pretsec_put_name_lv:nn #1#2 {
+  \prop_gput:Nnn \g__pretsec_name_lv_prop { #1 } { #2 }
+  \prop_gput:Nnn \g__pretsec_lv_name_prop { #2 } { #1 }
+}
+\cs_generate_variant:Nn \pretsec_put_name_lv:nn { nV }
+\cs_new:Npn \pretsec_get_name_lv:nN #1#2 {
+  \prop_get:NnN \g__pretsec_name_lv_prop { #1 } #2
+}
+\cs_generate_variant:Nn \pretsec_get_name_lv:nN { VN }
+\cs_new:Npn \pretsec_get_lv_name:nN #1#2 {
+  \prop_get:NnN \g__pretsec_lv_name_prop { #1 } #2
+}
+\tl_new:N \g__pretsec_cur_name_tl
+\tl_new:N \g__pretsec_cur_title_tl
+\cs_new:Npn \pretsec_register_name_title:nn #1#2 {
+  \tl_set:Nn \g__pretsec_cur_name_tl  { #1 }
+  \tl_set:Nn \g__pretsec_cur_title_tl { #2 }
+}
+\cs_new:Npn \pretsec_get_cur_name:N #1
+  { \tl_set_eq:NN #1 \g__pretsec_cur_name_tl  }
+\cs_new:Npn \pretsec_get_cur_lv:N #1
+  { \pretsec_get_name_lv:VN \g__pretsec_cur_name_tl #1 }
+\cs_new:Npn \pretsec_get_cur_title:N #1
+  { \tl_set_eq:NN #1 \g__pretsec_cur_title_tl }
+\bool_new:N \g__pretsec_star_mark_bool
+\bool_set_false:N \g__pretsec_star_mark_bool
+\tl_new:N \g__pretsec_star_title_tl
+\seq_new:N \g__pretsec_lv_seq
+\seq_new:N \g__pretsec_title_seq
+\bool_new:N \l__pretsec_geq_bool
+\int_new:N \l__pretsec_top_lv_int
+\int_new:N \l__pretsec_cur_lv_int
+\cs_new:Npn \pretsec_push_stack_name_title:nn #1#2 {
+  \tl_if_eq:nnTF { #1 } { star }
+  {
+    \bool_set_true:N \g__pretsec_star_mark_bool
+    \tl_set:Nn \g__pretsec_star_title_tl { #2 }
+  }
+  {
+    \bool_set_false:N \g__pretsec_star_mark_bool
+    \tl_if_eq:nnTF { #1 } { part }
+      {
+        \seq_clear:N \g__pretsec_title_seq
+        \seq_clear:N \g__pretsec_lv_seq
+      }
+      {
+        \pretsec_get_name_lv:nN { #1 } \l__pretsec_cur_lv_int
+        \bool_set_true:N \l__pretsec_geq_bool
+        \bool_do_while:Nn \l__pretsec_geq_bool
+          {
+            \seq_get:NNTF \g__pretsec_lv_seq \l__pretsec_top_lv_int
+              {
+                \int_compare:nNnTF { \l__pretsec_top_lv_int } < { \l__pretsec_cur_lv_int }
+                  { \bool_set_false:N \l__pretsec_geq_bool }
+                  {
+                    \seq_pop:NN \g__pretsec_lv_seq \l__pretsec_tmpa_int
+                    \seq_pop:NN \g__pretsec_title_seq \l__pretsec_tmpa_tl
+                  }
+              }
+              { \bool_set_false:N \l__pretsec_geq_bool }
+          }
+        \seq_push:NV \g__pretsec_lv_seq \l__pretsec_cur_lv_int
+        \seq_push:Nn \g__pretsec_title_seq { #2 }
+      }
+  }
+}
+\seq_new:N \l__pretsec_parent_seq
+\cs_new:Npn \pretsec_get_stack_parent_child_title:NN #1#2 {
+  \seq_clear:N #1
+  \tl_clear:N #2
+  \bool_if:NTF \g__pretsec_star_mark_bool
+    {
+      \tl_set_eq:NN #2 \g__pretsec_star_title_tl
+    }
+    {
+      \seq_get:NNT \g__pretsec_lv_seq \l__pretsec_tmpb_int
+        {
+          \seq_set_eq:NN \l__pretsec_parent_seq \g__pretsec_title_seq
+          \seq_pop:NN \l__pretsec_parent_seq #2
+          \seq_set_eq:NN #1 \l__pretsec_parent_seq
+        }
+    }
+}
+\endinput
+%%
+%% End of file `pretsec.sty'.

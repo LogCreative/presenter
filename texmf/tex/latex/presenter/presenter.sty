@@ -1,0 +1,159 @@
+%%
+%% This is file `presenter.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% presenter.dtx  (with options: `package')
+%% ------------------------------------------------------------------------
+%% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Log Creative.
+%% ------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesExplPackage
+  {presenter}
+  {2023-07-18}{0.6.0}
+  {A LaTeX presentation framework with seamless migration (package)}
+\IfPackageLoadedTF { hyperref }
+  { \hypersetup { pdfview = Fit } }
+  { \PassOptionsToPackage { pdfview = Fit } { hyperref } }
+\bool_new:N \g__pret_chapter_bool
+\cs_if_exist:NTF \chapter
+  { \bool_gset_true:N  \g__pret_chapter_bool }
+  { \bool_gset_false:N \g__pret_chapter_bool }
+\RequirePackage { pretsec }
+\RequirePackage { geometry }
+\geometry{
+  paperwidth  = 16 cm,
+  paperheight =  9 cm,
+  top         =  2 cm,
+  bottom      =  2 cm,
+  left        =  2 cm,
+  right       =  2 cm
+}
+\RequirePackage { prettpl }
+\LoadPresenterBackground { default }
+\LoadPresenterForeground { default }
+\RequirePackage { xpatch }
+\xpatchcmd { \maketitle } { \vskip 60\p@ } { } { } { }
+\xpretocmd { \part } {
+  \clearpage
+  \thispagestyle { plain }
+  \UseInstance { foreground / sectioning } { base } { part } { }
+} {  } {  }
+\pretsec_put_name_lv:nn { part } { 0 }
+\bool_if:NT \g__pret_chapter_bool
+  {
+    \pretsec_put_name_lv:nn { part    } { -1 }
+    \pretsec_put_name_lv:nn { chapter } {  0 }
+    \xpatchcmd { \chapter } { \thispagestyle{plain} } { } { } { }
+    \renewcommand { \@makechapterhead  } [ 1 ] { }
+    \renewcommand { \@makeschapterhead } [ 1 ] { }
+    \xpretocmd { \@schapter } { \starmark{#1} } { } { }
+  }
+\xpretocmd { \@startsection } { \clearpage } { } { }
+\RenewDocumentCommand { \@sect } { m m m m m m O{} m } {
+  \int_compare:nNnF { #2 } > { \value { secnumdepth } }
+    { \refstepcounter { #1 } }
+  \addcontentsline { toc } { #1 } {
+    \int_compare:nNnF { #2 } > { \value { secnumdepth } }
+      { \protect \numberline { \use:c { the#1 } } }
+    #7
+  }
+  \pretsec_put_name_lv:nn { #1 } { #2 }
+  \use:c { #1mark } { #8 }
+}
+\RenewDocumentCommand { \@ssect } { m m m m m } {
+  \starmark { #5 }
+}
+\pretsec_put_name_lv:nn { star } { 10 }
+\pretsec_put_name_lv:nn { empty } { 11 }
+\pretsec_register_name_title:nn { empty } { }
+\int_new:N \l__pret_in_lv_int
+\NewDocumentCommand { \printsecnum } { m } {
+  \pretsec_get_name_lv:nN { #1 } \l__pret_in_lv_int
+  \int_compare:nNnF { \l__pret_in_lv_int } > { \value { secnumdepth } }
+    { \use:c { the#1 } \quad }
+}
+\xapptocmd { \ps@plain }
+  {
+    \renewcommand { \@oddfoot }
+      { \UseInstance { foreground / footline } { base } }
+  } { } { }
+\newcommand { \ps@presenterpage } {
+  \AddToHook { shipout / background } {
+    \UseInstance { background / canvas } { base }
+  }
+  \renewcommand { \@oddhead } {
+    \UseInstance { foreground / headline } { base }
+    \AddToHookNext { shipout / background } {
+      \UseInstance { background / headline } { base }
+    }
+  }
+  \renewcommand { \@oddfoot } {
+    \UseInstance { foreground / footline } { base }
+    \AddToHookNext { shipout / background } {
+      \UseInstance { background / footline } { base }
+    }
+  }
+  \bool_if:NT \g__pret_chapter_bool
+    {
+      \RenewDocumentCommand { \chaptermark } { +m } {
+        \UseInstance { foreground / sectioning } { base } { chapter }
+          { \printsecnum { chapter } ##1 }
+      }
+    }
+  \RenewDocumentCommand { \sectionmark } { +m }
+    {
+      \UseInstance { foreground / sectioning } { base } { section }
+        { \printsecnum { section } ##1 }
+    }
+  \RenewDocumentCommand { \subsectionmark } { +m }
+    {
+      \UseInstance { foreground / sectioning } { base } { subsection }
+        { \printsecnum { subsection } ##1 }
+    }
+  \RenewDocumentCommand { \subsubsectionmark } { +m }
+    {
+      \UseInstance { foreground / sectioning } { base } { subsubsection }
+        { \printsecnum { subsubsection } ##1 }
+    }
+  \RenewDocumentCommand { \paragraphmark } { +m }
+    {
+      \UseInstance { foreground / sectioning } { base } { paragraph }
+        { \printsecnum { paragraph } ##1 }
+    }
+  \RenewDocumentCommand { \subparagraphmark } { +m }
+    {
+      \UseInstance { foreground / sectioning } { base } { subparagraph }
+        { \printsecnum { subparagraph } ##1 }
+    }
+  \ProvideDocumentCommand { \starmark } { +m }
+    {
+      \UseInstance { foreground / sectioning } { base } { star }
+        { ##1 }
+    }
+  \AddToHook { shipout / foreground } {
+    \UseInstance { foreground / canvas } { base }
+  }
+}
+\pagestyle { presenterpage }
+\renewcommand { \fps@figure } { hp }
+\renewcommand { \fps@table  } { hp }
+\renewcommand { \familydefault } { \sfdefault }
+\let \@title  \@empty
+\let \@author \@empty
+\endinput
+%%
+%% End of file `presenter.sty'.
