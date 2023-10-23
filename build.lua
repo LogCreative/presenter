@@ -8,7 +8,7 @@
 module           = "presenter"
 
 docfiledir       = "texmf/doc/latex/" .. module
-typesetfiles     = {"presenter-doc.tex"}
+typesetfiles     = {"presenter-doc.tex", "presenter-code.tex"}
 
 sourcefiledir    = "texmf/source/latex/" .. module
 
