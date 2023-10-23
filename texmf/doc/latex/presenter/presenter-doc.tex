@@ -134,10 +134,47 @@ package \cite{xtemplate}. \presenter{} highly recommends using the latest
 \end{itemize}
 
 \textbf{
-  \presenter{} is currently in ALPHA release stage, further modifications to
-  the interfaces could be made without the deprecation transition stage. See
-  Changes section for details.
+  \presenter{} is currently in BETA release stage, further modifications to
+  the interfaces could be made without the deprecation transition stage.
+  % See Changes section for details.
 }
+
+\section{Installation}
+
+To use \presenter{} downloaded from \href{https://github.com/LogCreative/presenter}
+{GitHub repo}, there are mainly three ways:
+\begin{itemize}
+  \item \textbf{Create the document in the repo directory.} The repo is now
+        designed to be used out of the box. Create a document \file{main.tex} in
+        the root directory and you could compile the document by
+  \begin{verbatim}
+    latexmk -pdf main
+  \end{verbatim}
+        which will detect the configuration file \file{.latexmkrc} automatically.
+  
+  \item \textbf{Install the package by the released asset.} You could download
+        the produced package in the \href{https://github.com/LogCreative/presenter/releases}
+        {Releases} section. Copy the unpacked folder from \file{presenter.tds.zip}
+        to your \TeX{} distribution directory and refresh the filename database.
+  
+  \item \textbf{Build the package and install it.}
+    \begin{itemize}
+      \item For \TeX{} Live/Mac\TeX{} users, without building the whole project,
+            you could just run
+      \begin{verbatim}
+        l3build install
+      \end{verbatim}
+            to unpack and copy only the generated install files to \verb"TEXMFHOME".
+
+      \item For a complete-built package (with doc), you could use the command
+      \begin{verbatim}
+        l3build ctan
+      \end{verbatim}
+            to build the package. Once built the documentation is generated
+            and you could copy the folder \file{texmf} directory to your
+            \TeX{} distribution and then refresh the filename database.
+        \end{itemize}
+\end{itemize}
 
 \section{Basics}
 
@@ -242,7 +279,7 @@ and \texttt{foreground}. There are several components inside each layer to
 composite the page, as is shown in Figure~\ref{fig:tpldecomp}. These layers
 are rendered in this order to overlay one after another.
 
-\begin{figure}
+\begin{figure}[h]
 \ExplSyntaxOn
 \draw_begin:
 \hbox_set:Nn \l_tmpa_box { \fbox{\texttt{foreground/sectioning}} }
