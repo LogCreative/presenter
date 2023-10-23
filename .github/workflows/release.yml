@@ -32,7 +32,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: ${{ github.event.head_commit.message }}
           draft: true
-      - name: add presenter-ctan.zip
+      - name: add presenter-doc.pdf
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
