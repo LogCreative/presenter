@@ -38,7 +38,7 @@ end
 
 -- l3build tag x.x.x
 -- Simple tagging, copyright information needs manual update.
-tagfiles         = {"*.dtx","presenter-doc.tex"}
+tagfiles         = {"*.dtx","presenter-code.tex"}
 function update_tag(file, content, tagname, tagdate)
     local iso = "%d%d%d%d%-%d%d%-%d%d"
     local ver = "%d.%d.%d"
