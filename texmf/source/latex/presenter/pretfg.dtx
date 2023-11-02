@@ -100,7 +100,7 @@
 \DeclareTemplateInterface { foreground / headline } { dual } { 0 }
   { 
     parent-style : tokenlist = \normalsize ,
-    child-style : tokenlist = \Large
+    child-style  : tokenlist = \Large
   }
 %    \end{macrocode}
 % \end{TemplateDescription}
@@ -138,8 +138,8 @@
 %    \begin{macrocode}
 \DeclareTemplateInterface { foreground / headline } { cascade } { 0 }
   { 
-    parent-style : tokenlist = \normalsize ,
-    child-style : tokenlist = \Large ,
+    parent-style     : tokenlist = \normalsize ,
+    child-style      : tokenlist = \Large ,
     parent-separator : tokenlist = { \quad{}$\triangleright$\quad{} } ,
   }
 %    \end{macrocode}
@@ -281,7 +281,7 @@
 \DeclareTemplateCode { foreground / headline } { dual } { 0 }
   {
     parent-style = \l_@@_headline_parent_style_tl ,
-    child-style = \l_@@_headline_child_style_tl
+    child-style  = \l_@@_headline_child_style_tl
   }
   {
     \AssignTemplateKeys
@@ -343,8 +343,8 @@
 \tl_new:N \l_@@_child_tl
 \DeclareTemplateCode { foreground / headline } { cascade } { 0 }
   {
-    parent-style = \l_@@_headline_parent_style_tl ,
-    child-style = \l_@@_headline_child_style_tl ,
+    parent-style     = \l_@@_headline_parent_style_tl ,
+    child-style      = \l_@@_headline_child_style_tl ,
     parent-separator = \l_@@_headline_parent_separator_tl
   }
   {
