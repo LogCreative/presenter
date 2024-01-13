@@ -1,6 +1,6 @@
 \input{regression-test}
 \AtBeginDocument{\START}
-\documentclass[report]{presenter}
+\documentclass[base=report]{presenter}
 \LoadPresenterBackground{secblock}
 \begin{document}
 

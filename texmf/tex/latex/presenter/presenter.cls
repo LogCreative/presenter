@@ -6,7 +6,7 @@
 %%
 %% presenter.dtx  (with options: `class')
 %% ------------------------------------------------------------------------
-%% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+%% Copyright (C) 2023--2024 Log Creative <logcreative@outlook.com>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -20,21 +20,25 @@
 %% 
 %% The Current Maintainer of this work is Log Creative.
 %% ------------------------------------------------------------------------
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
 \ProvidesExplClass
   {presenter}
-  {2023-10-23}{0.7.0}
+  {2024-01-14}{0.7.1}
   {A LaTeX presentation framework with seamless migration (class)}
-\bool_new:N \g__pretcls_article_bool
-\bool_gset_true:N \g__pretcls_article_bool
-\DeclareOption { article } { \bool_gset_true:N  \g__pretcls_article_bool }
-\DeclareOption { report  } { \bool_gset_false:N \g__pretcls_article_bool }
-\DeclareOption* {
-  \PassOptionsToClass { \CurrentOption } { article }
-  \PassOptionsToClass { \CurrentOption } { report  }
+\tl_new:N \l__pretcls_base_tl
+\clist_new:N \l__pretcls_base_options_clist
+\DeclareKeys [ pretcls ] {
+  base.tl_gset:N = \l__pretcls_base_tl,
+  base.initial:n = article,
+  base-options.clist_gset:N = \l__pretcls_base_options_clist,
+  base-options.initial:n = ,
 }
-\ProcessOptions*
-\LoadClass { \bool_if:NTF \g__pretcls_article_bool { article } { report } }
+\DeclareUnknownKeyHandler [ pretcls ] {
+  \PassOptionsToClass { \CurrentOption } { \l__pretcls_base_tl }
+}
+\ProcessKeyOptions [ pretcls ]
+\PassOptionsToClass { \l__pretcls_base_options_clist } { \l__pretcls_base_tl }
+\LoadClass { \l__pretcls_base_tl }
 \RequirePackage { presenter }
 \endinput
 %%

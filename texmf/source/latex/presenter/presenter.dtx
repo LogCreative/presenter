@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 % ------------------------------------------------------------------------
-% Copyright (C) 2023 Log Creative <logcreative@outlook.com>
+% Copyright (C) 2023--2024 Log Creative <logcreative@outlook.com>
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -19,12 +19,15 @@
 % \begin{implementation}
 %
 % \iffalse
+% The setting of key-based options through CamelCase commands (
+% \cs{DeclareKeys}, \cs{DeclareUnknownKeyHandler}, \cs{ProcessKeysOptions}
+% ) is only available after the June 2022 release \cite{tlc3}.
 %<*class|package>
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
 %<class>\ProvidesExplClass
 %<package>\ProvidesExplPackage
   {presenter}
-  {2023-10-23}{0.7.0}
+  {2024-01-14}{0.7.1}
 %<class>  {A LaTeX presentation framework with seamless migration (class)}
 %<package>  {A LaTeX presentation framework with seamless migration (package)}
 %</class|package>
@@ -42,33 +45,93 @@
 %<@@=pretcls>
 %    \end{macrocode}
 %
-% \begin{variable}[int]{\g_@@_article_bool}
-% Base class boolean variable if it is \cls{article} base class.
+% \begin{variable}{\l__pretcls_base_tl, \l__pretcls_base_options_clist}
+% Store the base class and its options.
 %    \begin{macrocode}
-\bool_new:N \g_@@_article_bool
-\bool_gset_true:N \g_@@_article_bool
+\tl_new:N \l__pretcls_base_tl
+\clist_new:N \l__pretcls_base_options_clist
 %    \end{macrocode}
+% The base options are stored in comma list (\verb"clist")
+% instead of token list (\verb"tl") type
+% to avoid the unwanted space token in the options.
 % \end{variable}
 %
-% Declare option \verb"report" and \verb"article" for selecting respective base
-% classes.
+% Declare keys for the class with family name \verb"pretcls" to avoid the
+% default family name \verb"presenter" which may conflict the package with the
+% same name.
 %    \begin{macrocode}
-\DeclareOption { article } { \bool_gset_true:N  \g_@@_article_bool }
-\DeclareOption { report  } { \bool_gset_false:N \g_@@_article_bool }
+\DeclareKeys [ pretcls ] {
 %    \end{macrocode}
+% \begin{texnote}
+%   Instead of using \cs{SetKeys}, \presenter{} uses \verb".initial" property on
+%   those keys. Be aware that the \verb".initial" property should be always
+%   declared after \verb".store" or \verb".<type>_set:N" property to avoid
+%   uninitialized variables!
+% \end{texnote}
 %
-% Pass other options to both the potential document classes.
+% \begin{macro}{base}
+% The base class to be loaded before the package \pkg{presenter}.
 %    \begin{macrocode}
-\DeclareOption* {
-  \PassOptionsToClass { \CurrentOption } { article }
-  \PassOptionsToClass { \CurrentOption } { report  }
+  base.tl_gset:N = \l__pretcls_base_tl,
+  base.initial:n = article,
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{base-options}
+% The option comma list to be passed to the base class.
+%    \begin{macrocode}
+  base-options.clist_gset:N = \l__pretcls_base_options_clist,
+  base-options.initial:n = ,
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
 }
 %    \end{macrocode}
 %
-% Process the options and load the selected base class. Load the main package.
+% User could use the traditional ``global'' options to pass options to the
+% setted \verb"base" class.
+% The usage should be replaced by the \verb"base-options" key above
+% and only acts as a compatibility feature with other \LaTeX{} classes.
+% Unlike \verb"base-options" key, those ``global'' options are only available
+% after the \verb"base" key is set in the key-value list of this class.
+% 
+% \begin{texnote}
+% The reason is as follows. 
+% Since the order of keys processed by \cs{ProcessKeyOptions} is in the order of
+% the key-value list,
+% if those ``global'' options are set before the \verb"base" key, 
+% those options will be passed to the initial value of \verb"base" key,
+% i.e., \cls{article} class.
+% As a result, those ``pre-base'' options will be ignored if \verb"base" is
+% not \verb"article".
+% \end{texnote}
 %    \begin{macrocode}
-\ProcessOptions*
-\LoadClass { \bool_if:NTF \g_@@_article_bool { article } { report } }
+\DeclareUnknownKeyHandler [ pretcls ] {
+  \PassOptionsToClass { \CurrentOption } { \l__pretcls_base_tl }
+}
+%    \end{macrocode}
+%
+% Process the class options.
+%    \begin{macrocode}
+\ProcessKeyOptions [ pretcls ]
+%    \end{macrocode}
+%
+% Pass options in \verb"base-options" to the base class.
+% Then load the base class.
+%    \begin{macrocode}
+\PassOptionsToClass { \l__pretcls_base_options_clist } { \l__pretcls_base_tl }
+\LoadClass { \l__pretcls_base_tl }
+%    \end{macrocode}
+%
+% \begin{texnote}
+% The decision to make use of \cs{DeclareUnknownKeyHandler} with trade-off
+% instead of \cs{LoadClassWithOptions} is for avoiding the warnings of unused
+% options raised by the latter one.
+% \end{texnote}
+%
+% Load \cls{presenter} main package.
+%    \begin{macrocode}
 \RequirePackage { presenter }
 %    \end{macrocode}
 %
