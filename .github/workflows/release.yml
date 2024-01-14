@@ -12,10 +12,11 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps: 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: checkout code
-      - uses: xu-cheng/texlive-action/full@v1
+      - uses: xu-cheng/texlive-action@v2
         with:
+          scheme: full
           run: |
             apk add zip diffutils
             l3build ctan
