@@ -23,7 +23,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
 \ProvidesExplClass
   {presenter}
-  {2024-01-14}{0.7.1}
+  {2024-01-17}{0.7.2}
   {A LaTeX presentation framework with seamless migration (class)}
 \tl_new:N \l__pretcls_base_tl
 \clist_new:N \l__pretcls_base_options_clist
