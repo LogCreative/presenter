@@ -1,0 +1,12 @@
+\input{regression-test}
+\AtBeginDocument{\START}
+\DocumentMetadata{}
+\documentclass{presenter}
+\usepackage{hyperref}
+\begin{document}
+\section{Test}
+Test \textsf{hyperref} on Page \pageref{sec:target}.
+
+\section{Target}\label{sec:target}
+This is the target section.
+\end{document}

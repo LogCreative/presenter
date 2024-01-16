@@ -14,8 +14,6 @@ sourcefiledir    = "texmf/source/latex/" .. module
 
 -- l3build check
 -- Checking will copy the unpack files to the final directory.
-testfiledir      = "testfiles"
-testsuppdir      = testfiledir .. "/support"
 installfiles     = {"*.sty", "*.cls"}
 extraunpackdir   = "texmf/tex/latex/" .. module
 function checkinit_hook()
@@ -25,8 +23,20 @@ function checkinit_hook()
     return 0
 end
 
+-- main check config
+checkruns        = 1
+testfiledir      = "testfiles"
+testsuppdir      = testfiledir .. "/support"
+
+-- extra check configs
+checkconfigs = {
+    "build",
+    "testfiles/tworuns/config"
+}
+
 -- l3build doc
 -- prepare the test pdf in the doc (should be done after 'l3build check')
+-- only main folder check could be included
 maindir          = "."
 builddir         = maindir .. "/build"
 testdir          = builddir .. "/test"
