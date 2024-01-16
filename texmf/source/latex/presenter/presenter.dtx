@@ -56,6 +56,14 @@
 % to avoid the unwanted space token in the options.
 % \end{variable}
 %
+% \begin{variable}{\l_@@_bg_tl, \l_@@_fg_tl}
+% Background and foreground template selections.
+%    \begin{macrocode}
+\tl_new:N \l_@@_bg_tl
+\tl_new:N \l_@@_fg_tl
+%    \end{macrocode}
+% \end{variable}
+%
 % Declare keys for the class with family name \verb"pretcls" to avoid the
 % default family name \verb"presenter" which may conflict the package with the
 % same name.
@@ -82,6 +90,22 @@
 %    \begin{macrocode}
   base-options.clist_gset:N = \l_@@_base_options_clist,
   base-options.initial:n = ,
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{bg}
+% The background template to be initially loaded.
+%    \begin{macrocode}
+  bg.tl_gset:N = \l_@@_bg_tl,
+  bg.initial:n = default,
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{fg}
+% The foreground template to be initially loaded.
+%    \begin{macrocode}
+  fg.tl_gset:N = \l_@@_fg_tl,
+  fg.initial:n = default,
 %    \end{macrocode}
 % \end{macro}
 %
@@ -130,6 +154,14 @@
 % options raised by the latter one.
 % \end{texnote}
 %
+% Pass the initial background and foreground template to the package.
+%    \begin{macrocode}
+\PassOptionsToPackage {
+  bg = \l_@@_bg_tl,
+  fg = \l_@@_fg_tl
+} { presenter }
+%    \end{macrocode}
+%
 % Load \cls{presenter} main package.
 %    \begin{macrocode}
 \RequirePackage { presenter }
@@ -150,6 +182,43 @@
 % to avoid the potential conflictions with other classes/packages.
 %    \begin{macrocode}
 %<@@=pret>
+%    \end{macrocode}
+%
+% \begin{variable}{\l_@@_bg_tl, \l_@@_fg_tl}
+% Background and foreground template selections.
+%    \begin{macrocode}
+\tl_new:N \l_@@_bg_tl
+\tl_new:N \l_@@_fg_tl
+%    \end{macrocode}
+% \end{variable}
+%
+%    \begin{macrocode}
+\DeclareKeys [ pret ] {
+%    \end{macrocode}
+%
+% \begin{macro}{bg}
+% The background template to be initially loaded.
+%    \begin{macrocode}
+  bg.tl_gset:N = \l_@@_bg_tl,
+  bg.initial:n = default,
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{fg}
+% The foreground template to be initially loaded.
+%    \begin{macrocode}
+  fg.tl_gset:N = \l_@@_fg_tl,
+  fg.initial:n = default,
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% Process the package options.
+%    \begin{macrocode}
+\ProcessKeyOptions [ pret ]
 %    \end{macrocode}
 %
 % When using \pkg{hyperref} package, the internal link will jump to the whole
@@ -202,10 +271,22 @@
 %    \end{macrocode}
 %
 % One could only load the template in the preamble.
-% It is too heavy to load all the templates. Load \pkg{default} template as base.
+% It is too heavy to load all the templates.
+% Load \pkg{default} template as base
+% which is required to declare all components used by \presenter{}.
 %    \begin{macrocode}
 \LoadPresenterBackground { default }
 \LoadPresenterForeground { default }
+%    \end{macrocode}
+%
+% Then load the initial templates set by the user.
+% They will override some default components.
+% \presenter{} will not load the \pkg{default} template twice.
+%    \begin{macrocode}
+\tl_if_eq:NnF \l_@@_bg_tl { default }
+  { \LoadPresenterBackground { \l_@@_bg_tl } }
+\tl_if_eq:NnF \l_@@_fg_tl { default }
+  { \LoadPresenterForeground { \l_@@_fg_tl } }
 %    \end{macrocode}
 %
 % Introduce \pkg{xpatch} for patching command by searching the query.

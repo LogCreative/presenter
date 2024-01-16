@@ -1,7 +1,6 @@
 \input{regression-test}
 \AtBeginDocument{\START}
-\documentclass{presenter}
-\LoadPresenterForeground{dual}
+\documentclass[fg=dual]{presenter}
 \title{Dual Style}
 \geometry{headheight=1.8cm,top=2.3cm}
 \begin{document}

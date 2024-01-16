@@ -1,9 +1,7 @@
 \input{regression-test}
 \AtBeginDocument{\START}
-\documentclass{presenter}
+\documentclass[bg=img, fg=img]{presenter}
 \usepackage{mwe}
-\LoadPresenterBackground{img}
-\LoadPresenterForeground{img}
 \begin{document}
 \paragraph{center image}
 \EditPresenterBackground{canvas}{

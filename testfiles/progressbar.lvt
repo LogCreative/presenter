@@ -1,7 +1,6 @@
 \input{regression-test}
 \AtBeginDocument{\START}
-\documentclass{presenter}
-\LoadPresenterBackground{progressbar}
+\documentclass[bg=progressbar]{presenter}
 \makeatletter
 \gdef\@abspage@last{6}  % assume it is the second run
 \makeatother

@@ -1,7 +1,6 @@
 \input{regression-test}
 \AtBeginDocument{\START}
-\documentclass{presenter}
-\LoadPresenterForeground{cascade}
+\documentclass[fg=cascade]{presenter}
 \EditPresenterForeground{headline}{parent-separator={\quad $\rightarrow$\quad}}
 \title{Cascade Style}
 \author{Your Name}

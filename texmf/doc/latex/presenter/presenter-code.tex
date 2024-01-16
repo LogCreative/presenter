@@ -55,6 +55,11 @@
 \renewcommand*\l@subsubsection{\@dottedtocline{3}{4.3em}{3.7em}}
 \makeatother
 
+\newrobustcmd\rexptarget{%
+  \AddLineBeginMainAux{\csgdef{Codedoc@rexpstar}{}}%
+  \csname Hy@raisedlink\endcsname{\hypertarget{rexpstar}{}}}
+\newrobustcmd\rexpstar{\hyperlink{rexpstar}{\ding{73}}}
+
 \begin{document}
 
 \maketitle
@@ -107,7 +112,7 @@ The Current Maintainer of this work is Log Creative.
 \section{Introduction}
 
 \presenter{} is a document class (or a package) to create presentations from
-regular \LaTeX{} documents without many modifications, \textit{i.e.} present
+regular \LaTeX{} documents without many modifications, \textit{i.e.}, present
 your \LaTeX{} document in a screen-friendly way.
 
 \presenter{} won't need any additional \env{frame} or \env{slide} environments
@@ -240,21 +245,9 @@ For example, you could create a thank you page in this way
 
 \section{Options}
 
-\begin{function}[added=2024-01-14]{base, base-options}
-  Set the \meta{base} document class to be used with \meta{base-options} comma 
-  list. The default is \cls{article} base document class with empty options.
-  
-  You should always set \meta{base} first if you want to use a different base
-  document class other than \cls{article}. And always surround your
-  \meta{base-options} comma list with braces (\verb"{}") especially if you want
-  to pass multiple options to the \meta{base} document class.
-
-  If you want to use \tn{chapter} level, you could use \cls{report} document
-  class as the base like \verb"\documentclass[base=report,base-options={}]{presenter}".
-\end{function}
-
 \begin{texnote}
-  If you want to customize the loading of the \presenter{} code,
+  Other than loading the document class \cls{presenter} shown previously,
+  if you want to customize the loading of the \presenter{} code,
   you could use the package \pkg{presenter} instead.
 
 \begin{center}
@@ -272,7 +265,37 @@ For example, you could create a thank you page in this way
   \previewtest{package}
 \end{minipage}
 \end{center}
+
+In the following section, the option with \rexptarget\rexpstar{} represents that
+it is only available as a document class option,
+\emph{i.e.}, not available as a package option.
+
 \end{texnote}
+
+\begin{function}[rEXP,added=2024-01-14]{base, base-options}
+  Set the \meta{base} document class to be used with \meta{base-options} comma 
+  list. The default is \cls{article} base document class with empty options.
+  
+  You should always set \meta{base} first if you want to use a different base
+  document class other than \cls{article}. And always surround your
+  \meta{base-options} comma list with braces (\verb"{}") especially if you want
+  to pass multiple options to the \meta{base} document class.
+
+  If you want to use \tn{chapter} level, you could use \cls{report} document
+  class as the base like \verb"\documentclass[base=report,base-options={}]{presenter}".
+\end{function}
+
+\begin{function}[added=2024-01-16]{bg, fg}
+  Set the initial background (\verb"bg") and foreground (\verb"fg") templates to
+  be loaded. \pkg{default} background and \pkg{default} foreground templates are
+  loaded by default and before the assigned templates are loaded.
+  
+  The name choices can be viewed in Section \ref{sec:pretbg} and Section
+  \ref{sec:pretfg} respectively.
+  For advanced template loading, you could ignore these options and see the
+  commands \cs{LoadPresenterBackground} and \cs{LoadPresenterForeground} in
+  page \pageref{sec:loadtpl}.
+\end{function}
 
 \section{Templates}
 
@@ -335,6 +358,7 @@ interfaces for loading or editing them. You could visit the
 {\texttt{testfiles/}} folder for the code example of using these templates.
 
 \subsection{Load Templates}
+\label{sec:loadtpl}
 
 \begin{function}[added=2023-03-17,updated=2023-07-14]{\LoadPresenterBackground}
   \begin{syntax}

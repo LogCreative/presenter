@@ -25,6 +25,15 @@
   {presenter}
   {2024-01-14}{0.7.1}
   {A LaTeX presentation framework with seamless migration (package)}
+\tl_new:N \l__pret_bg_tl
+\tl_new:N \l__pret_fg_tl
+\DeclareKeys [ pret ] {
+  bg.tl_gset:N = \l__pret_bg_tl,
+  bg.initial:n = default,
+  fg.tl_gset:N = \l__pret_fg_tl,
+  fg.initial:n = default,
+}
+\ProcessKeyOptions [ pret ]
 \IfPackageLoadedTF { hyperref }
   { \hypersetup { pdfview = Fit } }
   { \PassOptionsToPackage { pdfview = Fit } { hyperref } }
@@ -45,6 +54,10 @@
 \RequirePackage { prettpl }
 \LoadPresenterBackground { default }
 \LoadPresenterForeground { default }
+\tl_if_eq:NnF \l__pret_bg_tl { default }
+  { \LoadPresenterBackground { \l__pret_bg_tl } }
+\tl_if_eq:NnF \l__pret_fg_tl { default }
+  { \LoadPresenterForeground { \l__pret_fg_tl } }
 \RequirePackage { xpatch }
 \xpatchcmd { \maketitle } { \vskip 60\p@ } { } { } { }
 \xpretocmd { \part } {

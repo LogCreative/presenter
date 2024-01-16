@@ -27,11 +27,17 @@
   {A LaTeX presentation framework with seamless migration (class)}
 \tl_new:N \l__pretcls_base_tl
 \clist_new:N \l__pretcls_base_options_clist
+\tl_new:N \l__pretcls_bg_tl
+\tl_new:N \l__pretcls_fg_tl
 \DeclareKeys [ pretcls ] {
   base.tl_gset:N = \l__pretcls_base_tl,
   base.initial:n = article,
   base-options.clist_gset:N = \l__pretcls_base_options_clist,
   base-options.initial:n = ,
+  bg.tl_gset:N = \l__pretcls_bg_tl,
+  bg.initial:n = default,
+  fg.tl_gset:N = \l__pretcls_fg_tl,
+  fg.initial:n = default,
 }
 \DeclareUnknownKeyHandler [ pretcls ] {
   \PassOptionsToClass { \CurrentOption } { \l__pretcls_base_tl }
@@ -39,6 +45,10 @@
 \ProcessKeyOptions [ pretcls ]
 \PassOptionsToClass { \l__pretcls_base_options_clist } { \l__pretcls_base_tl }
 \LoadClass { \l__pretcls_base_tl }
+\PassOptionsToPackage {
+  bg = \l__pretcls_bg_tl,
+  fg = \l__pretcls_fg_tl
+} { presenter }
 \RequirePackage { presenter }
 \endinput
 %%

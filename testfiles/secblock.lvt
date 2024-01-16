@@ -1,7 +1,6 @@
 \input{regression-test}
 \AtBeginDocument{\START}
-\documentclass[base=report]{presenter}
-\LoadPresenterBackground{secblock}
+\documentclass[base=report, bg=secblock]{presenter}
 \begin{document}
 
 Testing the first empty sectioning page.
