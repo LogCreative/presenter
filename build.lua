@@ -29,6 +29,7 @@ testfiledir      = "testfiles"
 testsuppdir      = testfiledir .. "/support"
 
 -- extra check configs
+-- When save, use l3build save -c <config> <testname>
 checkconfigs = {
     "build",
     "testfiles/tworuns/config"
