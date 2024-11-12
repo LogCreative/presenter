@@ -22,7 +22,7 @@
 \NewDocumentCommand{\presenter}{}{\textsc{Presenter}}
 \title{\presenter: A \LaTeX{} presentation framework with seamless migration}
 \author{Zilong Li (Log Creative)}
-\date{2024-01-17 \quad v0.7.2}
+\date{2024-11-12 \quad v0.8.0}
 
 \usepackage{array}
 \usepackage{float}
@@ -55,6 +55,7 @@
 \renewcommand*\l@subsubsection{\@dottedtocline{3}{4.3em}{3.7em}}
 \makeatother
 
+\usepackage{auxhook} % for \AddLineBeginMainAux to work
 \newrobustcmd\rexptarget{%
   \AddLineBeginMainAux{\csgdef{Codedoc@rexpstar}{}}%
   \csname Hy@raisedlink\endcsname{\hypertarget{rexpstar}{}}}
@@ -121,9 +122,9 @@ natural way to split different points.
 
 \presenter{} aims at providing a framework with the minimum code powered by
 modern \LaTeX3 facilities. For further customization, the template developer
-could make use of the interfaces based on the \pkg{xtemplate}
-package \cite{xtemplate}. \presenter{} highly recommends using the latest
-\TeX{} distribution for the best user experience.
+could make use of the interfaces based on the \pkg{lttemplates}
+\cite{lttemplates}. \presenter{} highly recommends using the latest \TeX{}
+distribution (after 2024-06-01) for the best user experience.
 
 \presenter{} has the following main characteristics:
 
@@ -316,10 +317,12 @@ are rendered in this order to overlay one after another.
 \draw_transform_yslant:n { 0.3 }
 \hbox_set:Nn \l_tmpa_box { \previewtest[page=1]{decomp} }
 \draw_box_use:N \l_tmpa_box
-\draw_transform_xshift:n { 4cm }
+\draw_transform_xshift:n { 6cm }
+\draw_transform_yshift:n { -1.8cm }
 \hbox_set:Nn \l_tmpa_box { \previewtest[page=2]{decomp} }
 \draw_box_use:N \l_tmpa_box
-\draw_transform_xshift:n { 4cm }
+\draw_transform_xshift:n { 6cm }
+\draw_transform_yshift:n { -1.8cm }
 \hbox_set:Nn \l_tmpa_box { \previewtest[page=3]{decomp} }
 \draw_box_use:N \l_tmpa_box
 \draw_end:
@@ -443,10 +446,9 @@ Xunjie Xu.
 \newblock Lightweight WYSIWYG editing for math/physics presentations, 2023.
 \newblock \url{https://tuna.moe/event/2023/lightweight-wysiwyg-editing/}.
 
-\bibitem{xtemplate}
+\bibitem{lttemplates}
 The \LaTeX{} Project.
-\newblock The \pkg{xtemplate} package: Prototype document functions, 2023.
-\newblock \url{https://www.ctan.org/pkg/xtemplate}.
+\newblock The \pkg{lttemplates} code, 2024.
 
 \bibitem{tlc3}
 Frank Mittelbach and Ulrike Fischer.
