@@ -41,49 +41,48 @@
 %
 % \subsection{Template Management Helper}
 %
-% Introduce \pkg{xtemplate} as the base package.
-%    \begin{macrocode}
-\RequirePackage { xtemplate }
-%    \end{macrocode}
+% Since templates has already been integrated into the \LaTeXe{} kernel since
+% 2024-06-01, \pkg{xtemplate} package is no longer need. And new interface
+% \cs{NewTemplateType} replaces the old interface \cs{NewTemplateType}.
 %
 % \begin{macro}[TF]{\prettpl_if_template_exist:nn}
-% If the \meta{object type} in style \meta{template name} exists for the
+% If the \meta{template type} in style \meta{template name} exists for the
 % current loaded code.
 % \begin{arguments}
-%   \item Object type
+%   \item Template type
 %   \item Template name
 % \end{arguments}
 %    \begin{macrocode}
 \prg_new_conditional:Npnn \prettpl_if_template_exist:nn #1#2 { T, F, TF }
 {
-  \cs_if_exist:cTF { \c__xtemplate_code_root_tl #1 / #2 }
+  \cs_if_exist:cTF { \c__template_code_root_tl #1 / #2 }
     { \prg_return_true: }
     { \prg_return_false: }
 }
 %    \end{macrocode}
 % \begin{texnote}
-% Package \pkg{xtemplate} does not provide a user interface like
+% Package \pkg{lttemplate} does not provide a user interface like
 % \cs{IfInstanceExistTF} to detect whether the template exists. And the internal
-% interface \cs{__xtemplate_execute_if_code_exist:nnT} will raise the error if
+% interface \cs{__template_execute_if_code_exist:nnT} will raise the error if
 % the template code does not exist (can be seen as only \texttt{T} conditional
 % exists). This macro is referred to the code of the internal interface but
 % won't raise error if it does not exist.
 %
-% \pkg{xtemplate} collection model is suitable for the use of \presenter{}, 
+% \pkg{xtemplate} old collection model is suitable for the use of \presenter{}, 
 % which may be the reason why the user interface for detecting template does
-% not exist. But the collection model has been marked as deprecated now
+% not exist. But the collection model has been removed from \pkg{lttemplate}
 % and \presenter{} has to use a cutomized interface for the use of the package
-% \pkg{xtemplate} at present.
+% \pkg{lttemplate} at present.
 % \end{texnote}
 % \end{macro}
 %
 % \begin{macro}{\prettpl_load_template:nn}
-% Load the \meta{object type} in style \meta{template name}. Mainly redeclare
+% Load the \meta{template type} in style \meta{template name}. Mainly redeclare
 % the instance \texttt{base} to the new template.
 % If the template code does not exists, then an info message will be recorded
 % in the log file.
 % \begin{arguments}
-%   \item Object type
+%   \item Template type
 %   \item Template name
 % \end{arguments}
 %    \begin{macrocode}
@@ -100,23 +99,23 @@
 %
 % \subsection{Object Type Declaration}
 %
-% Declare object types.
+% Declare template types.
 % \begin{macro}{background/canvas}
 % The background bottom layer.
 %    \begin{macrocode}
-\DeclareObjectType { background / canvas } { 0 }
+\NewTemplateType { background / canvas } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{background/headline}
 % The background rendering of the headline, which is hooked to \tn{@oddhead}.
 %    \begin{macrocode}
-\DeclareObjectType { background / headline } { 0 }
+\NewTemplateType { background / headline } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{background/footline}
 % The background rendering of the footline, which is hooked to \tn{@oddfoot}.
 %    \begin{macrocode}
-\DeclareObjectType { background / footline } { 0 }
+\NewTemplateType { background / footline } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/sectioning}
@@ -124,31 +123,31 @@
 % (or \texttt{foreground/footline} if you want to show the sectioning
 % information in the footline).
 % The call of \cs{pretsec_register_name_title:nn} is required for every
-% implementation code of this object type.
+% implementation code of this template type.
 % \begin{arguments}
 %   \item the name of sectioning.
 %   \item the content of the sectioning title.
 % \end{arguments}
 %    \begin{macrocode}
-\DeclareObjectType { foreground / sectioning } { 2 }
+\NewTemplateType { foreground / sectioning } { 2 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/headline}
 % The foreground display method of the headline.
 %    \begin{macrocode}
-\DeclareObjectType { foreground / headline } { 0 }
+\NewTemplateType { foreground / headline } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/footline}
 % The foreground display of the footline.
 %    \begin{macrocode}
-\DeclareObjectType { foreground / footline } { 0 }
+\NewTemplateType { foreground / footline } { 0 }
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{foreground/canvas}
 % The foreground top layer.
 %    \begin{macrocode}
-\DeclareObjectType { foreground / canvas } { 0 }
+\NewTemplateType { foreground / canvas } { 0 }
 %    \end{macrocode}
 % \end{macro}
 %
