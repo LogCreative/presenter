@@ -24,39 +24,14 @@ jobs:
       - name: check if generated files are of latest version
         run: |
           git diff --exit-code
-      - uses: actions/create-release@latest
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: create release
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ github.ref }}
           body: ${{ github.event.head_commit.message }}
           draft: true
-      - name: add presenter-doc.pdf
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: texmf/doc/latex/presenter/presenter-doc.pdf
-          asset_name: presenter-doc.pdf
-          asset_content_type: application/pdf
-      - name: add presenter-ctan.zip
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: presenter-ctan.zip
-          asset_name: presenter-ctan.zip
-          asset_content_type: application/x-zip
-      - name: add presenter.tds.zip
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/distrib/tds/presenter.tds.zip
-          asset_name: presenter.tds.zip
-          asset_content_type: application/x-zip
+          files: |
+            texmf/doc/latex/presenter/presenter-doc.pdf
+            presenter-ctan.zip
+            build/distrib/tds/presenter.tds.zip
