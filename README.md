@@ -5,7 +5,7 @@ presenter is a package to create presentations from
 regular LaTeX documents without many modifications, which could be natively run by any latest TeX distributions.
 
 > [!WARNING]
-> You should use the LaTeX2e kernel (2024-06-01) or later to compile the latest version of presenter document successfully.
+> You should use the LaTeX2e kernel (2024-06-01 or later) to compile the latest version of presenter document successfully.
 
 presenter won't need any additional frame or slide environment to split different pages, but uses the original sectioning commands as the natural way to split different points.
 
