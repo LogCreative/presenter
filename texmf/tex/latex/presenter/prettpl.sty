@@ -21,12 +21,11 @@
 %% The Current Maintainer of this work is Log Creative.
 %% ------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplPackage{prettpl}{2024-01-17}{0.7.2}
+\ProvidesExplPackage{prettpl}{2024-11-12}{0.8.0}
   {template management for presenter}
-\RequirePackage { xtemplate }
 \prg_new_conditional:Npnn \prettpl_if_template_exist:nn #1#2 { T, F, TF }
 {
-  \cs_if_exist:cTF { \c__xtemplate_code_root_tl #1 / #2 }
+  \cs_if_exist:cTF { \c__template_code_root_tl #1 / #2 }
     { \prg_return_true: }
     { \prg_return_false: }
 }
@@ -38,13 +37,13 @@
       { \DeclareInstance { #1 } { base } { #2 } { } }
       { \msg_info:nnnn { presenter } { no-template } { #1 } { #2 } }
   }
-\DeclareObjectType { background / canvas } { 0 }
-\DeclareObjectType { background / headline } { 0 }
-\DeclareObjectType { background / footline } { 0 }
-\DeclareObjectType { foreground / sectioning } { 2 }
-\DeclareObjectType { foreground / headline } { 0 }
-\DeclareObjectType { foreground / footline } { 0 }
-\DeclareObjectType { foreground / canvas } { 0 }
+\NewTemplateType { background / canvas } { 0 }
+\NewTemplateType { background / headline } { 0 }
+\NewTemplateType { background / footline } { 0 }
+\NewTemplateType { foreground / sectioning } { 2 }
+\NewTemplateType { foreground / headline } { 0 }
+\NewTemplateType { foreground / footline } { 0 }
+\NewTemplateType { foreground / canvas } { 0 }
 \NewDocumentCommand { \LoadPresenterBackground }
   { O{canvas, headline, footline} m }
   {
